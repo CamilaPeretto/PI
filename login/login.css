@@ -1,0 +1,284 @@
+/* 1) Reset e configurações globais*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background-color: #E0F2F1;
+  }
+  
+  /* 2) Container principal*/
+  .container {
+    display: flex; /* Flex horizontal */
+    height: 100vh; /* Preenche toda altura da tela */
+  }
+  
+  /*3) Lado esquerdo: Logo*/
+  .left-side {
+    flex: 0.8; /* 40% da largura */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E0F2F1;
+  }
+  
+  /*4) Lado direito: Formulário*/
+  .right-side {
+    flex: 1.2; /* 60% da largura */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E0F2F1;
+  }
+  
+  /*5) Logo*/
+  .logo {
+    max-width: 80%;
+    height: auto;
+  }
+  
+  /*6) Formulário de login*/
+  .login-form {
+    width: 100%;
+    max-width: 700px;
+    background: #FFFFFF;
+    padding: 48px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Título do formulário */
+  .login-form h2 {
+    text-align: center;
+    color: #1B4965;
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+  
+  /*7) Grupos de inputs*/
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .input-group label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1B4965;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+  }
+  
+  /* Foco no input */
+  .input-group input:focus {
+    border-color: #1B4965;
+  }
+  
+  /*8) Botão principal*/
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background-color: #1B4965;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  /* Hover no botão */
+  .btn-primary:hover {
+    background-color: #144256;
+  }
+  
+  /*9) Links adicionais*/
+  .options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  
+  .options a {
+    color: #1B4965;
+    text-decoration: none;
+  }
+  
+  .options a:hover {
+    text-decoration: underline;
+  }
+  
+  /*10) Link de cadastro*/
+  .register-link {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  
+  .register-link a {
+    color: #1B4965;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+  
+  /*11) Responsividade: abaixo de 1024px*/
+  @media (max-width: 1024px) {
+    .container {
+      flex-direction: column; /* Agora a logo vai para cima */
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px 16px;
+    }
+  
+    .left-side,
+    .right-side {
+      width: 100%;
+      flex: none;
+      background-color: #E0F2F1;
+    }
+  
+    .left-side {
+      padding: 20px 0;
+    }
+  
+    .right-side {
+      margin-top: 16px;
+    }
+  
+    .login-form {
+      width: 100%;
+      max-width: 400px;
+      padding: 32px;
+    }
+  
+    .logo {
+      max-width: 200px;
+    }
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: #FFFFFF;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+  }
+
+  .modal-title {
+    text-align: center;
+    color: #1B4965;
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1B4965;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+  }
+
+  .input-group input:focus {
+    border-color: #1B4965;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #1B4965;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+  }
+
+  .btn-primary:hover {
+    background-color: #123347;
+  }
+
+  .btn-danger {
+    background-color: red;
+    margin-top: 15px;
+  }
+
+  .btn-danger:hover {
+    background-color: darkred;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #1B4965;
+  }
+
+  .message {
+    text-align: center;
+    margin-top: 15px;
+    color: #1B4965;
+    font-size: 14px;
+  }
+
+  .new-password-fields {
+    display: none;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+  }
