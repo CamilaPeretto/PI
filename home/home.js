@@ -35,7 +35,7 @@ $(document).ready(function () {
   }
 
   function buscarLivros(query, sectionId) {
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=10`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=40`;
 
     $.get(url)
       .done(response => {
@@ -87,6 +87,26 @@ $(document).ready(function () {
     }
   });
 
+  function verificarSeçõesVazias() {
+    const secoesEscondiveis = ['my-list', 'continue-reading', 'read-again'];
+  
+    secoesEscondiveis.forEach(id => {
+      const secao = $(`#${id}`);
+      const livros = secao.find('.book-card');
+  
+      if (livros.length === 0) {
+        secao.hide();
+      } else {
+        secao.show();
+      }
+    });
+  }
+  
+  // Chamar essa função depois de tentar carregar os livros
+  setTimeout(() => {
+    verificarSeçõesVazias();
+  }, 600); // Ajuste o tempo se necessário pra garantir que deu tempo de renderizar os livros
+  
 });
 
   

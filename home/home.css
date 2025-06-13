@@ -207,11 +207,11 @@ html, body {
   }
   
   .arrow.left {
-    left: 0;
+    left: -10px;
   }
   
   .arrow.right {
-    right: 0;
+    right: -10px;
   }
   
   .arrow-icon {
