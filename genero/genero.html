@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Livros por Gênero</title>
-  <link rel="stylesheet" href="./home.css">
+  <link rel="stylesheet" href="./genero.css">
+  <link rel="stylesheet" href="../home/home.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
-   <!-- NAVBAR -->
   <header class="navbar">
     <div class="logo">
       <img src="../img/logo-Photoroom-home.png" alt="Logo InBook">
@@ -17,93 +18,16 @@
   
 
   <main class="genero-container">
-    <h2 id="titulo-genero">Livros</h2>
-    <div id="grid-livros" class="livros-grid"></div>
-
+    <h1 id="titulo-genero"></h1>
+    <div id="livros-grade" class="grade-livros"></div>
     <div class="paginacao">
-      <button id="btn-anterior">Anterior</button>
-      <span id="info-pagina">Página 1</span>
-      <button id="btn-proxima">Próxima</button>
+      <button id="prev">← Anterior</button>
+      <span id="pagina-atual"></span>
+      <button id="next">Próxima →</button>
     </div>
   </main>
 
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    let genero = urlParams.get('tipo') || 'romance';
-    let pagina = parseInt(urlParams.get('pagina')) || 1;
-
-    const livrosPorPagina = 50;
-    const grid = document.getElementById('grid-livros');
-    const tituloGenero = document.getElementById('titulo-genero');
-    const infoPagina = document.getElementById('info-pagina');
-
-    function atualizarURL(genero, pagina) {
-      const novaURL = `?tipo=${genero}&pagina=${pagina}`;
-      history.pushState({}, '', novaURL);
-    }
-
-    function limitarTexto(texto, limite) {
-      return texto.length > limite ? texto.substring(0, limite).trim() + '...' : texto;
-    }
-
-    function carregarLivrosPorGenero(genero, pagina) {
-      const startIndex = (pagina - 1) * livrosPorPagina;
-      const url = `https://www.googleapis.com/books/v1/volumes?q=subject:${genero}&maxResults=${livrosPorPagina}&startIndex=${startIndex}`;
-
-      grid.innerHTML = 'Carregando...';
-      infoPagina.textContent = `Página ${pagina}`;
-      tituloGenero.textContent = `Livros de ${genero.charAt(0).toUpperCase() + genero.slice(1)}`;
-      atualizarURL(genero, pagina);
-
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          if (!data.items || data.items.length === 0) {
-            grid.innerHTML = '<p>Nenhum livro encontrado.</p>';
-            return;
-          }
-
-          grid.innerHTML = '';
-          data.items.forEach(livro => {
-            const info = livro.volumeInfo;
-            const capa = info.imageLinks?.thumbnail || 'https://via.placeholder.com/128x192?text=Sem+Capa';
-            const titulo = limitarTexto(info.title || 'Sem título', 40);
-            const autor = limitarTexto(info.authors?.join(', ') || 'Autor desconhecido', 30);
-
-            const card = document.createElement('div');
-            card.className = 'livro-card';
-            card.innerHTML = `
-              <img src="${capa}" alt="${titulo}">
-              <h4>${titulo}</h4>
-              <p>${autor}</p>
-            `;
-            grid.appendChild(card);
-          });
-        });
-    }
-
-    document.getElementById('btn-proxima').addEventListener('click', () => {
-      pagina++;
-      carregarLivrosPorGenero(genero, pagina);
-    });
-
-    document.getElementById('btn-anterior').addEventListener('click', () => {
-      if (pagina > 1) {
-        pagina--;
-        carregarLivrosPorGenero(genero, pagina);
-      }
-    });
-
-    window.addEventListener('popstate', () => {
-      const novaURL = new URLSearchParams(window.location.search);
-      genero = novaURL.get('tipo') || 'romance';
-      pagina = parseInt(novaURL.get('pagina')) || 1;
-      carregarLivrosPorGenero(genero, pagina);
-    });
-
-    // Inicializa
-    carregarLivrosPorGenero(genero, pagina);
-
-  </script>
+  <script src="./genero.js"></script>
+  <script src="../home/home.js"></script>
 </body>
 </html>
