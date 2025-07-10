@@ -25,29 +25,44 @@ html, body {
     margin: 0; 
   }
   
-  /* Barra de pesquisa */
   .search-container {
+    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 1vh 0; 
+    gap: 1rem;
+    margin: 1vh 5vw;
+    padding-right: 2vw;
+  }
+  
+  /* Ajusta o wrapper para não ser absoluto, assim evita sobreposição */
+  .search-wrapper {
+    width: 0;
+    opacity: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .search-wrapper.active {
+    width: 200px; /* Ajusta aqui o tamanho que quiser */
+    opacity: 1;
   }
   
   .search-input {
-    width: 40vw;
-    padding: 1.5vh 2vw;
-    font-size: 1.8vh;
+    width: 100%;
+    padding: 1.5vh 1rem;
+    font-size: 1.5vh;
     border: 2px solid #1B4965;
-    border-right: none;
-    border-radius: 2vh 0 0 2vh;
-    outline: none;
+    border-radius: 2vh;
   }
   
+  /* Botão da lupa */
   .search-button {
     background-color: #1B4965;
-    padding: 1.5vh 2vw;
-    border: 1px solid #1B4965;
-    border-radius: 0 2vh 2vh 0;
+    padding: 1vh 1vw;
+    border: 2px solid #1B4965;
+    border-radius: 2vh;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -60,28 +75,59 @@ html, body {
   }
   
   .search-img {
+  height: 2.5vh;
+  filter: brightness(0) invert(1);
+  }
+  
+  /* Menu hamburguer */
+  .menu-toggle {
+    background-color: #1B4965;
+    padding: 1vh 1vw;
+    border: 2px solid #1B4965;
+    border-radius: 2vh;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+    margin-left: auto; /* joga o botão para a direita */
+  }
+  
+  .menu-toggle:hover {
+    background-color: #123347;
+  }
+
+  .menu-icon {
     height: 2.5vh;
     filter: brightness(0) invert(1);
   }
   
-  /* Container principal com sidebar e conteúdo */
-  .container {
-    display: flex;
-    gap: 30px; /* Espaçamento mais clean */
-    padding: 10px; /* Dá um respiro geral */
+  /* Menu lateral hamburguer */
+  .sidebar-menu {
+    position: absolute;
+    top: 100%;
+    right: 2vw;
+    background-color: #fff;
+  
+    border-radius: 10px;
+    width: 220px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 0; /* remove padding quando fechado */
   }
   
-  /* Sidebar */
-  .sidebar {
-    width: 12vw;
-    max-width: 200px; 
-    color: #222;
+  .sidebar-menu.open {
+    max-height: 500px;
     padding: 1rem;
-    overflow-y: auto;
+    border: 2px solid #1B4965;
+    margin-top: 10px;
   }
   
-  .sidebar h2 {
-    font-size: 1.3rem;
+  .sidebar-menu h2 {
+    font-size: 1.2rem;
     margin-bottom: 1rem;
     border-bottom: 2px solid #1B4965;
     padding-bottom: 0.5rem;
@@ -89,7 +135,7 @@ html, body {
   
   .genre-list {
     list-style: none;
-    padding-left: 0;
+    padding: 0;
     margin: 0;
   }
   
@@ -108,6 +154,14 @@ html, body {
     color: #123347;
   }
   
+
+  /* Container principal com sidebar e conteúdo */
+  .container {
+    display: flex;
+    gap: 30px; /* Espaçamento mais clean */
+    padding: 10px; /* Dá um respiro geral */
+  }
+
   /* Conteúdo principal */
   .content-area {
     flex: 1;
@@ -142,6 +196,7 @@ html, body {
   scrollbar-width: none;
   scroll-behavior: smooth;
   min-width: 100%;
+  align-items: flex-start;
   }
 
   .book-carousel::-webkit-scrollbar {
@@ -156,6 +211,13 @@ html, body {
     padding: 0.75rem;
     text-align: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .book-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
   }
   
   .book-card img {
