@@ -11,57 +11,59 @@ html, body {
   header.navbar {
     background-color: #fff;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
-    padding: 15px 0px; 
+    padding: 1rem 3vw 1rem 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   }
   
   /* Logo */
   header.navbar .logo img {
-    width: 20%;
-    object-fit: contain;
-    transform: none; 
-    margin: 0; 
+    width: 200px;
+    height: auto; 
   }
   
   .search-container {
-    position: relative;
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin: 1vh 5vw;
-    padding-right: 2vw;
+    position: relative;
   }
   
   /* Ajusta o wrapper para não ser absoluto, assim evita sobreposição */
   .search-wrapper {
-    width: 0;
-    opacity: 0;
-    transition: width 0.3s ease, opacity 0.3s ease;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 2px solid #1B4965;
+  border-radius: 9999px;
+  padding: 0;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
   }
   
   .search-wrapper.active {
     width: 200px; /* Ajusta aqui o tamanho que quiser */
     opacity: 1;
+    padding: 0 1rem;
   }
   
   .search-input {
     width: 100%;
-    padding: 1.5vh 1rem;
+    border: none;
+    outline: none;
+    padding: 1.2vh 0;
     font-size: 1.5vh;
-    border: 2px solid #1B4965;
-    border-radius: 2vh;
+    background: transparent;
   }
   
   /* Botão da lupa */
   .search-button {
     background-color: #1B4965;
     padding: 1vh 1vw;
-    border: 2px solid #1B4965;
+    border: none;
     border-radius: 2vh;
     cursor: pointer;
     display: flex;
@@ -79,95 +81,87 @@ html, body {
   filter: brightness(0) invert(1);
   }
   
-  /* Menu hamburguer */
-  .menu-toggle {
-    background-color: #1B4965;
-    padding: 1vh 1vw;
-    border: 2px solid #1B4965;
-    border-radius: 2vh;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s ease;
-    margin-left: auto; /* joga o botão para a direita */
-  }
-  
-  .menu-toggle:hover {
-    background-color: #123347;
-  }
+  /* Estilo do botão dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
 
-  .menu-icon {
-    height: 2.5vh;
-    filter: brightness(0) invert(1);
-  }
-  
-  /* Menu lateral hamburguer */
-  .sidebar-menu {
-    position: absolute;
-    top: 100%;
-    right: 2vw;
-    background-color: #fff;
-  
-    border-radius: 10px;
-    width: 220px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease, padding 0.4s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    z-index: 999;
-    padding: 0; /* remove padding quando fechado */
-  }
-  
-  .sidebar-menu.open {
-    max-height: 500px;
-    padding: 1rem;
-    border: 2px solid #1B4965;
-    margin-top: 10px;
-  }
-  
-  .sidebar-menu h2 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #1B4965;
-    padding-bottom: 0.5rem;
-  }
-  
-  .genre-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .genre-list li {
-    margin-bottom: 0.8rem;
-  }
-  
-  .genre-list a {
-    color: #222;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-  }
-  
-  .genre-list a:hover {
-    color: #123347;
-  }
+.dropdown-toggle {
+  background-color: #1B4965;
+  color: #fff;
+  padding: 0.75rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown-toggle:hover {
+  background-color: #123347;
+}
+
+.arrow-icone {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+/* Classe que gira a seta */
+.arrow-rotated {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border: 2px solid #1B4965;
+  border-radius: 10px;
+  padding: 0.5rem 0;
+  z-index: 1000;
+  display: none;
+}
+
+.dropdown-menu li {
+  list-style: none;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.4rem 1rem;
+  text-decoration: none;
+  color: #1B4965;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #E0F2F1;
+}
   
 
-  /* Container principal com sidebar e conteúdo */
+  /* Container principal com dropdown e conteúdo */
   .container {
     display: flex;
-    gap: 30px; /* Espaçamento mais clean */
-    padding: 10px; /* Dá um respiro geral */
+    justify-content: center; /* Centraliza horizontalmente */
+    padding: 2rem 2rem;
+    
   }
 
   /* Conteúdo principal */
   .content-area {
-    flex: 1;
-    background-color: #E0F2F1;
-    overflow-y: auto;
-    padding: 0 1rem;
+  width: 100%;
+  max-width: 2000px; /* ou outro valor que combine com seu layout */
+  background-color: #E0F2F1;
+  overflow-y: auto;
+  padding: 0 1rem;
+  overflow-x: hidden;
   }
   
   .book-section {
@@ -188,12 +182,13 @@ html, body {
   }
 
   .book-carousel {
-  overflow-x: auto;
+  
   display: flex;
-  gap: 1vw;
-  padding: 1vh 0;
+  gap: 2vw; 
+  padding: 2vh 1vw; 
   overflow-y: hidden;
   scrollbar-width: none;
+  overflow-x: auto;
   scroll-behavior: smooth;
   min-width: 100%;
   align-items: flex-start;
@@ -212,6 +207,7 @@ html, body {
     text-align: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-origin: center center; /* <- esse é o ouro */
   }
 
   .book-card:hover {
@@ -286,43 +282,42 @@ html, body {
     transform: translateY(-50%) scale(0.95);
   }
 
-  /* Responsividade */
-  @media (max-width: 1024px) {
-    .sidebar {
-      width: 20vw;
-      max-width: none;
-    }
+  .footer {
+    background-color: #fff;
+    color: #1B4965;
+    padding: 0.5rem 0.5rem;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: bold;
   }
-  
+
+  /* Responsividade */
   @media (max-width: 768px) {
     header.navbar .logo img {
-      width: 20%;
+      width: 30%; /* aumenta um pouco pra dar visibilidade */
     }
   
     .search-input {
-      width: 70vw;
-      font-size: 1.5vh;
-    }
-  
-    .sidebar {
-      width: 15vw;
-      position: static;
-      padding: 1rem;
-      border-right: none;
+      width: 60vw;
+      font-size: 1.3rem;
     }
   
     .book-section h2 {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
     }
   
     .book-card {
-      min-width: 200px;
+      width: 190px;
+      height: 390px;
     }
   
     .book-card img {
-      height: 250px;
+    width: 190px;
+    height: 290px;
+    object-fit: cover;
+    border-radius: 4px;
     }
-
+  
     .arrow {
       display: none;
     }
@@ -330,38 +325,67 @@ html, body {
   }
   
   @media (max-width: 480px) {
-    .sidebar {
-      display: none;
+    header.navbar .logo img {
+      width: 80%; /* aumenta um pouco pra dar visibilidade */
     }
-  
+
     .container {
       flex-direction: column;
       padding: 0 1rem;
     }
   
+    .content-area {
+      padding: 0;
+    }
+    .search-container {
+      width: 70vw;
+      font-size: 1rem;
+    }
+    .search-wrapper {
+      width: 10vw;
+      font-size: 1rem;
+    }
+    .search-input {
+      width: 20vw;
+      font-size: 1rem;
+    }
+
+    .dropdown-toggle {
+      display: flex;
+      width: 25vw;
+      font-size: 0.8rem;
+      margin-right: 10px;
+      justify-content: center;
+    }
+  
     .book-section h2 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
   
     .book-carousel {
-      gap: 2rem;
-      padding-left: 1rem;
+      gap: 1rem;
+      padding-left: 0.5rem;
       -webkit-overflow-scrolling: touch;
     }
   
     .book-card {
-      min-width: 230px;
-      max-width: 330px;
+      width: 180px;
+      height: 380px;
     }
   
     .book-card img {
-      height: auto;
+    width: 180px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 4px;
     }
-
+  
     .arrow {
       display: none;
     }
 
-    
+    .footer {
+      font-size: 0.75rem;
+    }
   }
   

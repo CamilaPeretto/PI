@@ -13,8 +13,11 @@
   <!-- NAVBAR -->
   <header class="navbar">
     <div class="logo">
-      <img src="../img/logo-Photoroom-home.png" alt="Logo InBook">
+      <a href="./home.html">
+        <img src="../img/logo-Photoroom-home.png" alt="Logo InBook">
+      </a>
     </div>
+
 
     <!-- BARRA DE PESQUISA -->
     <div class="search-container">
@@ -26,15 +29,12 @@
         </button>
     
 
-<!-- Ícone do menu hamburguer -->
-<button class="menu-toggle" aria-label="Abrir menu de gêneros">
-  <img src="../img/menu.svg" alt="Menu" class="menu-icon">
-</button>
-
-<!-- Menu de gêneros escondido -->
-<nav class="sidebar-menu">
-  <h2>Gêneros</h2>
-  <ul class="genre-list">
+<!-- BOTÃO DROPDOWN -->
+<div class="dropdown">
+  <button class="dropdown-toggle" aria-label="Abrir menu de gêneros">
+    Gêneros <span class="arrow-icone">▼</span>
+  </button>
+  <ul class="dropdown-menu">
     <li><a href="../genero/genero.html?tipo=acao">Ação</a></li>
     <li><a href="../genero/genero.html?tipo=autoajuda">Autoajuda</a></li>
     <li><a href="../genero/genero.html?tipo=aventura">Aventura</a></li>
@@ -56,18 +56,12 @@
     <li><a href="../genero/genero.html?tipo=terror">Terror</a></li>
     <li><a href="../genero/genero.html?tipo=thriller">Thriller</a></li>
   </ul>
-</nav>
 </div>
 </header>
 
   <!-- CONTAINER PRINCIPAL -->
   <div class="container">
-    <!-- SIDEBAR CATEGORIAS -->
-    <aside class="sidebar">
-        
-      </aside>
-      
-
+    
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="content-area">
 
@@ -250,7 +244,15 @@
           </button>
           </div>
         </section>
+      
     </main>  
+  </div>
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2025 InBook. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="./home.js"></script>
 </body>
