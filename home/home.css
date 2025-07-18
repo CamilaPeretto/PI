@@ -179,6 +179,7 @@ html, body {
     position: relative;
     display: flex;
     align-items: center;
+    overflow: visible;
   }
 
   .book-carousel {
@@ -265,11 +266,11 @@ html, body {
   }
   
   .arrow.left {
-    left: -10px;
+    left: 2px;
   }
   
   .arrow.right {
-    right: -10px;
+    right: -13px;
   }
   
   .arrow-icon {
