@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InBook | Página Inicial</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #E0F2F1; }
+    /* Scrollbar invisível para os carousels */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .arrow-rotated { transform: rotate(180deg); }
+  </style>
+</head>
+<body class="bg-[#E0F2F1]">
+
+  <!-- NAVBAR -->
+  <nav class="w-full bg-white shadow-md">
+    <div class="w-full md:max-w-[1450px] mx-auto flex items-center justify-between px-2 md:px-[52px] py-3 md:py-4">
+      <a href="./home.html" class="flex-shrink-0">
+        <img src="../img/logo-Photoroom-home.png" alt="Logo InBook" class="w-28 md:w-48">
+      </a>
+
+    <div class="flex items-center gap-2 md:gap-3">
+    <!-- Pesquisa -->
+      <!-- DESKTOP SEARCH (visível em md+) -->
+      <div id="desktopSearch" class="hidden md:flex items-center border-2 border-[#1B4965] rounded-lg px-1 py-1 ">
+        <input id="searchInput" type="text" placeholder="Buscar livros..." class="bg-transparent outline-none w-40 lg:w-64 text-sm md:text-base px-1 ">
+        <button id="searchBtnDesktop" class="bg-[#1B4965] hover:bg-[#123347] p-1 rounded-lg text-white">
+          <img src="../img/search.svg" alt="Buscar" class="h-4 md:h-5 filter invert">
+        </button>
+      </div>
+
+      <!-- MOBILE SEARCH TOGGLE (visível em sm) -->
+<div class="md:hidden relative">
+  <button id="searchToggleMobile" class="bg-[#1B4965] hover:bg-[#123347] px-2 py-1 rounded-lg text-white flex items-center">
+    <img src="../img/search.svg" alt="Buscar" class="h-5 filter invert">
+  </button>
+  <!-- popup mobile -->
+  <div id="mobileSearchBox" class="hidden absolute left-1/2 transform -translate-x-1/2 top-full mt-1 w-64 bg-white p-2 rounded-lg shadow z-50">
+    <div class="flex gap-2">
+      <input id="mobileSearchInput" type="text" placeholder="Buscar livros..." class="flex-1 px-2 py-1 border rounded text-sm">
+      <button id="mobileSearchSubmit" class="bg-[#1B4965] hover:bg-[#123347] px-2 md:px-3 py-1 rounded text-white text-sm">Ok</button>
+    </div>
+  </div>
+</div>
+
+      <!-- Dropdown -->
+      <div class="dropdown relative">
+        <button class="dropdown-toggle bg-[#1B4965] text-white px-2 py-1 md:px-4 md:py-2 text-sm md:text-md rounded-lg flex items-center gap-1 md:gap-2">
+          <span class="hidden md:inline">Gêneros</span> <!-- só aparece em md+ -->
+          <span>▼</span> <!-- sempre aparece -->
+        </button>
+        <ul class="dropdown-menu hidden absolute right-0 mt-2 bg-white border-2 border-[#1B4965] rounded-lg shadow-lg py-1 z-50  w-44 md:w-48 text-sm md:text-base">
+          <li><a href="../genero/genero.html?tipo=acao" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Ação</a></li>
+          <li><a href="../genero/genero.html?tipo=autoajuda" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Autoajuda</a></li>
+          <li><a href="../genero/genero.html?tipo=aventura" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Aventura</a></li>
+          <li><a href="../genero/genero.html?tipo=biografia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Biografia</a></li>
+          <li><a href="../genero/genero.html?tipo=classicos" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Clássicos</a></li>
+          <li><a href="../genero/genero.html?tipo=contos" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Contos</a></li>
+          <li><a href="../genero/genero.html?tipo=drama" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Drama</a></li>
+          <li><a href="../genero/genero.html?tipo=fantasia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Fantasia</a></li>
+          <li><a href="../genero/genero.html?tipo=ficcao cientifica" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Ficção Científica</a></li>
+          <li><a href="../genero/genero.html?tipo=historia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">História</a></li>
+          <li><a href="../genero/genero.html?tipo=infantil" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Infantil</a></li>
+          <li><a href="../genero/genero.html?tipo=misterio" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Mistério</a></li>
+          <li><a href="../genero/genero.html?tipo=poesia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Poesia</a></li>
+          <li><a href="../genero/genero.html?tipo=policial" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Policial</a></li>
+          <li><a href="../genero/genero.html?tipo=psicologia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Psicologia</a></li>
+          <li><a href="../genero/genero.html?tipo=religiao" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Religião</a></li>
+          <li><a href="../genero/genero.html?tipo=romance" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Romance</a></li>
+          <li><a href="../genero/genero.html?tipo=suspense" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Suspense</a></li>
+          <li><a href="../genero/genero.html?tipo=terror" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Terror</a></li>
+          <li><a href="../genero/genero.html?tipo=thriller" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Thriller</a></li>
+        </ul>
+      </div>
+
+        <!-- Botão Minha Lista -->
+        <a href="./minha-lista.html" class="bg-[#1B4965] hover:bg-[#123347] text-white rounded-lg flex items-center gap-1 md:gap-2 px-2 py-1 md:px-4 md:py-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 md:h-6 md:w-7" fill="currentColor">
+            <path d="M28.9562 24.3188L24.8075 4.59379C24.7538 4.33584 24.6497 4.09103 24.5012 3.87344C24.3526 3.65584 24.1626 3.46974 23.9419 3.32582C23.7212 3.18191 23.4742 3.08302 23.2152 3.03483C22.9562 2.98665 22.6902 2.99011 22.4325 3.04504L16.5812 4.30254C16.0637 4.41586 15.6118 4.72895 15.3239 5.17372C15.036 5.61848 14.9353 6.15893 15.0437 6.67754L19.1925 26.4025C19.285 26.8526 19.5295 27.257 19.8851 27.548C20.2407 27.8389 20.6856 27.9985 21.145 28C21.287 27.9998 21.4286 27.9848 21.5675 27.955L27.4188 26.6975C27.9369 26.5839 28.3893 26.2702 28.6772 25.8247C28.9652 25.3792 29.0655 24.8379 28.9562 24.3188ZM17 6.26879C17 6.26129 17 6.25754 17 6.25754L22.85 5.00754L23.2663 6.99129L17.4163 8.25004L17 6.26879ZM17.8275 10.2025L23.68 8.94629L24.0975 10.9338L18.25 12.1913L17.8275 10.2025ZM18.6575 14.1488L24.51 12.8913L26.1725 20.7963L20.32 22.0538L18.6575 14.1488ZM27 24.7425L21.15 25.9925L20.7337 24.0088L26.5837 22.75L27 24.7313C27 24.7388 27 24.7425 27 24.7425ZM13 4.00004H7C6.46957 4.00004 5.96086 4.21075 5.58579 4.58582C5.21071 4.96089 5 5.4696 5 6.00004V26C5 26.5305 5.21071 27.0392 5.58579 27.4142C5.96086 27.7893 6.46957 28 7 28H13C13.5304 28 14.0391 27.7893 14.4142 27.4142C14.7893 27.0392 15 26.5305 15 26V6.00004C15 5.4696 14.7893 4.96089 14.4142 4.58582C14.0391 4.21075 13.5304 4.00004 13 4.00004ZM7 6.00004H13V8.00004H7V6.00004ZM7 10H13V22H7V10ZM13 26H7V24H13V26Z"/>
+          </svg>
+        </a>
+
+        <!-- Botão Perfil do Leitor -->
+        <a href="./perfil.html" class="bg-[#1B4965] hover:bg-[#123347] text-white rounded-lg flex items-center gap-1 md:gap-2 px-2 py-1 md:px-4 md:py-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="lucide lucide-user h-5 w-5 md:h-6 md:w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <div class="w-full md:max-w-[1450px] mx-auto px-0 md:px-[52px]">
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="p-4 md:p-6 space-y-8">
+
+    <!-- Minha lista -->
+    <section class="book-section hidden" id="my-list">
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Minha lista</h2>
+      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
+        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
+        </div>
+        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Continuar lendo -->
+    <section class="book-section hidden" id="continue-reading">
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Continuar lendo</h2>
+      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
+        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
+        </div>
+        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Ler novamente -->
+    <section class="book-section hidden" id="read-again">
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Ler novamente</h2>
+      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
+        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
+        </div>
+        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Sugestões para o usuário -->
+    <section class="book-section" id="suggested">
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Sugestões para você</h2>
+      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
+        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
+        </div>
+        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Destaques -->
+    <section class="book-section" id="featured">
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Destaques</h2>
+      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
+        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
+        </div>
+        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Recentes -->
+    <section class="book-section" id="recent">
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Adicionados recentemente</h2>
+      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
+        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
+        </div>
+        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Bestsellers -->
+    <section class="book-section" id="bestsellers">
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Bestsellers</h2>
+      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
+        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
+        </div>
+        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Livros nacionais -->
+    <section class="book-section" id="brazilian-books">
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Livros nacionais</h2>
+      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
+        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
+        </div>
+        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+  </main>
+</div>
+  <!-- FOOTER -->
+  <footer class="bg-white text-[#1B4965] text-center py-3 font-bold">
+    &copy; 2025 InBook. Todos os direitos reservados.
+  </footer>
+
+
+  
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  
+      /* ---------- Configs ---------- */
+      const CACHE_KEY = 'livrosCache';
+      const CACHE_EXPIRACAO = 24 * 60 * 60 * 1000;
+      const categorias = {
+        suggested: 'livros recomendados',
+        featured: 'action',
+        recent: 'novidades',
+        'top-10-world': 'top books',
+        bestsellers: 'bestsellers',
+        'brazilian-books': 'brasil literatura',
+        sagas: 'sagas'
+      };
+      const userSections = ['my-list', 'continue-reading', 'read-again'];
+  
+      /* ---------- Helpers ---------- */
+      function safeJsonParse(str) {
+        try { return JSON.parse(str); } catch(e) { return null; }
+      }
+      function limitarTexto(nodeList, limite = 40) {
+        if (!nodeList) return;
+        nodeList.forEach(el => {
+          const txt = (el.textContent || '').trim();
+          if (txt.length > limite) el.textContent = txt.substring(0, limite).trim() + '...';
+        });
+      }
+  
+      /* ---------- Render livros ---------- */
+      function renderLivros(livros, sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+        const container = section.querySelector('.book-carousel');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!Array.isArray(livros) || livros.length === 0) {
+          container.innerHTML = '<p class="sem-resultados text-[#1B4965]">Nenhum livro encontrado.</p>';
+          return;
+        }
+        livros.forEach(item => {
+          const volume = item.volumeInfo || item;
+          const img = volume.imageLinks?.thumbnail || volume.image || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg';
+          const titulo = volume.title || 'Sem título';
+          const autor = (volume.authors && volume.authors.join) ? volume.authors.join(', ') : (volume.author || 'Autor desconhecido');
+  
+          const card = document.createElement('div');
+          card.className = 'book-card w-44 md:w-48 h-72 bg-white rounded-lg p-3 shadow hover:scale-[1.03] transition-transform flex-shrink-0';
+          card.innerHTML = `
+            <img src="${img}" alt="${titulo}" class="w-full h-56 object-cover rounded-md mb-2">
+            <h4 class="text-sm font-semibold truncate">${titulo}</h4>
+            <p class="text-xs text-gray-500 truncate">${autor}</p>
+          `;
+          container.appendChild(card);
+        });
+        limitarTexto(container.querySelectorAll('h4'), 40);
+        limitarTexto(container.querySelectorAll('p'), 30);
+        section.classList.remove('hidden');
+      }
+  
+      /* ---------- Buscar na API ---------- */
+      async function buscarLivros(query) {
+        if (!query) return [];
+        query = query.trim();
+        const formattedQuery = `intitle:${query} OR inauthor:${query}`;
+        try {
+          let res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(formattedQuery)}&maxResults=18`);
+          let json = await res.json();
+          let livros = json.items || [];
+          if (!livros.length) {
+            res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=18`);
+            json = await res.json();
+            livros = json.items || [];
+          }
+          return livros;
+        } catch (err) {
+          console.warn('Erro ao buscar livros:', err);
+          return [];
+        }
+      }
+  
+      /* ---------- Cache ---------- */
+      function temCacheValido() {
+        const cache = safeJsonParse(localStorage.getItem(CACHE_KEY));
+        return cache && (Date.now() - (cache.timestamp || 0)) < CACHE_EXPIRACAO;
+      }
+      function carregarDoCache() {
+        const cache = safeJsonParse(localStorage.getItem(CACHE_KEY));
+        if (!cache || !cache.data) return;
+        Object.entries(cache.data).forEach(([secao, livros]) => {
+          if (document.getElementById(secao)) renderLivros(livros, secao);
+        });
+      }
+      async function carregarAtualizado() {
+        const dados = {};
+        for (const [secao, query] of Object.entries(categorias)) {
+          if (!document.getElementById(secao)) continue;
+          const livros = await buscarLivros(query);
+          renderLivros(livros, secao);
+          dados[secao] = livros;
+        }
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: dados })); } catch(e){ console.warn('Cache write failed', e); }
+      }
+  
+      /* ---------- Seções do usuário ---------- */
+      function exibirSecoesDoUsuario() {
+        userSections.forEach(id => {
+          const sec = document.getElementById(id);
+          if (!sec) return;
+          const livros = safeJsonParse(localStorage.getItem(id)) || [];
+          if (Array.isArray(livros) && livros.length > 0) {
+            renderLivros(livros, id);
+            sec.classList.remove('hidden');
+          } else {
+            sec.classList.add('hidden');
+          }
+        });
+      }
+  
+      /* ---------- Setas (delegação) ---------- */
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.arrow');
+        if (!btn) return;
+        const wrapper = btn.closest('.carousel-wrapper');
+        if (!wrapper) return;
+        const carousel = wrapper.querySelector('.book-carousel');
+        if (!carousel) return;
+        const scrollAmount = Math.floor(carousel.offsetWidth * 0.8);
+        if (btn.classList.contains('left')) carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        else carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+  
+      /* ---------- Dropdown ---------- */
+      document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+        toggle.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const menu = toggle.nextElementSibling;
+          const arrow = toggle.querySelector('.arrow-icone');
+          document.querySelectorAll('.dropdown-menu').forEach(m => { if (m !== menu) m.classList.add('hidden'); });
+          document.querySelectorAll('.arrow-icone').forEach(a => { if (a !== arrow) a.classList.remove('arrow-rotated'); });
+          menu?.classList.toggle('hidden');
+          arrow?.classList.toggle('arrow-rotated');
+        });
+      });
+      document.addEventListener('click', (ev) => {
+        if (!ev.target.closest('.dropdown')) {
+          document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+          document.querySelectorAll('.arrow-icone').forEach(a => a.classList.remove('arrow-rotated'));
+        }
+      });
+  
+      /* ---------- SEARCH (desktop + mobile) ---------- */
+      const searchInput = document.getElementById('searchInput'); // desktop (md+)
+      const searchBtnDesktop = document.getElementById('searchBtnDesktop');
+      const searchToggleMobile = document.getElementById('searchToggleMobile');
+      const mobileSearchBox = document.getElementById('mobileSearchBox');
+      const mobileSearchInput = document.getElementById('mobileSearchInput');
+      const mobileSearchSubmit = document.getElementById('mobileSearchSubmit');
+  
+      // Desktop search button
+      if (searchBtnDesktop && searchInput) {
+        searchBtnDesktop.addEventListener('click', (e) => {
+          e.preventDefault();
+          const q = searchInput.value.trim();
+          if (!q) return;
+          buscarLivros(q).then(livros => {
+            if (document.getElementById('featured')) {
+              renderLivros(livros, 'featured');
+              document.getElementById('featured').classList.remove('hidden');
+              document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
+            }
+          });
+        });
+        searchInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') { e.preventDefault(); searchBtnDesktop.click(); }
+        });
+      }
+  
+      // Mobile toggle
+      if (searchToggleMobile && mobileSearchBox && mobileSearchInput && mobileSearchSubmit) {
+        searchToggleMobile.addEventListener('click', (e) => {
+          if (window.innerWidth < 768) {
+            mobileSearchBox.classList.toggle('hidden');
+            if (!mobileSearchBox.classList.contains('hidden')) mobileSearchInput.focus();
+          } else {
+            // se for desktop viewport, abrir o campo desktop
+            if (searchInput) searchInput.focus();
+          }
+        });
+        mobileSearchSubmit.addEventListener('click', () => {
+          const q = mobileSearchInput.value.trim();
+          if (!q) return;
+          buscarLivros(q).then(livros => {
+            if (document.getElementById('featured')) {
+              renderLivros(livros, 'featured');
+              document.getElementById('featured').classList.remove('hidden');
+              document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
+            }
+            mobileSearchBox.classList.add('hidden');
+          });
+        });
+        mobileSearchInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') { e.preventDefault(); mobileSearchSubmit.click(); }
+        });
+  
+        // fecha mobile search ao clicar fora
+        document.addEventListener('click', (ev) => {
+          if (!ev.target.closest('#mobileSearchBox') && !ev.target.closest('#searchToggleMobile')) {
+            mobileSearchBox.classList.add('hidden');
+          }
+        });
+      }
+  
+      /* ---------- Inicialização ---------- */
+      exibirSecoesDoUsuario();
+  
+      if (temCacheValido()) {
+        carregarDoCache();
+        // atualizar em background
+        carregarAtualizado();
+      } else {
+        carregarAtualizado();
+      }
+  
+      // debug helpers
+      window.__inbookDebug = { renderLivros, buscarLivros, carregarAtualizado, carregarDoCache, exibirSecoesDoUsuario };
+  
+    }); // DOMContentLoaded
+    </script>
+
+</body>
+</html>
