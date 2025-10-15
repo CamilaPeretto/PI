@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="../index.css">
 </head>
 <body class="bg-[#E0F2F1]">
 
@@ -91,7 +91,7 @@
     </div>
   </div>
 </nav>
-
+<div class="flex flex-col min-h-screen">
   <div class="w-full md:max-w-[1450px] mx-auto px-0 md:px-[52px]">
   <!-- CONTEÚDO PRINCIPAL -->
   <main class="p-4 md:p-6 space-y-8">
@@ -251,10 +251,69 @@
   </main>
 </div>
   <!-- FOOTER -->
-  <footer class="bg-white text-[#1B4965] text-center py-3 font-bold">
-    &copy; 2025 InBook. Todos os direitos reservados.
+  <footer class="bg-white text-white pt-8">
+    <div class="max-w-[1450px] mx-auto px-4 sm:px-6 md:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10">
+  
+      <!-- Logo + descrição -->
+      <div class="flex flex-col gap-4">
+        <img src="../img/logo-Photoroom-home.png" alt="InBook Logo" class="w-36 md:w-40">
+        <p class="text-[#1B4965] text-sm">
+          Descubra, leia e compartilhe histórias que inspiram. Seu universo literário começa aqui.
+        </p>
+      </div>
+  
+      <!-- Links rápidos -->
+      <div class="flex flex-col gap-3">
+        <h3 class="font-bold text-lg mb-2 text-[#1B4965]">Links Rápidos</h3>
+        <a href="../home/home.html" class="hover:underline text-[#1B4965]">Home</a>
+        <a href="../pesquisa/pesquisa.html" class="hover:underline text-[#1B4965]">Pesquisar</a>
+        <a href="../minha-lista/minha-lista.html" class="hover:underline text-[#1B4965]">Minha Lista</a>
+        <a href="../contato/contato.html" class="hover:underline text-[#1B4965]">Contato</a>
+      </div>
+  
+      <!-- Categorias -->
+      <div class="flex flex-col gap-3">
+        <h3 class="font-bold text-lg mb-2 text-[#1B4965]">Categorias Populares</h3>
+        <a href="../genero/romance.html" class="text-[#1B4965] hover:text-[#123347] transition-colors">Romance</a>
+        <a href="../genero/fantasia.html" class="text-[#1B4965] hover:text-[#123347] transition-colors">Fantasia</a>
+        <a href="../genero/autoajuda.html" class="text-[#1B4965] hover:text-[#123347] transition-colors">Autoajuda</a>
+        <a href="../genero/biografia.html" class="text-[#1B4965] hover:text-[#123347] transition-colors">Biografia</a>
+      </div>
+  
+      <!-- Redes sociais -->
+      <div class="flex flex-col gap-3">
+        <h3 class="font-bold text-lg mb-2 text-[#1B4965]">Siga-nos</h3>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-[#123347] transition-colors"><img src="../img/facebook.svg" alt="Facebook" class="w-6 h-6"></a>
+          <a href="#" class="hover:text-[#123347] transition-colors"><img src="../img/twitter.svg" alt="Twitter" class="w-6 h-6"></a>
+          <a href="#" class="hover:text-[#123347] transition-colors"><img src="../img/instagram.svg" alt="Instagram" class="w-6 h-6"></a>
+          <a href="#" class="hover:text-[#123347] transition-colors"><img src="../img/youtube.svg" alt="YouTube" class="w-6 h-6"></a>
+        </div>
+      </div>
+  
+      <!-- Newsletter -->
+      <div class="flex flex-col gap-3">
+        <h3 class="font-bold text-lg mb-2 text-[#1B4965]">Newsletter</h3>
+        <p class="text-[#1B4965] text-sm">Receba novidades e recomendações direto no seu e-mail:</p>
+        <div class="flex gap-2 mt-2 flex-wrap">
+          <input type="email" placeholder="Seu e-mail" class="flex-1 min-w-[150px] px-3 py-2 rounded-lg border-2 border-[#1B4965] text-[#1B4965]">
+          <button class="bg-[#1B4965] text-white font-bold px-4 py-2 rounded-lg hover:bg-[#123347] transition-colors">
+            Inscrever
+          </button>
+        </div>
+      </div>
+  
+    </div>
+  
+    <!-- Contato e Copyright -->
+    <div class=" border-t border-[#123347] pt-3 text-center text-[#1B4965] text-sm sm:flex sm:justify-between sm:items-center px-4 sm:px-6 md:px-16 flex flex-col gap-2">
+      <p>&copy; 2025 InBook. Todos os direitos reservados.</p>
+      <p>Contato: <a href="mailto:contato@inbook.com" class="hover:underline text-[#123347]">contato@inbook.com</a></p>
+    </div>
   </footer>
-
+  
+  
+</div>
   <script src="home.js"></script>
 
 </body>

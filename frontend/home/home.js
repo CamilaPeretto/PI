@@ -1,16 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-  
+
   /* ---------- Configs ---------- */
   const CACHE_KEY = 'livrosCache';
   const CACHE_EXPIRACAO = 24 * 60 * 60 * 1000;
   const categorias = {
-    suggested: 'livros recomendados',
-    featured: 'action',
-    recent: 'novidades',
-    'top-10-world': 'top books',
-    bestsellers: 'bestsellers',
-    'brazilian-books': 'brasil literatura',
-    sagas: 'sagas'
+    suggested: 'popular fiction OR young adult OR romance bestsellers',
+    featured: 'fantasy OR sci-fi OR adventure',
+    recent: 'new releases OR 2024 OR 2025',
+    bestsellers: 'bestsellers OR action',
+    'brazilian-books': 'literatura brasileira OR autores brasileiros OR romance brasileiro',
   };
   const userSections = ['my-list', 'continue-reading', 'read-again'];
 
@@ -18,11 +16,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function safeJsonParse(str) {
     try { return JSON.parse(str); } catch(e) { return null; }
   }
+
   function limitarTexto(nodeList, limite = 40) {
     if (!nodeList) return;
     nodeList.forEach(el => {
       const txt = (el.textContent || '').trim();
       if (txt.length > limite) el.textContent = txt.substring(0, limite).trim() + '...';
+    });
+  }
+
+  // 🔹 NOVO: filtra livros +18 (maturityRating = MATURE)
+  function filtrarAdultos(livros) {
+    return livros.filter(item => {
+      const rating = item.volumeInfo?.maturityRating || 'NOT_MATURE';
+      return rating !== 'MATURE';
     });
   }
 
@@ -33,15 +40,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = section.querySelector('.book-carousel');
     if (!container) return;
     container.innerHTML = '';
-    if (!Array.isArray(livros) || livros.length === 0) {
+
+    // 🔹 Filtra +18
+    const livrosFiltrados = filtrarAdultos(livros);
+
+    if (!Array.isArray(livrosFiltrados) || livrosFiltrados.length === 0) {
       container.innerHTML = '<p class="sem-resultados text-[#1B4965]">Nenhum livro encontrado.</p>';
       return;
     }
-    livros.forEach(item => {
+
+    // 🔹 Evita duplicados
+    const vistos = new Set();
+
+    livrosFiltrados.forEach(item => {
       const volume = item.volumeInfo || item;
+      const id = item.id || volume.id || volume.title;
+      if (vistos.has(id)) return;
+      vistos.add(id);
+
       const img = volume.imageLinks?.thumbnail || volume.image || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg';
       const titulo = volume.title || 'Sem título';
-      const autor = (volume.authors && volume.authors.join) ? volume.authors.join(', ') : (volume.author || 'Autor desconhecido');
+      const autor = (volume.authors && volume.authors.join)
+        ? volume.authors.join(', ')
+        : (volume.author || 'Autor desconhecido');
 
       const card = document.createElement('div');
       card.className = 'book-card w-44 md:w-48 h-72 bg-white rounded-lg p-3 shadow hover:scale-[1.03] transition-transform flex-shrink-0';
@@ -52,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       container.appendChild(card);
     });
+
     limitarTexto(container.querySelectorAll('h4'), 40);
     limitarTexto(container.querySelectorAll('p'), 30);
     section.classList.remove('hidden');
@@ -83,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cache = safeJsonParse(localStorage.getItem(CACHE_KEY));
     return cache && (Date.now() - (cache.timestamp || 0)) < CACHE_EXPIRACAO;
   }
+
   function carregarDoCache() {
     const cache = safeJsonParse(localStorage.getItem(CACHE_KEY));
     if (!cache || !cache.data) return;
@@ -90,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (document.getElementById(secao)) renderLivros(livros, secao);
     });
   }
+
   async function carregarAtualizado() {
     const dados = {};
     for (const [secao, query] of Object.entries(categorias)) {
@@ -98,7 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
       renderLivros(livros, secao);
       dados[secao] = livros;
     }
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: dados })); } catch(e){ console.warn('Cache write failed', e); }
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: dados }));
+    } catch (e) {
+      console.warn('Cache write failed', e);
+    }
   }
 
   /* ---------- Seções do usuário ---------- */
@@ -142,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
       arrow?.classList.toggle('arrow-rotated');
     });
   });
+
   document.addEventListener('click', (ev) => {
     if (!ev.target.closest('.dropdown')) {
       document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
@@ -150,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------- SEARCH REDIRECT ---------- */
-  const searchInput = document.getElementById('searchInput'); // desktop
+  const searchInput = document.getElementById('searchInput');
   const searchBtnDesktop = document.getElementById('searchBtnDesktop');
   const searchToggleMobile = document.getElementById('searchToggleMobile');
   const mobileSearchBox = document.getElementById('mobileSearchBox');
