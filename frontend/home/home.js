@@ -40,30 +40,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = section.querySelector('.book-carousel');
     if (!container) return;
     container.innerHTML = '';
-
+  
     // 🔹 Filtra +18
     const livrosFiltrados = filtrarAdultos(livros);
-
+  
     if (!Array.isArray(livrosFiltrados) || livrosFiltrados.length === 0) {
       container.innerHTML = '<p class="sem-resultados text-[#1B4965]">Nenhum livro encontrado.</p>';
       return;
     }
-
+  
     // 🔹 Evita duplicados
     const vistos = new Set();
-
+  
     livrosFiltrados.forEach(item => {
       const volume = item.volumeInfo || item;
       const id = item.id || volume.id || volume.title;
       if (vistos.has(id)) return;
       vistos.add(id);
-
+  
       const img = volume.imageLinks?.thumbnail || volume.image || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg';
       const titulo = volume.title || 'Sem título';
       const autor = (volume.authors && volume.authors.join)
         ? volume.authors.join(', ')
         : (volume.author || 'Autor desconhecido');
-
+  
       const card = document.createElement('div');
       card.className = 'book-card w-44 md:w-48 h-72 bg-white rounded-lg p-3 shadow hover:scale-[1.03] transition-transform flex-shrink-0';
       card.innerHTML = `
@@ -71,13 +71,29 @@ document.addEventListener('DOMContentLoaded', () => {
         <h4 class="text-sm font-semibold truncate">${titulo}</h4>
         <p class="text-xs text-gray-500 truncate">${autor}</p>
       `;
+  
+      // 🔹 Corrigido: usar volume em vez de info
+      card.addEventListener('click', () => {
+        abrirModalLivro({
+          capa: volume.imageLinks?.thumbnail || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg',
+          titulo: volume.title || 'Sem título',
+          autor: volume.authors?.join(", ") || 'Autor desconhecido',
+          genero: volume.categories?.[0] || 'Sem gênero',
+          data: volume.publishedDate || 'Data não informada',
+          nota: volume.averageRating || 0,
+          totalAvaliacoes: volume.ratingsCount || 0,
+          sinopse: volume.description || 'Sem descrição disponível.'
+        });
+      });
+  
       container.appendChild(card);
     });
-
+  
     limitarTexto(container.querySelectorAll('h4'), 40);
     limitarTexto(container.querySelectorAll('p'), 30);
     section.classList.remove('hidden');
   }
+  
 
   /* ---------- Buscar na API ---------- */
   async function buscarLivros(query) {
@@ -220,6 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  
 
   /* ---------- Inicialização ---------- */
   exibirSecoesDoUsuario();
