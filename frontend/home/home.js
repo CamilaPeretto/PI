@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bestsellers: 'bestsellers OR action',
     'brazilian-books': 'literatura brasileira OR autores brasileiros OR romance brasileiro',
   };
-  const userSections = ['my-list', 'continue-reading', 'read-again'];
+  const userSections = [];
 
   /* ---------- Helpers ---------- */
   function safeJsonParse(str) {

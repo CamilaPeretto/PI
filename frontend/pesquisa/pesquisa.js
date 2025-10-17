@@ -105,6 +105,18 @@ document.addEventListener('DOMContentLoaded', () => {
         <h4 class="text-sm font-semibold truncate">${titulo}</h4>
         <p class="text-xs text-gray-500 truncate">${autor}</p>
       `;
+      card.addEventListener('click', () => {
+        abrirModalLivro({
+          capa: info.imageLinks?.thumbnail || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg',
+          titulo: info.title || 'Sem título',
+          autor: info.authors?.join(", ") || 'Autor desconhecido',
+          genero: info.categories?.[0] || 'Sem gênero',
+          data: info.publishedDate || 'Data não informada',
+          nota: info.averageRating || Math.floor(Math.random() * 5) + 1, // nota aleatória se não houver
+          totalAvaliacoes: info.ratingsCount || Math.floor(Math.random() * 1000), // avaliações aleatórias
+          sinopse: info.description || 'Sem descrição disponível.'
+        });
+      });
       searchResults.appendChild(card);
     });
 

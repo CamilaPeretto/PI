@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InBook | Página Inicial</title>
+  <title>InBook | Minha Lista</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
@@ -21,55 +21,7 @@
     <div class="flex items-center gap-2 md:gap-3">
     <!-- Pesquisa -->
       <!-- DESKTOP SEARCH (visível em md+) -->
-      <div id="desktopSearch" class="hidden md:flex items-center border-2 border-[#1B4965] rounded-lg px-1 py-1 ">
-        <input id="searchInput" type="text" placeholder="Buscar livros..." class="bg-transparent outline-none w-40 lg:w-64 text-sm md:text-base px-1 ">
-        <button id="searchBtnDesktop" class="bg-[#1B4965] hover:bg-[#123347] p-1 rounded-lg text-white">
-          <img src="../img/search.svg" alt="Buscar" class="h-4 md:h-5 filter invert">
-        </button>
-      </div>
-
-      <!-- MOBILE SEARCH TOGGLE (visível em sm) -->
-<div class="md:hidden relative">
-  <button id="searchToggleMobile" class="bg-[#1B4965] hover:bg-[#123347] px-2 py-1 rounded-lg text-white flex items-center">
-    <img src="../img/search.svg" alt="Buscar" class="h-5 filter invert">
-  </button>
-  <!-- popup mobile -->
-  <div id="mobileSearchBox" class="hidden absolute left-1/2 transform -translate-x-1/2 top-full mt-1 w-64 bg-white p-2 rounded-lg shadow z-50">
-    <div class="flex gap-2">
-      <input id="mobileSearchInput" type="text" placeholder="Buscar livros..." class="flex-1 px-2 py-1 border rounded text-sm">
-      <button id="mobileSearchSubmit" class="bg-[#1B4965] hover:bg-[#123347] px-2 md:px-3 py-1 rounded text-white text-sm">Ok</button>
-    </div>
-  </div>
-</div>
-
-      <!-- Dropdown -->
-      <div class="dropdown relative">
-        <button class="dropdown-toggle bg-[#1B4965] text-white px-2 py-1 md:px-4 md:py-2 text-sm md:text-md rounded-lg flex items-center gap-1 md:gap-2">
-          <span class="hidden md:inline">Gêneros</span> <!-- só aparece em md+ -->
-          <span>▼</span> <!-- sempre aparece -->
-        </button>
-        <ul class="dropdown-menu hidden absolute right-0 mt-2 bg-white border-2 border-[#1B4965] rounded-lg shadow-lg py-1 z-50  w-44 md:w-48 text-sm md:text-base">
-          <li><a href="../genero/genero.html?tipo=acao" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Ação</a></li>
-          <li><a href="../genero/genero.html?tipo=autoajuda" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Autoajuda</a></li>
-          <li><a href="../genero/genero.html?tipo=aventura" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Aventura</a></li>
-          <li><a href="../genero/genero.html?tipo=biografia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Biografia</a></li>
-          <li><a href="../genero/genero.html?tipo=classicos" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Clássicos</a></li>
-          <li><a href="../genero/genero.html?tipo=drama" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Drama</a></li>
-          <li><a href="../genero/genero.html?tipo=fantasia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Fantasia</a></li>
-          <li><a href="../genero/genero.html?tipo=ficcao cientifica" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Ficção Científica</a></li>
-          <li><a href="../genero/genero.html?tipo=historia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">História</a></li>
-          <li><a href="../genero/genero.html?tipo=infantil" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Infantil</a></li>
-          <li><a href="../genero/genero.html?tipo=misterio" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Mistério</a></li>
-          <li><a href="../genero/genero.html?tipo=poesia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Poesia</a></li>
-          <li><a href="../genero/genero.html?tipo=policial" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Policial</a></li>
-          <li><a href="../genero/genero.html?tipo=psicologia" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Psicologia</a></li>
-          <li><a href="../genero/genero.html?tipo=religiao" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Religião</a></li>
-          <li><a href="../genero/genero.html?tipo=romance" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Romance</a></li>
-          <li><a href="../genero/genero.html?tipo=suspense" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Suspense</a></li>
-          <li><a href="../genero/genero.html?tipo=terror" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Terror</a></li>
-          <li><a href="../genero/genero.html?tipo=thriller" class="block px-2 md:px-4 py-1 md:py-2 hover:bg-[#E0F2F1] text-[#1B4965]">Thriller</a></li>
-        </ul>
-      </div>
+      
 
         <!-- Botão Minha Lista -->
         <a href="./minha-lista.html" class="bg-[#1B4965] hover:bg-[#123347] text-white rounded-lg flex items-center gap-1 md:gap-2 px-2 py-1 md:px-4 md:py-2">
@@ -94,10 +46,11 @@
   <div class="w-full md:max-w-[1450px] mx-auto px-0 md:px-[52px]">
   <!-- CONTEÚDO PRINCIPAL -->
   <main class="flex-grow p-4 md:p-6 space-y-8">
-
+<!-- Título -->
+<div id="breadcrumb" class="text-sm md:text-xl font-semibold text-[#123347] mb-6 flex gap-1 items-center"></div>
     <!-- Sugestões para o usuário -->
     <section class="book-section" id="suggested">
-      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Sugestões para você</h2>
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Favoritos</h2>
       <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
         <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
           <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
@@ -116,7 +69,7 @@
 
     <!-- Destaques -->
     <section class="book-section" id="featured">
-      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Destaques</h2>
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Avaliações</h2>
       <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
         <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
           <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
@@ -135,7 +88,7 @@
 
     <!-- Recentes -->
     <section class="book-section" id="recent">
-      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Adicionados recentemente</h2>
+      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Baixados</h2>
       <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
         <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
           <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
@@ -151,45 +104,6 @@
         </button>
       </div>
     </section>
-
-    <!-- Bestsellers -->
-    <section class="book-section" id="bestsellers">
-      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Bestsellers</h2>
-      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
-        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
-          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-          </svg>
-        </button>
-        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
-        </div>
-        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
-          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
-          </svg>
-        </button>
-      </div>
-    </section>
-
-    <!-- Livros nacionais -->
-    <section class="book-section" id="brazilian-books">
-      <h2 class="text-[#1B4965] text-xl md:text-2xl mb-4">Livros nacionais</h2>
-      <div class="carousel-wrapper relative flex items-center px-0 md:px-6">
-        <button class="arrow left hidden md:flex absolute -left-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]" >
-          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-          </svg>
-        </button>
-        <div class="book-carousel px-2 flex gap-4 overflow-x-auto overflow-visible no-scrollbar py-2">
-        </div>
-        <button class="arrow right hidden md:flex absolute -right-14 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1B4965cc] text-white items-center justify-center hover:bg-[#123347]">
-          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
-          </svg>
-        </button>
-      </div>
-    </section>
-
   </main>
 </div>
   <!-- FOOTER -->

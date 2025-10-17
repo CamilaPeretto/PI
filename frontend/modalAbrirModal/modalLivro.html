@@ -22,11 +22,11 @@
           id="modalCapa"
           src=""
           alt="Capa do livro"
-          class="object-cover rounded-xl shadow-md transition-all duration-300 w-[80%] h-[80%]"
+          class="object-cover rounded-xl shadow-md transition-all duration-300 w-[90%] h-[90%]"
         />
 
         <!-- Avaliação do usuário -->
-        <div class="flex items-center gap-3 mt-4">
+        <div class="flex items-center gap-3 mt-6">
           <span class="text-gray-700 text-sm">Sua avaliação:</span>
           <div id="modalAvaliar" class="flex gap-1 text-yellow-400 cursor-pointer text-2xl">
             <span data-star="1">★</span>
@@ -38,50 +38,65 @@
         </div>
       </div>
 
-      <!-- Lado direito -->
-      <div class="flex flex-col justify-between w-[60%]">
-        <div class="flex flex-col">
-          <h2 id="modalTitulo" class="text-2xl font-bold text-[#1B4965] mb-1"></h2>
-          <p id="modalAutor" class="text-gray-600 mb-3"></p>
+<!-- Lado direito -->
+<div class="flex flex-col justify-between w-[60%]">
+  <div class="flex flex-col">
+    <!-- Título e autor -->
+    <h2 id="modalTitulo" class="text-2xl font-bold text-[#1B4965] mb-1"></h2>
+    <p id="modalAutor" class="text-gray-600 mb-3"></p>
 
-          <div class="flex flex-wrap items-center gap-3 mb-3">
-            <p id="modalGenero" class="text-sm text-gray-700"></p>
-            <p id="modalData" class="text-sm text-gray-700"></p>
-          </div>
+    <!-- Gênero e data -->
+    <div class="flex flex-wrap items-center gap-3 mb-3">
+      <p id="modalGenero" class="text-sm text-gray-700"></p>
+      <p id="modalData" class="text-sm text-gray-700"></p>
+    </div>
 
-          <!-- Avaliação visual -->
-          <div class="flex flex-col items-start gap-1 mb-4">
-            <div id="modalEstrelas" class="flex text-yellow-400 text-2xl"></div>
-            <span id="modalNota" class="text-sm text-gray-700"></span>
-          </div>
+    <!-- Avaliação visual -->
+    <div class="flex flex-col items-start gap-1 mb-4">
+      <div id="modalEstrelas" class="flex text-yellow-400 text-2xl"></div>
+      <span id="modalNota" class="text-sm text-gray-700"></span>
+    </div>
 
-          <!-- Sinopse -->
-        <div class="mt-2">
-            <p class="text-gray-700 font-semibold mb-2">Sinopse:</p>
-            <div
-            id="modalSinopseContainer"
-            class="overflow-y-auto max-h-[300px] pr-2 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded"
-            >
-            <p id="modalSinopse" class="text-gray-700 text-sm leading-relaxed"></p>
-            </div>
-        </div>
-
-          <!-- Botões de Download -->
-          <div class="flex gap-3 mt-4">
-            <button class="px-6 py-2 bg-[#1B4965] text-white rounded-xl font-semibold hover:bg-[#173A52] transition">PDF</button>
-            <button class="px-6 py-2 bg-[#1B4965] text-white rounded-xl font-semibold hover:bg-[#173A52] transition">EPUB</button>
-            <button class="px-6 py-2 bg-[#1B4965] text-white rounded-xl font-semibold hover:bg-[#173A52] transition">MOBI</button>
-          </div>
-        </div>
-
-        <!-- Botão Favorito -->
-        <button
-          id="btnFavorito"
-          class="absolute bottom-6 right-6 text-4xl text-gray-400 hover:text-red-500 transition"
-        >
-          ❤
-        </button>
+    <!-- Sinopse -->
+    <div class="mt-2">
+      <p class="text-gray-700 font-semibold mb-2">Sinopse:</p>
+      <div
+        id="modalSinopseContainer"
+        class="overflow-y-auto max-h-[240px] pr-2 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded"
+      >
+        <p id="modalSinopse" class="text-gray-700 text-sm leading-relaxed"></p>
       </div>
     </div>
+  </div>
+
+  <!-- 📚 Botões de Download + ❤️ Favorito -->
+  <div class="flex justify-between items-center w-full">
+    <!-- Botões de formato -->
+    <div class="flex gap-3">
+      <button
+        class="px-5 py-2 bg-[#1B4965] text-white rounded-xl font-semibold shadow hover:bg-[#123347] hover:shadow-lg transition-all"
+      >
+        PDF
+      </button>
+      <button
+        class="px-5 py-2 bg-[#1B4965] text-white rounded-xl font-semibold shadow hover:bg-[#123347] hover:shadow-lg transition-all"
+      >
+        EPUB
+      </button>
+      <button
+        class="px-5 py-2 bg-[#1B4965] text-white rounded-xl font-semibold shadow hover:bg-[#123347] hover:shadow-lg transition-all"
+      >
+        MOBI
+      </button>
+    </div>
+
+    <!-- ❤️ Botão Favorito -->
+    <button
+      id="btnFavorito"
+      class="text-4xl text-gray-400 hover:text-red-500 transition-transform duration-300 hover:scale-110"
+      title="Adicionar aos favoritos"
+    >
+      ❤
+    </button>
   </div>
 </div>
