@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const autor = (info.authors || []).join(', ') || 'Autor desconhecido';
 
       const card = document.createElement('div');
-      card.className = 'book-card w-44 md:w-48 h-72 bg-white rounded-lg p-3 shadow hover:scale-[1.03] transition-transform flex-shrink-0';
+      card.className = 'book-card w-44 md:w-48 h-72 bg-white rounded-lg p-3 shadow hover:scale-[1.03] transition-transform flex-shrink-0 cursor-pointer';
       card.innerHTML = `
         <img src="${img}" alt="${titulo}" class="w-full h-56 object-cover rounded-md mb-2">
         <h4 class="text-sm font-semibold truncate">${titulo}</h4>

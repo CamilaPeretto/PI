@@ -113,7 +113,7 @@ async function carregarLivros() {
       const totalAvaliacoes = info.ratingsCount || Math.floor(Math.random() * 1500) + 50;
 
       const card = document.createElement("div");
-      card.className = "bg-white rounded-lg shadow-md p-3 text-center hover:scale-105 hover:shadow-xl transition-transform duration-300 h-auto";
+      card.className = "bg-white rounded-lg shadow-md p-3 text-center hover:scale-105 hover:shadow-xl transition-transform duration-300 h-auto cursor-pointer";
 
       card.innerHTML = `
          <img src="${img}" alt="${titulo}" class="w-full h-auto object-contain rounded-md mb-3">
