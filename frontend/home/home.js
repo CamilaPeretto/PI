@@ -75,14 +75,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // 🔹 Corrigido: usar volume em vez de info
       card.addEventListener('click', () => {
         abrirModalLivro({
-          capa: volume.imageLinks?.thumbnail || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg',
-          titulo: volume.title || 'Sem título',
-          autor: volume.authors?.join(", ") || 'Autor desconhecido',
-          genero: volume.categories?.[0] || 'Sem gênero',
-          data: volume.publishedDate || 'Data não informada',
-          nota: volume.averageRating || 0,
-          totalAvaliacoes: volume.ratingsCount || 0,
-          sinopse: volume.description || 'Sem descrição disponível.'
+          capa: volume.imageLinks?.thumbnail || volume.imageLinks?.smallThumbnail,
+          imagemLinks: volume.imageLinks, // opcional
+          titulo: volume.title,
+          autor: (volume.authors||[]).join(', '),
+          genero: volume.categories?.[0],
+          data: volume.publishedDate,
+          nota: volume.averageRating,
+          totalAvaliacoes: volume.ratingsCount,
+          sinopse: volume.description
         });
       });
   
