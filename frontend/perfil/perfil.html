@@ -6,33 +6,16 @@
   <title>InBook | Perfil</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../index.css">
   <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #B2DFDB, #E0F2F1);
-      color: #1B4965;
-    }
-
-    /* Glass Card */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 4px 20px rgba(27, 73, 101, 0.1);
-      border-radius: 1.25rem;
-      transition: all 0.3s ease;
-    }
-
-    .tab-btn.active {
-      border-bottom: 3px solid #1B4965;
-      color: #1B4965;
-    }
+body {
+    color: #1B4965;
+  }
   </style>
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-[#E0F2F1]">
 
   <!-- NAVBAR -->
   <nav class="w-full bg-white shadow-md">
@@ -67,8 +50,8 @@
   <main class="flex-grow px-4 md:px-[52px] py-8 md:py-10 max-w-[1100px] mx-auto w-full min-h-[690px]">
 
     <!-- BOTÕES DE ABA -->
-    <div class="flex flex-wrap justify-center gap-3 mb-8 border-b border-[#1B4965]/30 pb-3">
-      <button class="tab-btn active text-[#1B4965] font-semibold px-4 py-2 transition-colors" data-tab="dados">Meus Dados</button>
+    <div class="flex flex-wrap justify-center gap-9 mb-8 border-b border-[#1B4965]/30 pb-3">
+      <button class="tab-btn active text-gray-600 hover:text-[#1B4965]" data-tab="dados">Meus Dados</button>
       <button class="tab-btn text-gray-600 hover:text-[#1B4965]" data-tab="contato">Fale Conosco</button>
       <button class="tab-btn text-gray-600 hover:text-[#1B4965]" data-tab="solicitacao">Solicitação de Livros</button>
       <button class="tab-btn text-gray-600 hover:text-[#1B4965]" data-tab="termos">Termos de Uso</button>
@@ -250,18 +233,41 @@
   </footer>
 
   <script>
-    const tabs = document.querySelectorAll('.tab-btn');
-    const contents = document.querySelectorAll('.tab-content');
-
-    tabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabs.forEach(b => b.classList.remove('active'));
-        contents.forEach(c => c.classList.add('hidden'));
-
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.remove('hidden');
+    document.querySelectorAll("form").forEach(form => {
+      form.addEventListener("submit", e => {
+        e.preventDefault(); // Impede o reload e o redirecionamento
+  
       });
     });
-  </script>
+    
+    // Controle das abas
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+    
+    tabButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const tab = button.dataset.tab;
+    
+        tabButtons.forEach(btn => btn.classList.remove("active", "text-[#1B4965]"));
+        tabContents.forEach(content => content.classList.add("hidden"));
+    
+        button.classList.add("active", "text-[#1B4965]");
+        document.getElementById(tab).classList.remove("hidden");
+    
+        // salva a aba ativa no localStorage
+        localStorage.setItem("abaAtiva", tab);
+      });
+    });
+    
+    window.addEventListener("load", () => {
+  const defaultTab = "dados"; // sempre abre Meus Dados
+  tabButtons.forEach(btn => btn.classList.remove("active", "text-[#1B4965]"));
+  tabContents.forEach(content => content.classList.add("hidden"));
+
+  document.querySelector(`.tab-btn[data-tab="${defaultTab}"]`).classList.add("active", "text-[#1B4965]");
+  document.getElementById(defaultTab).classList.remove("hidden");
+});
+    </script>
+    
 </body>
 </html>

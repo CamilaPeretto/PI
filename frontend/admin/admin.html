@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InBook | Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../index.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+</head>
+<body class="min-h-screen flex flex-col bg-[#E0F2F1]">
+
+  <!-- NAVBAR -->
+  <nav class="w-full bg-white shadow-md">
+    <div class="w-full md:max-w-[1500px] mx-auto flex items-center justify-between px-2 md:px-[52px] py-3 md:py-4">
+      <a href="../home/home.html" class="flex-shrink-0">
+        <img src="../img/logo-Photoroom-home.png" alt="Logo InBook" class="w-20 md:w-32">
+      </a>
+
+    <div class="flex items-center gap-2 md:gap-3">
+  
+        <span>Olá, Admin</span>
+        <button id="logoutBtn" class="text-gray-800 hover:text-[#1B4965]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
+            </svg>
+          </button>
+  </div>
+</nav>
+
+<div class="w-full md:max-w-[1500px] mx-auto px-0">
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-grow p-4 md:p-6 space-y-8 ">
+
+  <!-- DASHBOARD CARDS -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+    <div class="bg-white shadow rounded p-4 text-center">
+      <h3 class="font-bold text-lg">Livros Baixados</h3>
+      <p class="text-2xl mt-2" id="livrosBaixados">123</p>
+    </div>
+    <div class="bg-white shadow rounded p-4 text-center">
+      <h3 class="font-bold text-lg">Total de Livros</h3>
+      <p class="text-2xl mt-2" id="totalLivros">456</p>
+    </div>
+    <div class="bg-white shadow rounded p-4 text-center">
+      <h3 class="font-bold text-lg">Usuários</h3>
+      <p class="text-2xl mt-2" id="totalUsuarios">78</p>
+    </div>
+  </div>
+
+  <!-- FILTROS E BOTÃO ADICIONAR -->
+  <div class="flex justify-between items-center p-4 flex-wrap gap-2">
+    <div class="flex gap-2 flex-wrap">
+      <input type="text" id="filterTitle" placeholder="Filtrar por Título" class="border rounded px-2 py-1">
+      <input type="text" id="filterAuthor" placeholder="Filtrar por Autor" class="border rounded px-2 py-1">
+      <input type="text" id="filterGenre" placeholder="Filtrar por Gênero" class="border rounded px-2 py-1">
+      <input type="text" id="filterFormat" placeholder="Filtrar por Formato" class="border rounded px-2 py-1">
+      <input type="date" id="filterPubStart" placeholder="Data Publicação Início" class="border rounded px-2 py-1">
+      <input type="date" id="filterPubEnd" placeholder="Data Publicação Fim" class="border rounded px-2 py-1">
+      <input type="date" id="filterAddedStart" placeholder="Data Adicionado Início" class="border rounded px-2 py-1">
+      <input type="date" id="filterAddedEnd" placeholder="Data Adicionado Fim" class="border rounded px-2 py-1">
+    </div>
+    <button id="addBookBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Adicionar Livro</button>
+  </div>
+
+  <!-- TABELA DE LIVROS -->
+  <div class="p-4 overflow-x-auto">
+    <table class="min-w-full bg-white shadow rounded" id="booksTable">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2 text-left">Título</th>
+          <th class="px-4 py-2 text-left">Autor</th>
+          <th class="px-4 py-2 text-left">Data de Publicação</th>
+          <th class="px-4 py-2 text-left">Adicionado em</th>
+          <th class="px-4 py-2 text-left">Gênero</th>
+          <th class="px-4 py-2 text-left">Formato</th>
+        </tr>
+      </thead>
+      <tbody id="booksBody">
+        <!-- Linhas serão geradas por JS -->
+      </tbody>
+    </table>
+    <div class="text-center mt-4">
+      <button id="loadMore" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Carregar Mais</button>
+    </div>
+  </div>
+
+  <!-- MODAL ADICIONAR LIVRO -->
+  <div id="addBookModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white rounded p-6 w-full max-w-md relative">
+      <h2 class="text-xl font-bold mb-4">Adicionar Novo Livro</h2>
+      <form id="addBookForm" class="flex flex-col gap-2">
+        <input type="text" placeholder="Título" id="newTitle" class="border rounded px-2 py-1">
+        <input type="text" placeholder="Autor" id="newAuthor" class="border rounded px-2 py-1">
+        <input type="date" placeholder="Data de Publicação" id="newPubDate" class="border rounded px-2 py-1">
+        <input type="text" placeholder="Gênero" id="newGenre" class="border rounded px-2 py-1">
+        <input type="text" placeholder="Formato" id="newFormat" class="border rounded px-2 py-1">
+        <div class="flex justify-end gap-2 mt-4">
+          <button type="button" id="closeAddModal" class="px-4 py-2 bg-gray-400 rounded hover:bg-gray-500">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Adicionar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DETALHES DO LIVRO -->
+  <div id="bookDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white rounded p-6 w-full max-w-md relative">
+      <h2 class="text-xl font-bold mb-4" id="detailTitle"></h2>
+      <p><strong>Autor:</strong> <span id="detailAuthor"></span></p>
+      <p><strong>Data de Publicação:</strong> <span id="detailPubDate"></span></p>
+      <p><strong>Adicionado em:</strong> <span id="detailAdded"></span></p>
+      <p><strong>Gênero:</strong> <span id="detailGenre"></span></p>
+      <p><strong>Formato:</strong> <span id="detailFormat"></span></p>
+      <div class="flex justify-end mt-4">
+        <button id="closeDetailsModal" class="px-4 py-2 bg-gray-400 rounded hover:bg-gray-500">Fechar</button>
+      </div>
+    </div>
+  </div>
+    </main>
+</div>
+<!-- FOOTER -->
+  <footer class="bg-white text-white pt-8 mt-auto shadow-md">
+    <div class="max-w-[1450px] mx-auto px-4 sm:px-6 md:px-16  gap-10">
+  
+      <!-- Logo + descrição -->
+      <div class=" gap-4">
+        <img src="../img/logo-Photoroom-home.png" alt="InBook Logo" class="w-36 md:w-40">
+        <p class="text-[#1B4965] text-sm">
+          Descubra, leia e compartilhe histórias que inspiram. Seu universo literário começa aqui.
+        </p>
+      </div>
+    </div>
+  
+    <!-- Contato e Copyright -->
+    <div class="mt-3 border-t border-[#123347] p-5 text-center text-[#1B4965] text-md text-bold sm:flex sm:justify-between sm:items-center px-4 sm:px-6 md:px-16 flex flex-col gap-2 shadow-md">
+        <div class="justify-between">
+        <img src="../img/logo-Photoroom-home.png" alt="InBook Logo" class="w-36 md:w-40">
+        <p class="text-[#1B4965] text-sm">
+          Descubra, leia e compartilhe histórias que inspiram. Seu universo literário começa aqui.
+        </p>
+    </div>
+        <p>&copy; 2025 InBook. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+  <script>
+    // GERAR 20 LIVROS ALEATÓRIOS
+    const livros = [];
+    const generos = ["Romance", "Ficção", "Aventura", "Autoajuda", "Biografia"];
+    const formatos = ["PDF", "EPUB", "MOBI"];
+    for(let i=1; i<=20; i++){
+      const pubDate = new Date(2010 + Math.floor(Math.random()*13), Math.floor(Math.random()*12), Math.floor(Math.random()*28)+1);
+      const addedDate = new Date(2023, Math.floor(Math.random()*10), Math.floor(Math.random()*28)+1);
+      livros.push({
+        titulo: "Livro " + i,
+        autor: "Autor " + i,
+        pubDate: pubDate.toISOString().split('T')[0],
+        addedDate: addedDate.toISOString().split('T')[0],
+        genero: generos[Math.floor(Math.random()*generos.length)],
+        formato: formatos[Math.floor(Math.random()*formatos.length)]
+      });
+    }
+
+    let livrosExibidos = 0;
+    const livrosPorPagina = 10;
+    const tbody = document.getElementById("booksBody");
+    let filteredLivros = [...livros];
+
+    function renderTable(reset=false){
+      if(reset){
+        tbody.innerHTML = "";
+        livrosExibidos = 0;
+      }
+      const slice = filteredLivros.slice(livrosExibidos, livrosExibidos + livrosPorPagina);
+      slice.forEach((livro) => {
+        const tr = document.createElement("tr");
+        tr.classList.add("border-b", "cursor-pointer");
+        tr.innerHTML = `
+          <td class="px-4 py-2">${livro.titulo}</td>
+          <td class="px-4 py-2">${livro.autor}</td>
+          <td class="px-4 py-2">${livro.pubDate}</td>
+          <td class="px-4 py-2">${livro.addedDate}</td>
+          <td class="px-4 py-2">${livro.genero}</td>
+          <td class="px-4 py-2">${livro.formato}</td>
+        `;
+        tr.addEventListener("click", () => openBookDetails(livro));
+        tbody.appendChild(tr);
+      });
+      livrosExibidos += livrosPorPagina;
+      document.getElementById("loadMore").style.display = livrosExibidos >= filteredLivros.length ? "none" : "inline-block";
+    }
+
+    renderTable();
+
+    document.getElementById("loadMore").addEventListener("click", () => renderTable());
+
+    // MODAIS
+    const addBookModal = document.getElementById("addBookModal");
+    document.getElementById("addBookBtn").addEventListener("click", () => addBookModal.classList.remove("hidden"));
+    document.getElementById("closeAddModal").addEventListener("click", () => addBookModal.classList.add("hidden"));
+
+    document.getElementById("addBookForm").addEventListener("submit", e=>{
+      e.preventDefault();
+      const newBook = {
+        titulo: document.getElementById("newTitle").value,
+        autor: document.getElementById("newAuthor").value,
+        pubDate: document.getElementById("newPubDate").value,
+        addedDate: new Date().toISOString().split('T')[0],
+        genero: document.getElementById("newGenre").value,
+        formato: document.getElementById("newFormat").value
+      };
+      livros.unshift(newBook);
+      applyFilters(); // atualiza tabela considerando filtros
+      addBookModal.classList.add("hidden");
+      e.target.reset();
+    });
+
+    const bookDetailsModal = document.getElementById("bookDetailsModal");
+    function openBookDetails(book){
+      document.getElementById("detailTitle").innerText = book.titulo;
+      document.getElementById("detailAuthor").innerText = book.autor;
+      document.getElementById("detailPubDate").innerText = livro.pubDate;
+      document.getElementById("detailAdded").innerText = livro.addedDate;
+      document.getElementById("detailGenre").innerText = livro.genero;
+      document.getElementById("detailFormat").innerText = livro.formato;
+      bookDetailsModal.classList.remove("hidden");
+    }
+    document.getElementById("closeDetailsModal").addEventListener("click", ()=> bookDetailsModal.classList.add("hidden"));
+
+    // FILTROS AVANÇADOS
+    const filterFields = [
+      "filterTitle", "filterAuthor", "filterGenre", "filterFormat",
+      "filterPubStart","filterPubEnd","filterAddedStart","filterAddedEnd"
+    ];
+
+    filterFields.forEach(f=>{
+      document.getElementById(f).addEventListener("input", applyFilters);
+    });
+
+    function applyFilters(){
+      const title = document.getElementById("filterTitle").value.toLowerCase();
+      const author = document.getElementById("filterAuthor").value.toLowerCase();
+      const genre = document.getElementById("filterGenre").value.toLowerCase();
+      const format = document.getElementById("filterFormat").value.toLowerCase();
+      const pubStart = document.getElementById("filterPubStart").value;
+      const pubEnd = document.getElementById("filterPubEnd").value;
+      const addedStart = document.getElementById("filterAddedStart").value;
+      const addedEnd = document.getElementById("filterAddedEnd").value;
+
+      filteredLivros = livros.filter(l => 
+        l.titulo.toLowerCase().includes(title) &&
+        l.autor.toLowerCase().includes(author) &&
+        l.genero.toLowerCase().includes(genre) &&
+        l.formato.toLowerCase().includes(format) &&
+        (!pubStart || l.pubDate >= pubStart) &&
+        (!pubEnd || l.pubDate <= pubEnd) &&
+        (!addedStart || l.addedDate >= addedStart) &&
+        (!addedEnd || l.addedDate <= addedEnd)
+      );
+      renderTable(true);
+    }
+
+  </script>
+</body>
+</html>
