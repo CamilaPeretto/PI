@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Admin</title>
+  <title>InBook | Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+  <link rel="stylesheet" href="../index.css">
 </head>
-<body class="bg-gray-100 min-h-screen text-gray-800">
+<body class="bg-[#E0F2F1] min-h-screen text-gray-800 ">
 
   <!-- Navbar -->
-  <nav class="bg-[#1B4965] text-white flex justify-between items-center px-6 py-4 shadow-md">
+  <nav class="bg-[#1B4965] text-white flex justify-between items-center px-8 lg:px-28 py-4 shadow-md">
     <div class="flex items-center space-x-2">
       <i data-lucide="book-open" class="w-6 h-6"></i>
-      <span class="font-semibold text-lg">InBook Admin</span>
+      <span class="font-bold text-lg">InBook Admin</span>
     </div>
     <div class="flex items-center space-x-4">
-      <span>Olá, <strong>Admin</strong></span>
       <button id="logoutBtn" class="flex items-center gap-1 hover:text-red-400 transition">
         <i data-lucide="log-out" class="w-5 h-5"></i>
         Sair
@@ -24,6 +26,7 @@
     </div>
   </nav>
 
+  <main class="flex-1 px-2 lg:px-24 py-6 space-y-6">
   <!-- Dashboard Cards -->
   <section class="grid md:grid-cols-3 gap-6 p-6">
     <div class="bg-white p-5 rounded-2xl shadow flex items-center justify-between">
@@ -31,37 +34,51 @@
         <h3 class="text-gray-500 text-sm">Livros Baixados</h3>
         <p class="text-2xl font-bold">1.248</p>
       </div>
-      <i data-lucide="download" class="w-8 h-8 text-blue-500"></i>
+      <i data-lucide="download" class="w-8 h-8 text-[#123347]"></i>
     </div>
     <div class="bg-white p-5 rounded-2xl shadow flex items-center justify-between">
       <div>
         <h3 class="text-gray-500 text-sm">Total de Livros</h3>
         <p class="text-2xl font-bold">320</p>
       </div>
-      <i data-lucide="book" class="w-8 h-8 text-green-500"></i>
+      <i data-lucide="book" class="w-8 h-8 text-[#123347]"></i>
     </div>
     <div class="bg-white p-5 rounded-2xl shadow flex items-center justify-between">
       <div>
         <h3 class="text-gray-500 text-sm">Usuários</h3>
         <p class="text-2xl font-bold">580</p>
       </div>
-      <i data-lucide="users" class="w-8 h-8 text-purple-500"></i>
+      <i data-lucide="users" class="w-8 h-8 text-[#123347]"></i>
     </div>
   </section>
 
   <!-- Filtros -->
   <section class="bg-white mx-6 p-5 rounded-2xl shadow">
-    <h2 class="font-semibold mb-4 text-lg">Filtros Avançados</h2>
+    <h2 class="font-semibold mb-4 text-lg text-[#1B4965]">Filtros Avançados</h2>
     <div class="grid md:grid-cols-4 gap-4">
       <input type="text" id="filtroTitulo" placeholder="Filtrar por título" class="border rounded-lg p-2 w-full">
       <input type="text" id="filtroAutor" placeholder="Filtrar por autor" class="border rounded-lg p-2 w-full">
       <select id="filtroGenero" class="border rounded-lg p-2 w-full">
         <option value="">Todos os gêneros</option>
-        <option>Romance</option>
-        <option>Ficção</option>
-        <option>Aventura</option>
-        <option>Fantasia</option>
-        <option>Terror</option>
+          <option>Ação</option>
+          <option>Autoajuda</option>
+          <option>Aventura</option>
+          <option>Biografia</option>
+          <option>Clássicos</option>
+          <option>Drama</option>
+          <option>Fantasia</option>
+          <option>Ficção Científica</option>
+          <option>História</option>
+          <option>Infantil</option>
+          <option>Mistério</option>
+          <option>Poesia</option>
+          <option>Policial</option>
+          <option>Psicologia</option>
+          <option>Religião</option>
+          <option>Romance</option>
+          <option>Suspense</option>
+          <option>Terror</option>
+          <option>Thriller</option>
       </select>
       <select id="filtroFormato" class="border rounded-lg p-2 w-full">
         <option value="">Todos os formatos</option>
@@ -86,14 +103,20 @@
         <label class="text-sm text-gray-600">Adicionado (até)</label>
         <input type="date" id="dataAddAte" class="border rounded-lg p-2 w-full">
       </div>
+      
+    </div>
+    <div class="flex justify-end gap-3 pt-4">
+      <button id="btnLimpar" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded">Limpar</button>
+      <button id="btnFiltrar" class="bg-[#1B4965] hover:bg-[#173955] text-white px-4 py-2 rounded">Filtrar</button>
     </div>
   </section>
 
   <!-- Tabela -->
-  <section class="bg-white mx-6 mt-6 p-6 rounded-2xl shadow overflow-x-auto">
+  <section class="bg-white mx-6 mt-6 p-6 rounded-2xl shadow ">
+    
     <table class="min-w-full text-left">
       <thead>
-        <tr class="border-b">
+        <tr class="border-b text-[#1B4965]">
           <th class="p-3">Título</th>
           <th class="p-3">Autor</th>
           <th class="p-3">Data de Publicação</th>
@@ -103,145 +126,202 @@
         </tr>
       </thead>
       <tbody id="tabelaLivros" class="divide-y"></tbody>
+
     </table>
     <div class="text-center mt-4">
       <button id="carregarMais" class="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Carregar mais</button>
     </div>
   </section>
-
+</main>
   <!-- Botão flutuante -->
-  <button id="btnAdicionar" class="fixed bottom-6 right-6 bg-[#1B4965] text-white p-4 rounded-full shadow-lg hover:bg-[#163a51] transition flex items-center justify-center">
+  <button id="btnAdicionar" class="fixed bottom-16 right-6 bg-[#1B4965] text-white p-4 rounded-full shadow-lg hover:bg-[#163a51] transition flex items-center justify-center">
     <i data-lucide="plus" class="w-6 h-6"></i>
   </button>
 
   <!-- Modal Adicionar Livro -->
-  <div id="modalAdicionar" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-2xl shadow-lg w-96">
-      <h2 class="text-lg font-semibold mb-4">Adicionar Novo Livro</h2>
-      <form id="formAdicionar" class="space-y-3">
-        <input type="text" id="tituloAdd" placeholder="Título" class="border p-2 rounded w-full" required>
-        <input type="text" id="autorAdd" placeholder="Autor" class="border p-2 rounded w-full" required>
+<div id="modalAdicionar" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white p-6 rounded-2xl shadow-lg w-[450px] relative">
+    <!-- Botão X -->
+    <button id="fecharModalAdicionar" class="absolute top-3 right-3 text-gray-500 hover:text-black">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <h2 class="text-lg font-semibold mb-4 text-[#1B4965]">Adicionar Novo Livro</h2>
+
+    <form id="formAdicionar" class="space-y-3">
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Título</label>
+        <input type="text" id="tituloAdd" placeholder="Título do livro" class="border p-2 rounded w-full" required>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Autor</label>
+        <input type="text" id="autorAdd" placeholder="Autor do livro" class="border p-2 rounded w-full" required>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Data de Publicação</label>
         <input type="date" id="dataPubAdd" class="border p-2 rounded w-full" required>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Gênero</label>
         <select id="generoAdd" class="border p-2 rounded w-full">
-          <option>Romance</option>
-          <option>Ficção</option>
+          <option>Ação</option>
+          <option>Autoajuda</option>
           <option>Aventura</option>
+          <option>Biografia</option>
+          <option>Clássicos</option>
+          <option>Drama</option>
           <option>Fantasia</option>
+          <option>Ficção Científica</option>
+          <option>História</option>
+          <option>Infantil</option>
+          <option>Mistério</option>
+          <option>Poesia</option>
+          <option>Policial</option>
+          <option>Psicologia</option>
+          <option>Religião</option>
+          <option>Romance</option>
+          <option>Suspense</option>
           <option>Terror</option>
+          <option>Thriller</option>
+          
         </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Sinopse</label>
+        <textarea id="sinopseAdd" rows="3" placeholder="Resumo do livro..." class="border p-2 rounded w-full resize-none"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Tipo de Arquivo</label>
         <select id="formatoAdd" class="border p-2 rounded w-full">
           <option>PDF</option>
           <option>EPUB</option>
           <option>MOBI</option>
         </select>
-        <button type="submit" class="bg-[#1B4965] text-white w-full py-2 rounded-lg hover:bg-[#163a51]">Salvar</button>
-      </form>
-      <button id="fecharModalAdicionar" class="mt-3 text-sm text-gray-600 hover:text-black">Cancelar</button>
-    </div>
+      </div>
+
+      <!-- Upload da capa -->
+<div>
+  <label class="block text-sm font-medium text-gray-600 mb-1">Capa do Livro</label>
+  <label for="uploadCapa" 
+         class="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-6 bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+    <i data-lucide="image" class="w-5 h-5 text-gray-500"></i>
+    <span id="labelCapa" class="text-gray-500 text-sm">Selecionar imagem...</span>
+  </label>
+  <input type="file" id="uploadCapa" accept="image/*" class="hidden">
+</div>
+
+<!-- Upload do arquivo -->
+<div>
+  <label class="block text-sm font-medium text-gray-600 mb-1">Arquivo do Livro</label>
+  <label for="uploadArquivo" 
+         class="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-6 bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+    <i data-lucide="file-text" class="w-5 h-5 text-gray-500"></i>
+    <span id="labelArquivo" class="text-gray-500 text-sm">Selecionar arquivo (.pdf, .epub, .mobi)...</span>
+  </label>
+  <input type="file" id="uploadArquivo" accept=".pdf,.epub,.mobi" class="hidden">
+</div>
+
+      <button type="submit" class="bg-[#1B4965] text-white w-full py-2 rounded-lg hover:bg-[#163a51] transition">
+        Salvar
+      </button>
+    </form>
   </div>
+</div>
 
-  <!-- Modal Detalhes Livro -->
-  <div id="modalDetalhes" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-2xl shadow-lg w-96">
-      <h2 class="text-lg font-semibold mb-4">Detalhes do Livro</h2>
-      <div id="detalhesLivro" class="space-y-2 text-sm"></div>
-      <button id="fecharModalDetalhes" class="mt-3 text-sm text-gray-600 hover:text-black">Fechar</button>
+<!-- Modal Detalhes Livro -->
+<div id="modalDetalhes" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white p-6 rounded-2xl shadow-lg w-[420px] relative">
+
+    <!-- Botão X -->
+    <button id="fecharModalDetalhes" class="absolute top-4 right-4 text-gray-500 hover:text-black transition">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <h2 class="text-xl font-semibold mb-5 text-gray-800">Detalhes do Livro</h2>
+
+    <!-- Campos -->
+    <div id="detalhesLivro" class="space-y-3 text-sm">
+      <div>
+        <label class="block text-gray-700 mb-1 font-medium">Título</label>
+        <input type="text" id="tituloDetalhe" class="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" readonly>
+      </div>
+
+      <div>
+        <label class="block text-gray-700 mb-1 font-medium">Autor</label>
+        <input type="text" id="autorDetalhe" class="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" readonly>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-gray-700 mb-1 font-medium">Data de Publicação</label>
+          <input type="date" id="dataPubDetalhe" class="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" readonly>
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-1 font-medium">Data de Adição</label>
+          <input type="date" id="dataAddDetalhe" class="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" readonly>
+        </div>
+      </div>
+
+      <!-- Gênero -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Gênero</label>
+        <select id="generoDetalhe" class="w-full border-gray-300 rounded-lg p-2" disabled>
+          <!-- opções geradas pelo JS -->
+        </select>
+      </div>
+
+      <!-- Formato -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Formato</label>
+        <select id="formatoDetalhe" class="w-full border-gray-300 rounded-lg p-2" disabled>
+          <!-- opções geradas pelo JS -->
+        </select>
+      </div>
+
+      <!-- Upload da capa -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Capa do Livro</label>
+        <label for="uploadCapaDetalhe"
+               class="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-6 bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+          <i data-lucide="image" class="w-5 h-5 text-gray-500"></i>
+          <span id="labelCapaDetalhe" class="text-gray-500 text-sm">Selecionar imagem...</span>
+        </label>
+        <input type="file" id="uploadCapaDetalhe" accept="image/*" class="hidden">
+      </div>
+
+      <!-- Upload do arquivo -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Arquivo do Livro</label>
+        <label for="uploadArquivoDetalhe"
+               class="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-6 bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+          <i data-lucide="file-text" class="w-5 h-5 text-gray-500"></i>
+          <span id="labelArquivoDetalhe" class="text-gray-500 text-sm">Selecionar arquivo (.pdf, .epub, .mobi)...</span>
+        </label>
+        <input type="file" id="uploadArquivoDetalhe" accept=".pdf,.epub,.mobi" class="hidden">
+      </div>
     </div>
+
+    <!-- Botões -->
+    <div class="flex justify-between mt-6">
+      <button id="editarLivro" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition text-sm">Editar</button>
+      <button id="deletarLivro" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl transition text-sm">Excluir</button>
+    </div>
+
   </div>
+</div>
 
-  <script>
-    lucide.createIcons();
-
-    const generos = ["Romance", "Ficção", "Aventura", "Fantasia", "Terror"];
-    const formatos = ["PDF", "EPUB", "MOBI"];
-    const livros = Array.from({ length: 50 }, (_, i) => ({
-      titulo: `Livro ${i + 1}`,
-      autor: `Autor ${i + 1}`,
-      publicacao: `20${10 + (i % 14)}-${String((i % 9) + 1).padStart(2, "0")}-15`,
-      adicionado: `2025-10-${String((i % 28) + 1).padStart(2, "0")}`,
-      genero: generos[i % generos.length],
-      formato: formatos[i % formatos.length]
-    }));
-
-    let mostrados = 10;
-    const tabela = document.getElementById("tabelaLivros");
-
-    const renderTabela = (lista) => {
-      tabela.innerHTML = "";
-      lista.slice(0, mostrados).forEach(l => {
-        const tr = document.createElement("tr");
-        tr.classList.add("hover:bg-gray-100", "cursor-pointer");
-        tr.innerHTML = `
-          <td class="p-3">${l.titulo}</td>
-          <td class="p-3">${l.autor}</td>
-          <td class="p-3">${l.publicacao}</td>
-          <td class="p-3">${l.adicionado}</td>
-          <td class="p-3">${l.genero}</td>
-          <td class="p-3">${l.formato}</td>`;
-        tr.onclick = () => abrirDetalhes(l);
-        tabela.appendChild(tr);
-      });
-    };
-    renderTabela(livros);
-
-    // Carregar mais
-    document.getElementById("carregarMais").onclick = () => {
-      mostrados += 10;
-      aplicarFiltros();
-    };
-
-    // Filtros
-    const filtros = [
-      "filtroTitulo", "filtroAutor", "filtroGenero", "filtroFormato",
-      "dataPubDe", "dataPubAte", "dataAddDe", "dataAddAte"
-    ];
-    filtros.forEach(id => document.getElementById(id).addEventListener("input", aplicarFiltros));
-
-    function aplicarFiltros() {
-      let filtrados = livros.filter(l => {
-        const t = document.getElementById("filtroTitulo").value.toLowerCase();
-        const a = document.getElementById("filtroAutor").value.toLowerCase();
-        const g = document.getElementById("filtroGenero").value;
-        const f = document.getElementById("filtroFormato").value;
-        const pubDe = document.getElementById("dataPubDe").value;
-        const pubAte = document.getElementById("dataPubAte").value;
-        const addDe = document.getElementById("dataAddDe").value;
-        const addAte = document.getElementById("dataAddAte").value;
-
-        const matchTitulo = l.titulo.toLowerCase().includes(t);
-        const matchAutor = l.autor.toLowerCase().includes(a);
-        const matchGenero = !g || l.genero === g;
-        const matchFormato = !f || l.formato === f;
-
-        const pubOk = (!pubDe || l.publicacao >= pubDe) && (!pubAte || l.publicacao <= pubAte);
-        const addOk = (!addDe || l.adicionado >= addDe) && (!addAte || l.adicionado <= addAte);
-
-        return matchTitulo && matchAutor && matchGenero && matchFormato && pubOk && addOk;
-      });
-
-      renderTabela(filtrados);
-    }
-
-    // Modais
-    const modalAdicionar = document.getElementById("modalAdicionar");
-    const modalDetalhes = document.getElementById("modalDetalhes");
-    const detalhesLivro = document.getElementById("detalhesLivro");
-
-    document.getElementById("btnAdicionar").onclick = () => modalAdicionar.classList.remove("hidden");
-    document.getElementById("fecharModalAdicionar").onclick = () => modalAdicionar.classList.add("hidden");
-
-    const abrirDetalhes = (l) => {
-      detalhesLivro.innerHTML = `
-        <p><strong>Título:</strong> ${l.titulo}</p>
-        <p><strong>Autor:</strong> ${l.autor}</p>
-        <p><strong>Publicação:</strong> ${l.publicacao}</p>
-        <p><strong>Adicionado em:</strong> ${l.adicionado}</p>
-        <p><strong>Gênero:</strong> ${l.genero}</p>
-        <p><strong>Formato:</strong> ${l.formato}</p>`;
-      modalDetalhes.classList.remove("hidden");
-    };
-    document.getElementById("fecharModalDetalhes").onclick = () => modalDetalhes.classList.add("hidden");
-  </script>
+  <!-- Footer -->
+  <footer class="bg-[#1B4965] text-white text-center p-5 mt-10 shadow-md">
+    <p class="text-sm">© 2025 InBook Admin. Todos os direitos reservados.</p>
+  </footer>
+  
+  <script src="admin.js"></script>
 </body>
 </html>
 

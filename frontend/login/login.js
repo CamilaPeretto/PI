@@ -110,6 +110,46 @@ document.getElementById('changePassword').addEventListener('click', () => {
 });
 
 // =======================
+// LOGIN DE USUÁRIO
+// =======================
+
+const loginButton = document.getElementById('loginButton');
+
+loginButton.addEventListener('click', (e) => {
+  e.preventDefault(); // evita que o formulário faça submit e recarregue a página
+
+  // Pega os valores dos inputs
+  const email = document.getElementById('emailLogin').value.trim();
+  const senha = document.getElementById('senha').value;
+
+  // Elemento para mensagens
+  const messageEl = document.getElementById('loginMessage') || document.createElement('div');
+  messageEl.id = 'loginMessage';
+  loginButton.parentNode.appendChild(messageEl);
+
+  messageEl.style.textAlign = 'center';
+
+  // Validações básicas
+  if (!email || !senha) {
+    messageEl.textContent = 'Por favor, preencha todos os campos.';
+    messageEl.style.color = 'red';
+    return;
+  }
+
+  if (!email.includes('@') || senha.length < 6) {
+    messageEl.textContent = 'E-mail ou senha inválidos.';
+    messageEl.style.color = 'red';
+    return;
+  }
+
+  // Se passou na validação
+  messageEl.textContent = 'Login realizado com sucesso!';
+  messageEl.style.color = 'green';
+
+});
+
+
+// =======================
 // BOTÕES DE FECHAR MODAIS
 // =======================
 document.getElementById('closeRegisterModal').addEventListener('click', () => closeModal('registerModal'));
