@@ -88,6 +88,7 @@ body { font-family: 'Poppins', sans-serif; background-color: #E0F2F1; }
         cursor: pointer;
       }
 
+        
       .glass-card {
         background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(12px);
@@ -101,4 +102,19 @@ body { font-family: 'Poppins', sans-serif; background-color: #E0F2F1; }
       .tab-btn.active {
         border-bottom: 3px solid #1B4965;
         color: #1B4965;
+      }
+
+            /* Ajustes finos fora do escopo Tailwind */
+
+
+      .sponsor-logos img {
+        
+        opacity: 0.8;
+        filter: grayscale(1);
+        transition: 0.3s ease;
+      }
+
+      .sponsor-logos img:hover {
+        opacity: 1;
+        filter: grayscale(0);
       }
