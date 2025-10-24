@@ -63,68 +63,180 @@
   </section>
 
     <!-- PATROCINADORES -->
-  <section class="bg-[#1B4965] text-white py-12 flex flex-col items-center text-center">
-    <h2 class="text-2xl md:text-3xl font-semibold mb-12">Nossos Patrocinadores</h2>
-    <div class="flex flex-wrap justify-center items-center gap-10 sponsor-logos">
-      <img src="../img/Logo Senac.png" alt="Senac" class="h-11"/>
-      <img src="../img/Logo Fundação Biblioteca.png" alt="Fundação Biblioteca Nacional" class="h-12"/>
-      <img src="../img/Logo Google.png" alt="Google" class="h-12"/>
-      <img src="../img/Logo Sebrae.png" alt="Sebrae" class="h-11"/>
-      <img src="../img/Logo Senna.png" alt="Instituto Ayrton Senna" class="h-12"/>
+    <section class="bg-gradient-to-r from-[#1B4965] to-[#123347] text-white py-16 flex flex-col items-center text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-10 tracking-wide relative after:content-[''] after:block after:w-20 after:h-[3px] after:bg-white after:mx-auto after:mt-4">
+        Nossos Patrocinadores
+      </h2>
+      <p class="text-gray-200 text-sm max-w-2xl mb-10">
+        A InBook conta com o apoio de instituições reconhecidas que acreditam na educação e no poder da leitura.
+      </p>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-10 sponsor-logos place-items-center">
+      <img src="../img/Logo Senac.png" alt="Senac" class="h-20 md:h-11 "/>
+      <img src="../img/Logo Fundação Biblioteca.png" alt="Fundação Biblioteca Nacional" class="h-24 md:h-12"/>
+      <img src="../img/Logo Google.png" alt="Google" class="h-24 md:h-12"/>
+      <img src="../img/Logo Sebrae.png" alt="Sebrae" class="h-20 md:h-11"/>
+      <img src="../img/Logo Senna.png" alt="Instituto Ayrton Senna" class="h-24 md:h-12"/>
     </div>
   </section>
 
   <!-- QUEM SOMOS -->
-  <section class="bg-white py-20 px-6 text-center">
-    <h2 class="text-3xl font-semibold mb-6 text-[#1B4965]">Quem Somos</h2>
-    <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-6">
-      O InBook é uma biblioteca digital inteligente que facilita o acesso à leitura e ao conhecimento. Desenvolvido com o suporte do Senac, garantimos estabilidade, evolução e boas práticas de desenvolvimento.
+<section class="relative bg-white py-24 px-6 text-center overflow-hidden">
+  <div class="absolute top-0 left-0 w-full h-full opacity-10"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto">
+    <h2 class="text-4xl md:text-5xl font-bold mb-10 text-[#1B4965] tracking-tight">
+      Quem Somos
+    </h2>
+    <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-700 leading-relaxed mb-12">
+      O <span class="font-semibold text-[#1B4965]">InBook</span> é uma plataforma digital que une tecnologia e educação para aproximar pessoas do conhecimento. 
+      Desenvolvido com o apoio do <span class="font-semibold">Senac</span>, o projeto segue as melhores práticas de desenvolvimento e design, 
+      garantindo uma experiência fluida, acessível e inspiradora para leitores de todas as idades.
     </p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto text-left">
-      <div>
-        <h3 class="font-semibold text-xl mb-2">Missão</h3>
-        <p class="text-gray-700">Incentivar a leitura e democratizar o acesso a livros digitais de qualidade.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
+      <!-- Missão -->
+      <div class="glass-card p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+        <h3 class="font-semibold text-2xl mb-3 text-[#1B4965]">Missão</h3>
+        <p class="text-gray-700 leading-relaxed">
+          Democratizar o acesso à leitura, promovendo conhecimento e inclusão através de uma biblioteca digital acessível, moderna e gratuita.
+        </p>
       </div>
-      <div>
-        <h3 class="font-semibold text-xl mb-2">Visão</h3>
-        <p class="text-gray-700">Ser referência em biblioteca digital, oferecendo experiência moderna e intuitiva.</p>
+
+      <!-- Visão -->
+      <div class="glass-card p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+        <h3 class="font-semibold text-2xl mb-3 text-[#1B4965]">Visão</h3>
+        <p class="text-gray-700 leading-relaxed">
+          Ser reconhecida como a principal referência em bibliotecas digitais do Brasil, aliando tecnologia, design e amor pela leitura.
+        </p>
       </div>
-      <div>
-        <h3 class="font-semibold text-xl mb-2">Valores</h3>
-        <p class="text-gray-700">Acessibilidade, inovação, qualidade e parceria com instituições educacionais.</p>
+
+      <!-- Valores -->
+      <div class="glass-card p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+        <h3 class="font-semibold text-2xl mb-3 text-[#1B4965]">Valores</h3>
+        <ul class="list-disc list-inside text-gray-700 leading-relaxed">
+          <li>Acessibilidade e inclusão</li>
+          <li>Inovação constante</li>
+          <li>Qualidade e confiabilidade</li>
+          <li>Educação como propósito</li>
+          <li>Parceria com instituições de ensino</li>
+        </ul>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- PARA QUEM É -->
-  <section class="bg-[#E0F2F1] py-20 px-6 text-center">
-    <h2 class="text-3xl font-semibold mb-6 text-[#1B4965]">Para quem é o InBook?</h2>
-    <p class="max-w-3xl mx-auto text-lg text-gray-700">
-      Estudantes, professores, pesquisadores e leitores em geral que buscam praticidade, variedade e acesso rápido a livros digitais de diferentes gêneros.
-    </p>
-  </section>
+<!-- PARA QUEM É -->
+<section class="relative bg-[#E0F2F1] py-24 px-6 text-center overflow-hidden">
+  <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('../img/pattern-books.png')] bg-cover bg-center"></div>
 
-  <!-- CATÁLOGO PERSONALIZADO -->
-  <section class="bg-white py-20 px-6 text-center">
-    <h2 class="text-3xl font-semibold mb-6 text-[#1B4965]">Catálogo Personalizado</h2>
-    <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-12">
-      Alta gama de variedade em livros digitais. Não encontrou seu livro? Solicite que adicionaremos em até 24h!
+  <div class="relative z-10 max-w-6xl mx-auto">
+    <h2 class="text-4xl md:text-5xl font-bold mb-10 text-[#1B4965] tracking-tight">
+      Para quem é o InBook?
+    </h2>
+    <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-700 leading-relaxed mb-16">
+      O <span class="font-semibold text-[#1B4965]">InBook</span> foi criado para todos que acreditam no poder transformador da leitura. 
+      Uma plataforma feita sob medida para quem busca aprender, ensinar e se inspirar — a qualquer hora, em qualquer lugar.
     </p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto text-left">
-      <div class="bg-[#E0F2F1] p-6 rounded-2xl shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-xl mb-3">📚 Diversidade de gêneros</h3>
-        <p class="text-gray-700">Literatura, ciências, tecnologia, artes e muito mais.</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-left">
+      <!-- Card 1 -->
+      <div class="glass-card p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <i class="fa-solid fa-user-graduate text-3xl text-[#1B4965]"></i>
+          <h3 class="text-xl font-semibold text-[#1B4965]">Estudantes</h3>
+        </div>
+        <p class="text-gray-700 leading-relaxed">
+          Tenha acesso fácil a obras acadêmicas, literárias e técnicas que fortalecem sua jornada de aprendizado.
+        </p>
       </div>
-      <div class="bg-[#E0F2F1] p-6 rounded-2xl shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-xl mb-3">🔍 Busca rápida</h3>
-        <p class="text-gray-700">Pesquise por título, autor ou gênero e encontre seu livro em segundos.</p>
+
+      <!-- Card 2 -->
+      <div class="glass-card p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <i class="fa-solid fa-chalkboard-teacher text-3xl text-[#1B4965]"></i>
+          <h3 class="text-xl font-semibold text-[#1B4965]">Professores</h3>
+        </div>
+        <p class="text-gray-700 leading-relaxed">
+          Utilize o InBook como ferramenta de apoio em sala de aula, enriquecendo conteúdos com leitura digital acessível.
+        </p>
       </div>
-      <div class="bg-[#E0F2F1] p-6 rounded-2xl shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-xl mb-3">⚡ Solicitações ágeis</h3>
-        <p class="text-gray-700">Não encontrou? Solicite o livro e adicionaremos em até 24h.</p>
+
+      <!-- Card 3 -->
+      <div class="glass-card p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <i class="fa-solid fa-flask text-3xl text-[#1B4965]"></i>
+          <h3 class="text-xl font-semibold text-[#1B4965]">Pesquisadores</h3>
+        </div>
+        <p class="text-gray-700 leading-relaxed">
+          Explore títulos de diferentes fontes e gêneros para embasar estudos e projetos de forma rápida e confiável.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="glass-card p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <i class="fa-solid fa-book-open-reader text-3xl text-[#1B4965]"></i>
+          <h3 class="text-xl font-semibold text-[#1B4965]">Leitores em Geral</h3>
+        </div>
+        <p class="text-gray-700 leading-relaxed">
+          Descubra novos autores, baixe seus livros favoritos e mergulhe em experiências literárias personalizadas.
+        </p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- CATÁLOGO PERSONALIZADO -->
+<section class="relative bg-[#1B4965] text-white py-24 px-6 text-center overflow-hidden">
+  <!-- Textura de fundo sutil -->
+  <div class="absolute inset-0 bg-[url('../img/pattern-books.png')] opacity-10 bg-cover bg-center"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto">
+    <h2 class="text-4xl md:text-5xl font-bold mb-8 tracking-tight">
+      Catálogo Personalizado
+    </h2>
+    <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-200 mb-16 leading-relaxed">
+      Explore uma ampla variedade de livros digitais em diversos formatos e gêneros.  
+      Se não encontrar o que procura, nossa equipe adiciona seu pedido em até <span class="font-semibold text-white">24 horas</span>.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto text-left">
+      <!-- Card 1 -->
+      <div class="glass-card p-8 rounded-2xl hover:scale-105 hover:shadow-xl transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <i class="fa-solid fa-layer-group text-3xl text-[#E0F2F1]"></i>
+          <h3 class="text-2xl font-semibold">Diversidade de Gêneros</h3>
+        </div>
+        <p class="text-gray-100 leading-relaxed">
+          De romances clássicos a obras técnicas — o InBook oferece opções para todos os perfis de leitores.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="glass-card p-8 rounded-2xl hover:scale-105 hover:shadow-xl transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <i class="fa-solid fa-magnifying-glass text-3xl text-[#E0F2F1]"></i>
+          <h3 class="text-2xl font-semibold">Busca Inteligente</h3>
+        </div>
+        <p class="text-gray-100 leading-relaxed">
+          Encontre qualquer livro em segundos — por título, autor, gênero ou palavras-chave.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="glass-card p-8 rounded-2xl hover:scale-105 hover:shadow-xl transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <i class="fa-solid fa-bolt text-3xl text-[#E0F2F1]"></i>
+          <h3 class="text-2xl font-semibold">Solicitações Ágeis</h3>
+        </div>
+        <p class="text-gray-100 leading-relaxed">
+          Não encontrou o livro? Solicite e adicionaremos à biblioteca em até 24 horas.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <!-- COMO FUNCIONA -->
   <section class="bg-[#E0F2F1] py-20 px-6 text-center">
