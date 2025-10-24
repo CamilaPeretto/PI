@@ -139,8 +139,8 @@
   </button>
 
   <!-- Modal Adicionar Livro -->
-<div id="modalAdicionar" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white p-6 rounded-2xl shadow-lg w-[450px] relative">
+<div id="modalAdicionar" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="relative bg-white p-6 w-full max-w-md max-h-[90vh] rounded overflow-auto">
     <!-- Botão X -->
     <button id="fecharModalAdicionar" class="absolute top-3 right-3 text-gray-500 hover:text-black">
       <i data-lucide="x" class="w-5 h-5"></i>
@@ -165,8 +165,8 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600">Gênero</label>
-        <select id="generoAdd" class="border p-2 rounded w-full">
+        <label class="block text-sm font-medium text-gray-600 mb-1">Gênero</label>
+        <select id="generoAdd" class="w-full border-gray-300 rounded-lg p-2">
           <option>Ação</option>
           <option>Autoajuda</option>
           <option>Aventura</option>
@@ -235,7 +235,7 @@
 
 <!-- Modal Detalhes Livro -->
 <div id="modalDetalhes" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white p-6 rounded-2xl shadow-lg w-[420px] relative">
+  <div class="bg-white p-6 rounded shadow-lg w-[420px] max-h-[90vh] overflow-auto relative">
 
     <!-- Botão X -->
     <button id="fecharModalDetalhes" class="absolute top-4 right-4 text-gray-500 hover:text-black transition">
@@ -246,6 +246,7 @@
 
     <!-- Campos -->
     <div id="detalhesLivro" class="space-y-3 text-sm">
+
       <div>
         <label class="block text-gray-700 mb-1 font-medium">Título</label>
         <input type="text" id="tituloDetalhe" class="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" readonly>
@@ -268,20 +269,49 @@
         </div>
       </div>
 
-      <!-- Gênero -->
-      <div>
-        <label class="block text-sm font-medium text-gray-600 mb-1">Gênero</label>
-        <select id="generoDetalhe" class="w-full border-gray-300 rounded-lg p-2" disabled>
-          <!-- opções geradas pelo JS -->
-        </select>
+      <div class="flex justify-between text-xs text-gray-500">
+        <span id="dataPubInfo"></span>
+        <span id="dataAddInfo"></span>
       </div>
 
-      <!-- Formato -->
       <div>
-        <label class="block text-sm font-medium text-gray-600 mb-1">Formato</label>
-        <select id="formatoDetalhe" class="w-full border-gray-300 rounded-lg p-2" disabled>
-          <!-- opções geradas pelo JS -->
-        </select>
+  <label class="block text-sm font-medium text-gray-600 mb-1">Gênero</label>
+  <select id="generoDetalhe" class="w-full border-gray-300 rounded-lg p-2" disabled>
+    <option>Ação</option>
+    <option>Autoajuda</option>
+    <option>Aventura</option>
+    <option>Biografia</option>
+    <option>Clássicos</option>
+    <option>Drama</option>
+    <option>Fantasia</option>
+    <option>Ficção Científica</option>
+    <option>História</option>
+    <option>Infantil</option>
+    <option>Mistério</option>
+    <option>Poesia</option>
+    <option>Policial</option>
+    <option>Psicologia</option>
+    <option>Religião</option>
+    <option>Romance</option>
+    <option>Suspense</option>
+    <option>Terror</option>
+    <option>Thriller</option>
+  </select>
+</div>
+
+<div>
+  <label class="block text-sm font-medium text-gray-600 mb-1">Formato</label>
+  <select id="formatoDetalhe" class="w-full border-gray-300 rounded-lg p-2" disabled>
+    <option>PDF</option>
+    <option>EPUB</option>
+    <option>MOBI</option>
+  </select>
+</div>
+
+
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Sinopse</label>
+        <textarea id="sinopseDetalhe" rows="3" class="w-full border p-2 rounded-xl resize-none" readonly></textarea>
       </div>
 
       <!-- Upload da capa -->
@@ -293,6 +323,7 @@
           <span id="labelCapaDetalhe" class="text-gray-500 text-sm">Selecionar imagem...</span>
         </label>
         <input type="file" id="uploadCapaDetalhe" accept="image/*" class="hidden">
+        <img id="previewCapaDetalhe" class="hidden w-32 h-auto mt-2 rounded" alt="Capa do livro">
       </div>
 
       <!-- Upload do arquivo -->
@@ -305,16 +336,19 @@
         </label>
         <input type="file" id="uploadArquivoDetalhe" accept=".pdf,.epub,.mobi" class="hidden">
       </div>
+
     </div>
 
     <!-- Botões -->
     <div class="flex justify-between mt-6">
       <button id="editarLivro" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition text-sm">Editar</button>
+      <button id="salvarEdicao" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl transition text-sm hidden">Salvar</button>
       <button id="deletarLivro" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl transition text-sm">Excluir</button>
     </div>
 
   </div>
 </div>
+
 
   <!-- Footer -->
   <footer class="bg-[#1B4965] text-white text-center p-5 mt-10 shadow-md">
@@ -324,4 +358,3 @@
   <script src="admin.js"></script>
 </body>
 </html>
-

@@ -184,7 +184,13 @@ document.addEventListener('click', (ev) => {
       }
     });
   }
-
+const logoutBtn = document.getElementById("logoutBtn");
+     logoutBtn.addEventListener("click", () => {
+    if (confirm("Deseja realmente sair?")) {
+      localStorage.removeItem("adminLogado");
+      window.location.href = "../login/login.html";
+    }
+  });
   /* ---------- Rodar ---------- */
   init();
 

@@ -85,7 +85,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       container.appendChild(card);
     });
   }
-
+const logoutBtn = document.getElementById("logoutBtn");
+     logoutBtn.addEventListener("click", () => {
+    if (confirm("Deseja realmente sair?")) {
+      localStorage.removeItem("adminLogado");
+      window.location.href = "../login/login.html";
+    }
+  });
   // ---------- Inicializar carrossel ----------
   function initCarousel() {
     document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {

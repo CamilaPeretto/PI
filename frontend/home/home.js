@@ -238,7 +238,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  
+   const logoutBtn = document.getElementById("logoutBtn");
+     logoutBtn.addEventListener("click", () => {
+    if (confirm("Deseja realmente sair?")) {
+      localStorage.removeItem("adminLogado");
+      window.location.href = "../login/login.html";
+    }
+  });
 
   /* ---------- Inicialização ---------- */
   exibirSecoesDoUsuario();
