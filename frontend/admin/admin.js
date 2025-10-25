@@ -3,7 +3,33 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicialização dos ícones Lucide
   // =========================
   lucide.createIcons();
+ const token = localStorage.getItem("token");
 
+  if (!token) {
+    alert("Acesso negado! Faça login primeiro.");
+    window.location.href = "../login/login.html";
+    return;
+  }
+
+  // Tenta validar o token com o backend
+  fetch("http://localhost:5000/api/admin/dados", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Token inválido");
+      return res.json();
+    })
+    .then(data => {
+      console.log("✅ Dados carregados:", data);
+      // Aqui você pode preencher os cards com dados reais
+    })
+    .catch(() => {
+      alert("Sessão expirada. Faça login novamente.");
+      localStorage.removeItem("token");
+      window.location.href = "../login/login.html";
+    });
   // =========================
   // Seletores principais
   // =========================
@@ -268,11 +294,10 @@ function desabilitarEdicao() {
   fecharModalDetalhes.addEventListener("click", () => fecharModal(modalDetalhes));
 
   logoutBtn.addEventListener("click", () => {
-    if (confirm("Deseja realmente sair?")) {
-      localStorage.removeItem("adminLogado");
-      window.location.href = "../login/login.html";
-    }
-  });
+  localStorage.removeItem("token");
+  window.location.href = "../login/login.html";
+});
+  
 
   // =========================
   // Fechar modal genérico

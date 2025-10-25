@@ -238,13 +238,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-   const logoutBtn = document.getElementById("logoutBtn");
-     logoutBtn.addEventListener("click", () => {
-    if (confirm("Deseja realmente sair?")) {
-      localStorage.removeItem("adminLogado");
-      window.location.href = "../login/login.html";
-    }
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    alert("Logout realizado com sucesso!");
+    window.location.href = "../login/login.html";
   });
+}
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Você precisa estar logado para acessar esta página!");
+    window.location.href = "../login/login.html";
+    return;
+  }
+
+  // Opcional: validar token no servidor
+  fetch("http://localhost:5000/api/auth/perfil", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data.success) {
+        alert("Sessão expirada. Faça login novamente.");
+        localStorage.removeItem("token");
+        window.location.href = "../login/login.html";
+      } else {
+        console.log("Usuário autenticado:", data.user.nome);
+      }
+    })
+    .catch(() => {
+      alert("Erro ao validar login. Tente novamente.");
+      localStorage.removeItem("token");
+      window.location.href = "../login/login.html";
+    });
 
   /* ---------- Inicialização ---------- */
   exibirSecoesDoUsuario();
