@@ -167,6 +167,40 @@ document.addEventListener("DOMContentLoaded", () => {
   carregarPerfil();
   ["nome", "email", "senha"].forEach(campo => configurarEdicao(campo));
 
+  // ================== DELETAR CONTA ==================
+const btnDeletar = document.getElementById("btnDeletarConta");
+
+btnDeletar.addEventListener("click", async () => {
+  const confirmar = confirm("Tem certeza que deseja deletar sua conta? Essa ação não poderá ser desfeita.");
+  if (!confirmar) return;
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Usuário não autenticado. Faça login novamente.");
+    window.location.href = "../login/login.html";
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/delete", {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      alert("Até logo 👋");
+      localStorage.removeItem("token");
+      window.location.href = "../telaInicial/tela.html";
+    } else {
+      alert(data.message || "Erro ao deletar conta.");
+    }
+  } catch (error) {
+    console.error("Erro ao deletar conta:", error);
+    alert("Erro ao conectar com o servidor.");
+  }
+});
+
   // ================== Fale Conosco ==================
   const formFale = document.getElementById("formFale");
   if (formFale) {

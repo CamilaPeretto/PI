@@ -39,13 +39,6 @@
           </div>
         </div>
 
-        <!-- Botão Minha Lista -->
-        <a href="../minhaLista/minhaLista.html" class="bg-[#1B4965] hover:bg-[#123347] text-white rounded-lg flex items-center gap-1 md:gap-2 px-2 py-1 md:px-4 md:py-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 md:h-6 md:w-7" fill="currentColor">
-            <path d="M28.9562 24.3188L24.8075 4.59379C24.7538 4.33584 24.6497 4.09103 24.5012 3.87344C24.3526 3.65584 24.1626 3.46974 23.9419 3.32582C23.7212 3.18191 23.4742 3.08302 23.2152 3.03483C22.9562 2.98665 22.6902 2.99011 22.4325 3.04504L16.5812 4.30254C16.0637 4.41586 15.6118 4.72895 15.3239 5.17372C15.036 5.61848 14.9353 6.15893 15.0437 6.67754L19.1925 26.4025C19.285 26.8526 19.5295 27.257 19.8851 27.548C20.2407 27.8389 20.6856 27.9985 21.145 28C21.287 27.9998 21.4286 27.9848 21.5675 27.955L27.4188 26.6975C27.9369 26.5839 28.3893 26.2702 28.6772 25.8247C28.9652 25.3792 29.0655 24.8379 28.9562 24.3188ZM17 6.26879C17 6.26129 17 6.25754 17 6.25754L22.85 5.00754L23.2663 6.99129L17.4163 8.25004L17 6.26879ZM17.8275 10.2025L23.68 8.94629L24.0975 10.9338L18.25 12.1913L17.8275 10.2025ZM18.6575 14.1488L24.51 12.8913L26.1725 20.7963L20.32 22.0538L18.6575 14.1488ZM27 24.7425L21.15 25.9925L20.7337 24.0088L26.5837 22.75L27 24.7313C27 24.7388 27 24.7425 27 24.7425ZM13 4.00004H7C6.46957 4.00004 5.96086 4.21075 5.58579 4.58582C5.21071 4.96089 5 5.4696 5 6.00004V26C5 26.5305 5.21071 27.0392 5.58579 27.4142C5.96086 27.7893 6.46957 28 7 28H13C13.5304 28 14.0391 27.7893 14.4142 27.4142C14.7893 27.0392 15 26.5305 15 26V6.00004C15 5.4696 14.7893 4.96089 14.4142 4.58582C14.0391 4.21075 13.5304 4.00004 13 4.00004ZM7 6.00004H13V8.00004H7V6.00004ZM7 10H13V22H7V10ZM13 26H7V24H13V26Z"/>
-          </svg>
-        </a>
-
         <!-- Botão Perfil do Leitor -->
         <a href="../perfil/perfil.html" class="bg-[#1B4965] hover:bg-[#123347] text-white rounded-lg flex items-center gap-1 md:gap-2 px-2 py-1 md:px-4 md:py-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="lucide lucide-user h-5 w-5 md:h-6 md:w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -82,83 +75,28 @@
 
   </main>
 
- 
-   <!-- FOOTER -->
-   <footer class="bg-white text-white pt-8 mt-auto shadow-md">
-    <div class="max-w-[1450px] mx-auto px-4 sm:px-6 md:px-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10">
+  <!-- FOOTER -->
+  <footer class="bg-white text-[#1B4965] mt-16 shadow-lg">
+    <div class="max-w-[1450px] mx-auto px-3 py-6 flex flex-col items-center text-center gap-6">
+      
+      <!-- Logo -->
+      <img src="../img/logo-Photoroom-home.png" alt="InBook Logo" class="w-20 md:w-32 drop-shadow-md">
   
-      <!-- Logo + descrição -->
-      <div class="flex flex-col gap-4">
-        <img src="../img/logo-Photoroom-home.png" alt="InBook Logo" class="w-36 md:w-40">
-        <p class="text-[#1B4965] text-sm">
-          Descubra, leia e compartilhe histórias que inspiram. Seu universo literário começa aqui.
-        </p>
-      </div>
+      <!-- Frase -->
+      <p class="text-sm md:text-base text-[#1B4965] leading-relaxed">
+        Descubra, leia e compartilhe histórias que inspiram.
+        Seu universo literário começa aqui.
+      </p>
   
-      <!-- Links rápidos -->
-      <div class="flex flex-col gap-3">
-        <h3 class="font-bold text-lg mb-2 text-[#1B4965]">Links Rápidos</h3>
-        <a href="../home/home.html" class="hover:underline text-[#1B4965]">Home</a>
-        <a href="../minhaLista/minhaLista.html" class="hover:underline text-[#1B4965]">Minha Lista</a>
-        <a href="../perfil/perfil.html" class="hover:underline text-[#1B4965]">Perfil</a>
-      </div>
+      <!-- Linha -->
+      <div class="w-24 h-[2px] bg-[#1B4965] rounded-full"></div>
   
-      <!-- Categorias -->
-      <div class="flex flex-col gap-3">
-        <h3 class="font-bold text-lg mb-2 text-[#1B4965]">Categorias Populares</h3>
-        <a href="../genero/genero.html?tipo=romance" class="text-[#1B4965] hover:text-[#123347] transition-colors">Romance</a>
-        <a href="../genero/genero.html?tipo=fantasia" class="text-[#1B4965] hover:text-[#123347] transition-colors">Fantasia</a>
-        <a href="../genero/genero.html?tipo=autoajuda" class="text-[#1B4965] hover:text-[#123347] transition-colors">Autoajuda</a>
-        <a href="../genero/genero.html?tipo=biografia" class="text-[#1B4965] hover:text-[#123347] transition-colors">Biografia</a>
-      </div>
-  
-      <!-- Redes sociais -->
-      <div class="flex flex-col gap-3">
-        <h3 class="font-bold text-lg mb-2 text-[#1B4965]">Siga-nos</h3>
-        <div class="flex gap-4">
-          <a href="#" class="text-[#1B4965] hover:text-[#123347] transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
-            <path d="M22.675 0h-21.35C.595 0 0 .595 0 1.325v21.351C0 23.406.595 24 1.325 24h11.494v-9.294H9.691v-3.622h3.128V8.413c0-3.1 1.894-4.788 4.659-4.788 1.325 0 2.464.099 2.796.143v3.24l-1.92.001c-1.506 0-1.798.716-1.798 1.767v2.317h3.594l-.468 3.622h-3.126V24h6.127C23.406 24 24 23.406 24 22.676V1.325C24 .595 23.406 0 22.675 0z"/>
-          </svg></a>
-          <a href="#" class=" text-[#1B4965] hover:text-[#123347] transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              preserveAspectRatio="xMidYMid meet"
-              fill="currentColor"
-              class="w-6 h-6">
-            <path d="M12 2.163c3.204 0 3.584.012 4.849.07 1.366.062 2.633.332 3.608 1.307.975.975 1.245 2.242 1.307 3.608.058 1.265.069 1.645.069 4.849s-.012 3.584-.069 4.849c-.062 1.366-.332 2.633-1.307 3.608-.975.975-2.242 1.245-3.608 1.307-1.265.058-1.645.069-4.849.069s-3.584-.012-4.849-.069c-1.366-.062-2.633-.332-3.608-1.307-.975-.975-1.245-2.242-1.307-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.849c.062-1.366.332-2.633 1.307-3.608C4.515 2.495 5.782 2.225 7.148 2.163 8.413 2.106 8.793 2.094 12 2.094m0-2.094C8.741 0 8.332.012 7.052.07 5.773.127 4.548.384 3.515 1.417c-1.033 1.033-1.29 2.258-1.347 3.537C2.012 6.334 2 6.743 2 10.002v3.996c0 3.259.012 3.668.07 4.948.057 1.279.314 2.504 1.347 3.537 1.033 1.033 2.258 1.29 3.537 1.347 1.279.058 1.688.07 4.948.07s3.668-.012 4.948-.07c1.279-.057 2.504-.314 3.537-1.347 1.033-1.033 1.29-2.258 1.347-3.537.058-1.279.07-1.688.07-4.948V10.002c0-3.259-.012-3.668-.07-4.948-.057-1.279-.314-2.504-1.347-3.537C19.453.384 18.228.127 16.949.07 15.668.012 15.259 0 12 0z"/>
-            <path d="M12 5.838A6.162 6.162 0 1 0 12 18.162 6.162 6.162 0 1 0 12 5.838zm0 10.162A4 4 0 1 1 12 8a4 4 0 0 1 0 8zM18.406 4.594a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/>
-          </svg></a>
-          <a href="#" class="text-[#1B4965] hover:text-[#123347] transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
-            <path d="M23.953 4.57a10 10 0 0 1-2.825.775A4.932 4.932 0 0 0 23.337 3.1a9.864 9.864 0 0 1-3.127 1.195A4.916 4.916 0 0 0 11.845 8.1 13.939 13.939 0 0 1 1.671 3.149a4.822 4.822 0 0 0-.666 2.475c0 1.708.869 3.213 2.188 4.096A4.904 4.904 0 0 1 .96 9.1v.06a4.928 4.928 0 0 0 3.946 4.827 4.902 4.902 0 0 1-2.212.084 4.93 4.93 0 0 0 4.604 3.417A9.867 9.867 0 0 1 0 21.54a13.905 13.905 0 0 0 7.548 2.212c9.054 0 14.004-7.496 14.004-13.986 0-.21-.005-.423-.015-.634A10.025 10.025 0 0 0 24 4.59z"/>
-          </svg></a>
-          <a href="#" class="text-[#1B4965] hover:text-[#123347] transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
-            <path d="M22.23 0H1.77C.79 0 0 .774 0 1.732v20.535C0 23.226.79 24 1.77 24h20.46C23.21 24 24 23.226 24 22.268V1.732C24 .774 23.21 0 22.23 0zM7.12 20.452H3.56V9h3.56v11.452zM5.34 7.433a2.063 2.063 0 1 1 0-4.126 2.063 2.063 0 0 1 0 4.126zM20.45 20.452h-3.56v-5.605c0-1.336-.027-3.057-1.863-3.057-1.865 0-2.15 1.458-2.15 2.963v5.699h-3.56V9h3.415v1.561h.048c.477-.9 1.637-1.848 3.37-1.848 3.604 0 4.27 2.373 4.27 5.459v6.28z"/>
-          </svg></a>
-        </div>
-      </div>
-  
-      <!-- Newsletter -->
-      <div class="flex flex-col gap-3">
-        <h3 class="font-bold text-lg mb-2 text-[#1B4965]">Newsletter</h3>
-        <p class="text-[#1B4965] text-sm">Receba novidades e recomendações direto no seu e-mail:</p>
-        <div class="flex gap-2 mt-2 flex-wrap">
-          <input type="email" placeholder="Seu e-mail" class="flex-1 min-w-[150px] px-3 py-2 rounded-lg border-2 border-[#1B4965] text-[#1B4965]">
-          <button class="bg-[#1B4965] text-white font-bold px-4 py-2 rounded-lg hover:bg-[#123347] transition-colors w-full">
-            Inscrever
-          </button>
-        </div>
-      </div>
-  
+      <!-- Copyright -->
+      <p class="text-xs md:text-sm text-[#1B4965] font-medium">
+        &copy; 2025 <span class="font-semibold text-[#1B4965]">InBook</span>. Todos os direitos reservados.
+      </p>
     </div>
-  
-    <!-- Contato e Copyright -->
-    <div class="mt-3 border-t border-[#123347] p-5 text-center text-[#1B4965] text-md text-bold sm:flex sm:justify-between sm:items-center px-4 sm:px-6 md:px-16 flex flex-col gap-2 shadow-md">
-      <p>&copy; 2025 InBook. Todos os direitos reservados.</p>
-    </div>
-  </footer>
+  </footer>  
 
 </div>
 <!-- Container do Modal -->

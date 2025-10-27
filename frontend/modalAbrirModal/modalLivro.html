@@ -1,4 +1,3 @@
-<!-- modalLivro.html -->
 <!-- Container do Modal (overlay) -->
 <div id="modal-overlay" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
   <!-- Caixa do modal -->
@@ -14,20 +13,6 @@
         alt="Capa do livro"
         class="object-contain rounded-xl shadow-md transition-all duration-300 w-full max-h-[65vh]"
       />
-
-      <!-- Área de avaliação do usuário (clicável) -->
-      <div class="w-full flex flex-col items-center">
-        <div class="flex items-center gap-3 mt-2">
-          <span class="text-gray-700 text-sm">Sua avaliação:</span>
-          <div id="modalAvaliar" class="flex gap-1 text-yellow-400 cursor-pointer text-2xl select-none" role="radiogroup" aria-label="Avaliar livro">
-            <button type="button" data-value="1" class="star-btn" aria-label="1 estrela">☆</button>
-            <button type="button" data-value="2" class="star-btn" aria-label="2 estrelas">☆</button>
-            <button type="button" data-value="3" class="star-btn" aria-label="3 estrelas">☆</button>
-            <button type="button" data-value="4" class="star-btn" aria-label="4 estrelas">☆</button>
-            <button type="button" data-value="5" class="star-btn" aria-label="5 estrelas">☆</button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Coluna direita: conteúdo do livro -->
@@ -52,14 +37,14 @@
         <!-- Sinopse (scroll interno, altura limitada ~10 linhas) -->
         <div class="mt-2">
           <p class="text-gray-700 font-semibold mb-2">Sinopse:</p>
-          <div id="modalSinopseContainer" class="overflow-y-auto max-h-[240px] pr-2 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded">
+          <div id="modalSinopseContainer" class="overflow-y-auto max-h-[300px] pr-2 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded">
             <p id="modalSinopse" class="text-gray-700 text-sm leading-relaxed"></p>
           </div>
         </div>
       </div>
 
       <!-- Rodapé do modal: botões de download e favorito alinhados -->
-      <div class="mt-4 flex items-center justify-between w-full">
+      <div class="mt-6 flex items-center justify-between w-full">
         <!-- Botões de formato (PDF / EPUB / MOBI) -->
         <div class="flex gap-3">
           <button id="btnPdf" class="px-5 py-2 bg-[#1B4965] text-white rounded-xl font-semibold shadow hover:bg-[#123347] hover:shadow-lg transition-all">PDF</button>
@@ -67,10 +52,6 @@
           <button id="btnMobi" class="px-5 py-2 bg-[#1B4965] text-white rounded-xl font-semibold shadow hover:bg-[#123347] hover:shadow-lg transition-all">MOBI</button>
         </div>
 
-        <!-- Botão Favorito (abaixo dos downloads, no canto inferior direito do modal) -->
-        <button id="btnFavorito" class="text-4xl text-gray-400 hover:text-red-500 transition-transform duration-300 hover:scale-110" title="Adicionar aos favoritos" aria-pressed="false">
-          ♡
-        </button>
       </div>
     </div>
   </div>
