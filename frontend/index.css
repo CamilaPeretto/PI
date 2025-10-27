@@ -97,11 +97,8 @@ body { font-family: 'Poppins', sans-serif; background-color: #E0F2F1; }
         border-radius: 1.25rem;
         transition: all 0.3s ease;
       }
-  
-      .tab-btn.active {
-        border-bottom: 3px solid #1B4965;
-        color: #1B4965;
-      }
+
+      
       .sponsor-logos img {
         opacity: 0.8;
         filter: grayscale(1);
@@ -112,3 +109,27 @@ body { font-family: 'Poppins', sans-serif; background-color: #E0F2F1; }
         filter: grayscale(0);
         transform: scale(1.05);
       }
+
+ 
+ .tab-btn.active {
+  border-bottom: 3px solid #1B4965;
+  color: #1B4965;
+}
+
+.tab-content {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tab-content.active {
+  display: block;
+  opacity: 1;
+}
+
+.valor {
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+

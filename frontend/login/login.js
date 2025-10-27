@@ -51,7 +51,7 @@ async function registerUser() {
     const response = await fetch("http://localhost:5000/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, cpf, nascimento, senha }),
+      body: JSON.stringify({ nome, email, cpf, dataNascimento: nascimento, senha }),
     });
     const data = await response.json();
     if (data.success) {

@@ -2,6 +2,7 @@
   "name": "pi-main",
   "version": "1.0.0",
   "main": "index.js",
+   "type": "module",
   "scripts": {
     "dev": "nodemon backend/server.js",
     "start": "node backend/server.js",

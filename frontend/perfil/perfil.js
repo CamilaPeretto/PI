@@ -1,70 +1,275 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // === Controle das abas ===
-  const tabs = document.querySelectorAll(".tab-link");
+  
+  console.log("DOM carregado, iniciando scripts...");
+
+  // ================== Abas ==================
+  const tabs = document.querySelectorAll(".tab-btn");
   const contents = document.querySelectorAll(".tab-content");
 
-  // Função pra ativar uma aba específica
   function ativarAba(tabId) {
-    tabs.forEach(b => b.classList.remove("active"));
-    contents.forEach(c => c.classList.remove("active"));
+    if (!tabId) return;
 
-    document.querySelector(`[data-tab="${tabId}"]`)?.classList.add("active");
-    document.getElementById(tabId)?.classList.add("active");
+    tabs.forEach(b => b.classList.remove("active", "text-[#1B4965]", "font-semibold"));
+    contents.forEach(c => c.classList.remove("active", "block"));
+    contents.forEach(c => c.classList.add("hidden"));
+
+    const abaAtiva = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+    const conteudoAtivo = document.getElementById(tabId);
+
+    if (abaAtiva && conteudoAtivo) {
+      abaAtiva.classList.add("active", "text-[#1B4965]", "font-semibold");
+      conteudoAtivo.classList.add("active", "block");
+      conteudoAtivo.classList.remove("hidden");
+    } else {
+      console.warn(`⚠️ Aba ou conteúdo não encontrados para: ${tabId}`);
+    }
   }
 
-  // Ao clicar em uma aba
   tabs.forEach(btn => {
-    btn.addEventListener("click", e => {
-      e.preventDefault();
+    btn.addEventListener("click", () => {
       const tabId = btn.dataset.tab;
       ativarAba(tabId);
+      localStorage.setItem("abaAtiva", tabId);
     });
   });
 
-  // Sempre que a página carregar ou recarregar, ativa "Meus Dados"
-  ativarAba("dados");
+  const abaSalva = localStorage.getItem("abaAtiva");
+  ativarAba(abaSalva && document.getElementById(abaSalva) ? abaSalva : "meus-dados");
 
-  // === Form de Meus Dados ===
-  const formDados = document.getElementById("formDados");
-  if (formDados) {
-    const nome = document.getElementById("nome");
-    const email = document.getElementById("email");
-    const telefone = document.getElementById("telefone");
-    const senha = document.getElementById("senha");
+  
+  // ================== Meus Dados ==================
+ async function carregarPerfil() {
+    console.log("carregarPerfil chamado");
 
-    // carregar dados salvos
-    const user = JSON.parse(localStorage.getItem("perfilUsuario")) || {};
-    nome.value = user.nome || "";
-    email.value = user.email || "";
-    telefone.value = user.telefone || "";
-    senha.value = user.senha || "";
+    const token = localStorage.getItem("token");
+    console.log("token:", token);
+    if (!token) {
+      alert("Usuário não autenticado. Faça login novamente.");
+      window.location.href = "../login/login.html";
+      return;
+    }
 
-    // salvar alterações
-    formDados.addEventListener("submit", e => {
-      e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/perfil", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-      const novoNome = nome.value.trim();
-      const novoEmail = email.value.trim();
-      const novoTelefone = telefone.value.trim();
-      const novaSenha = senha.value.trim();
+      const data = await response.json();
+      console.log("Resposta do servidor:", data);
 
-      if (novoNome) user.nome = novoNome;
-      if (novoEmail) user.email = novoEmail;
-      if (novoTelefone) user.telefone = novoTelefone;
-      if (novaSenha) user.senha = novaSenha;
+      if (!data.success) {
+        alert("Erro ao carregar perfil.");
+        return;
+      }
 
-      localStorage.setItem("perfilUsuario", JSON.stringify(user));
+      const user = data.user;
+
+      // Preenche os labels
+      console.log("Preenchendo labels...");
+      const nomeLabel = document.getElementById("nomeLabel");
+      const emailLabel = document.getElementById("emailLabel");
       
+
+      console.log({ nomeLabel, emailLabel});
+
+      if (nomeLabel) nomeLabel.innerText = user.nome || "";
+      if (emailLabel) emailLabel.innerText = user.email || "";
+
+    } catch (error) {
+      console.error("Erro ao carregar perfil:", error);
+      alert("Erro interno no servidor.");
+    }
+  }
+
+  // ================== ATUALIZAR CAMPO ==================
+  async function atualizarCampo(campo, valor) {
+    console.log("atualizarCampo chamado:", campo, valor);
+
+    const token = localStorage.getItem("token");
+    console.log("token no atualizarCampo:", token);
+    if (!token) return alert("Token ausente. Faça login novamente.");
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ [campo]: valor }),
+      });
+
+      const data = await response.json();
+      console.log("Resposta update:", data);
+      if (!data.success) {
+        alert(data.message || "Erro ao atualizar campo.");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar:", error);
+      alert("Erro ao conectar com o servidor.");
+    }
+  }
+
+  // ================== CONFIGURAR EDIÇÃO ==================
+  function configurarEdicao(campo) {
+    console.log("configurarEdicao chamado para:", campo);
+
+    const label = document.getElementById(`${campo}Label`);
+    const input = document.getElementById(`${campo}Input`);
+    const botao = document.getElementById(`edit${campo.charAt(0).toUpperCase() + campo.slice(1)}`);
+
+    console.log({ label, input, botao });
+
+    if (!label || !input || !botao) {
+      console.error("Algum elemento não encontrado para", campo);
+      return;
+    }
+
+    const svgs = botao.querySelectorAll("svg");
+    console.log("SVGS encontrados:", svgs);
+    if (svgs.length !== 2) {
+      console.warn("Esperado 2 SVGs, encontrado:", svgs.length);
+    }
+    const [iconeEditar, iconeSalvar] = svgs;
+
+    botao.addEventListener("click", async () => {
+      console.log("Botão clicado:", campo);
+      console.log("input.hidden?", input.classList.contains("hidden"));
+
+      if (input.classList.contains("hidden")) {
+        // Entrar em modo edição
+        console.log("Entrando em modo edição");
+        input.value = label.innerText;
+        label.classList.add("hidden");
+        input.classList.remove("hidden");
+        iconeEditar?.classList.add("hidden");
+        iconeSalvar?.classList.remove("hidden");
+      } else {
+        // Salvar
+        const novoValor = input.value.trim();
+        console.log("Valor para salvar:", novoValor);
+        if (!novoValor) {
+          alert("Campo não pode ficar vazio!");
+          return;
+        }
+
+        await atualizarCampo(campo, novoValor);
+        label.innerText = novoValor;
+        input.classList.add("hidden");
+        label.classList.remove("hidden");
+        iconeSalvar?.classList.add("hidden");
+        iconeEditar?.classList.remove("hidden");
+      }
     });
   }
 
-  // === Forms de Fale Conosco e Solicitação de Livro ===
-  document.querySelectorAll("#formFale, #formSolicitacao").forEach(form => {
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      
-      form.reset();
-    });
-  });
+  // ================== INICIALIZAÇÃO ==================
+  carregarPerfil();
+  ["nome", "email", "senha"].forEach(campo => configurarEdicao(campo));
 
+  // ================== Fale Conosco ==================
+  const formFale = document.getElementById("formFale");
+  if (formFale) {
+    formFale.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(formFale);
+      const dados = {
+        nome: formData.get("nome"),
+        email: formData.get("email"),
+        assunto: formData.get("assunto"),
+        mensagem: formData.get("mensagem")
+      };
+      if (!dados.nome || !dados.email || !dados.assunto || !dados.mensagem) {
+        mostrarMensagem("Preencha todos os campos.", "error");
+        return;
+      }
+
+      try {
+        mostrarLoading(formFale);
+        const res = await fetch("http://localhost:5000/api/contato", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
+        const result = await res.json();
+        if (result.success) {
+          mostrarMensagem(result.message, "success");
+          formFale.reset();
+        } else {
+          mostrarMensagem(result.message || "Erro ao enviar.", "error");
+        }
+      } catch {
+        mostrarMensagem("Erro de conexão.", "error");
+      } finally {
+        removerLoading(formFale);
+      }
+    });
+  }
+
+  // ================== Solicitação de Livro ==================
+  const formSolicitacao = document.getElementById("formSolicitacao");
+  if (formSolicitacao) {
+    formSolicitacao.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(formSolicitacao);
+      const dados = {
+        titulo: formData.get("titulo"),
+        autor: formData.get("autor"),
+        editora: formData.get("editora"),
+        ano: formData.get("ano")
+      };
+      if (!dados.titulo || !dados.autor) {
+        mostrarMensagem("Título e autor são obrigatórios.", "error");
+        return;
+      }
+
+      try {
+        mostrarLoading(formSolicitacao);
+        const res = await fetch("http://localhost:5000/api/solicitacao-livro", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
+        const result = await res.json();
+        if (result.success) {
+          mostrarMensagem(result.message, "success");
+          formSolicitacao.reset();
+        } else {
+          mostrarMensagem(result.message || "Erro ao enviar.", "error");
+        }
+      } catch {
+        mostrarMensagem("Erro de conexão.", "error");
+      } finally {
+        removerLoading(formSolicitacao);
+      }
+    });
+  }
+
+  // ================== Funções auxiliares ==================
+  function mostrarMensagem(texto, tipo) {
+    document.querySelectorAll(".mensagem-flutuante").forEach(m => m.remove());
+    const div = document.createElement("div");
+    div.className = `mensagem-flutuante fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+      tipo === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
+    }`;
+    div.textContent = texto;
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 5000);
+  }
+
+  function mostrarLoading(form, texto = "Enviando...") {
+    const botao = form.querySelector('button[type="submit"]');
+    botao.dataset.originalText = botao.textContent;
+    botao.innerHTML = `<div class="flex items-center justify-center gap-2">
+      <div class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+      ${texto}
+    </div>`;
+    botao.disabled = true;
+  }
+
+  function removerLoading(form) {
+    const botao = form.querySelector('button[type="submit"]');
+    botao.innerHTML = botao.dataset.originalText;
+    botao.disabled = false;
+  }
 });
