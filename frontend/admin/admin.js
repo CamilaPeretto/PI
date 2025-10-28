@@ -298,7 +298,6 @@ function desabilitarEdicao() {
   window.location.href = "../login/login.html";
 });
   
-
   // =========================
   // Fechar modal genérico
   // =========================
