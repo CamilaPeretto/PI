@@ -112,9 +112,9 @@
   </section>
 
   <!-- Tabela -->
-  <section class="bg-white mx-6 mt-6 p-6 rounded-2xl shadow ">
-    
-    <table class="min-w-full text-left">
+  <section class="bg-white mx-6 mt-6 p-6 rounded-2xl shadow">
+  <div class="w-full overflow-x-auto sm:overflow-visible">
+    <table class="min-w-full text-left text-sm sm:text-base">
       <thead>
         <tr class="border-b text-[#1B4965]">
           <th class="p-3">Título</th>
@@ -139,7 +139,7 @@
   </button>
 
   <!-- Modal Adicionar Livro -->
-<div id="modalAdicionar" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+<div id="modalAdicionar" class="p-4 hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="relative bg-white p-6 w-full max-w-md max-h-[90vh] rounded overflow-auto">
     <!-- Botão X -->
     <button id="fecharModalAdicionar" class="absolute top-3 right-3 text-gray-500 hover:text-black">
@@ -234,7 +234,7 @@
 </div>
 
 <!-- Modal Detalhes Livro -->
-<div id="modalDetalhes" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+<div id="modalDetalhes" class="p-4 hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
   <div class="bg-white p-6 rounded shadow-lg w-[420px] max-h-[90vh] overflow-auto relative">
 
     <!-- Botão X -->
@@ -276,7 +276,7 @@
 
       <div>
   <label class="block text-sm font-medium text-gray-600 mb-1">Gênero</label>
-  <select id="generoDetalhe" class="w-full border-gray-300 rounded-lg p-2" disabled>
+  <select id="generoDetalhe" class="border w-full border-gray-300 rounded-lg p-2" disabled>
     <option>Ação</option>
     <option>Autoajuda</option>
     <option>Aventura</option>
@@ -301,7 +301,7 @@
 
 <div>
   <label class="block text-sm font-medium text-gray-600 mb-1">Formato</label>
-  <select id="formatoDetalhe" class="w-full border-gray-300 rounded-lg p-2" disabled>
+  <select id="formatoDetalhe" class="border w-full border-gray-300 rounded-lg p-2" disabled>
     <option>PDF</option>
     <option>EPUB</option>
     <option>MOBI</option>
