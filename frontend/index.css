@@ -12,82 +12,12 @@ body { font-family: 'Poppins', sans-serif; background-color: #E0F2F1; }
       .animate-fadeIn {
         animation: fadeIn 0.3s ease-in-out forwards;
       }
-
-      #modal-overlay {
-        position: fixed;
-        inset: 0;
-        display: none; /* mostrado via JS */
-        align-items: center;
-        justify-content: center;
-        background: rgba(0,0,0,0.6);
-        z-index: 9999;
-        padding: 20px;
-      }
-      
-      /* caixa do modal - usa tailwind classes + complemento para comportamento */
-      #modal-box {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-        max-width: 1100px;
-        width: 100%;
-        max-height: 90vh;
-        overflow: hidden; /* evita scroll do modal inteiro */
-        display: flex;
-        gap: 18px;
-      }
-      
-      /* coluna esquerda (capa + visualização) */
-      #modal-left {
-        width: 40%;
-        min-width: 240px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 20px;
-      }
-      
-      /* imagem da capa responsiva */
-      #modalCapa {
-        width: 100%;
-        height: auto;
-        max-height: 70vh;   /* evita ultrapassar viewport */
-        object-fit: contain;
-        border-radius: 10px;
-        transition: transform .2s ease;
-      }
-      
-      /* aumentar imagem ao hover (opcional) */
-      #modalCapa:hover { transform: scale(1.02); }
-      
-      /* coluna direita com conteúdo e sinopse */
-      #modal-right {
-        width: 60%;
-        padding: 20px;
-        overflow: auto; /* permite scroll na área direita se necessário, mas veremos a sinopse limitada */
-        display: flex;
-        flex-direction: column;
-      }
-      
-      /* sinopse scroll interno com altura fixa (cerca de 10 linhas em desktop) */
-      #modalSinopseContainer {
-        max-height: 240px;
-        overflow-y: auto;
-        padding-right: 8px;
-      }
-      
-      /* botao favorito fixado na base direita do modal (por cima) */
-      #btnFavorito {
-        position: absolute;
-        right: 28px;
-        bottom: 22px;
-        background: transparent;
-        border: none;
-        font-size: 28px;
-        cursor: pointer;
-      }
-
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* número de linhas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
       .glass-card {
         background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(12px);
@@ -98,7 +28,6 @@ body { font-family: 'Poppins', sans-serif; background-color: #E0F2F1; }
         transition: all 0.3s ease;
       }
 
-      
       .sponsor-logos img {
         opacity: 0.8;
         filter: grayscale(1);

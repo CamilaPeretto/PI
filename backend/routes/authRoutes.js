@@ -56,4 +56,21 @@ router.put("/update", verificarToken, async (req, res) => {
   }
 });
 
+// Delete
+router.delete("/delete", verificarToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findByIdAndDelete(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "Usuário não encontrado." });
+    }
+
+    res.json({ success: true, message: "Conta deletada com sucesso." });
+  } catch (error) {
+    console.error("Erro /delete:", error);
+    res.status(500).json({ success: false, message: "Erro ao deletar conta." });
+  }
+});
+
 export default router;
