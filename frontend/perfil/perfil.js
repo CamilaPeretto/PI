@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  
-  console.log("DOM carregado, iniciando scripts...");
 
   // ================== Abas ==================
   const tabs = document.querySelectorAll(".tab-btn");
@@ -39,10 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // ================== Meus Dados ==================
  async function carregarPerfil() {
-    console.log("carregarPerfil chamado");
 
     const token = localStorage.getItem("token");
-    console.log("token:", token);
     if (!token) {
       alert("Usuário não autenticado. Faça login novamente.");
       window.location.href = "../login/login.html";
@@ -55,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await response.json();
-      console.log("Resposta do servidor:", data);
 
       if (!data.success) {
         alert("Erro ao carregar perfil.");
@@ -65,12 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const user = data.user;
 
       // Preenche os labels
-      console.log("Preenchendo labels...");
       const nomeLabel = document.getElementById("nomeLabel");
       const emailLabel = document.getElementById("emailLabel");
-      
-
-      console.log({ nomeLabel, emailLabel});
 
       if (nomeLabel) nomeLabel.innerText = user.nome || "";
       if (emailLabel) emailLabel.innerText = user.email || "";
@@ -83,10 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ================== ATUALIZAR CAMPO ==================
   async function atualizarCampo(campo, valor) {
-    console.log("atualizarCampo chamado:", campo, valor);
 
     const token = localStorage.getItem("token");
-    console.log("token no atualizarCampo:", token);
     if (!token) return alert("Token ausente. Faça login novamente.");
 
     try {
@@ -100,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await response.json();
-      console.log("Resposta update:", data);
       if (!data.success) {
         alert(data.message || "Erro ao atualizar campo.");
       }
@@ -112,13 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ================== CONFIGURAR EDIÇÃO ==================
   function configurarEdicao(campo) {
-    console.log("configurarEdicao chamado para:", campo);
 
     const label = document.getElementById(`${campo}Label`);
     const input = document.getElementById(`${campo}Input`);
     const botao = document.getElementById(`edit${campo.charAt(0).toUpperCase() + campo.slice(1)}`);
 
-    console.log({ label, input, botao });
+
 
     if (!label || !input || !botao) {
       console.error("Algum elemento não encontrado para", campo);
@@ -126,19 +113,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const svgs = botao.querySelectorAll("svg");
-    console.log("SVGS encontrados:", svgs);
+
     if (svgs.length !== 2) {
       console.warn("Esperado 2 SVGs, encontrado:", svgs.length);
     }
     const [iconeEditar, iconeSalvar] = svgs;
 
     botao.addEventListener("click", async () => {
-      console.log("Botão clicado:", campo);
-      console.log("input.hidden?", input.classList.contains("hidden"));
 
       if (input.classList.contains("hidden")) {
-        // Entrar em modo edição
-        console.log("Entrando em modo edição");
+
         input.value = label.innerText;
         label.classList.add("hidden");
         input.classList.remove("hidden");
@@ -147,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // Salvar
         const novoValor = input.value.trim();
-        console.log("Valor para salvar:", novoValor);
         if (!novoValor) {
           alert("Campo não pode ficar vazio!");
           return;
@@ -166,6 +149,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================== INICIALIZAÇÃO ==================
   carregarPerfil();
   ["nome", "email", "senha"].forEach(campo => configurarEdicao(campo));
+
+  // ================== DELETAR CONTA ==================
+const btnDeletar = document.getElementById("btnDeletarConta");
+
+btnDeletar.addEventListener("click", async () => {
+  const confirmar = confirm("Tem certeza que deseja deletar sua conta? Essa ação não poderá ser desfeita.");
+  if (!confirmar) return;
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Usuário não autenticado. Faça login novamente.");
+    window.location.href = "../login/login.html";
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/delete", {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      alert("Até logo 👋");
+      localStorage.removeItem("token");
+      window.location.href = "../telaInicial/tela.html";
+    } else {
+      alert(data.message || "Erro ao deletar conta.");
+    }
+  } catch (error) {
+    console.error("Erro ao deletar conta:", error);
+    alert("Erro ao conectar com o servidor.");
+  }
+});
 
   // ================== Fale Conosco ==================
   const formFale = document.getElementById("formFale");
