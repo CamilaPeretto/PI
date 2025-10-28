@@ -1,29 +1,32 @@
+<!-- Loader -->
+<div id="modal-loading" class="fixed inset-0 bg-black/60 flex items-center justify-center z-[99999] hidden">
+  <div class="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+</div>
 <!-- Container do Modal (overlay) -->
-<div id="modal-overlay" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+<div id="modal-overlay" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] hidden p-6" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
   <!-- Caixa do modal -->
-  <div id="modal-box" class="bg-white w-[92%] md:w-[980px] max-w-[1100px] rounded-2xl shadow-2xl p-6 relative flex gap-6 overflow-hidden">
+  <div id="modal-box" class="bg-white w-[92%] max-w-[1100px] rounded-2xl shadow-2xl p-4 relative flex flex-col md:flex-row gap-4 max-h-[90vh] overflow-y-auto">
     <!-- Botão Fechar -->
     <button id="fecharModalLivro" class="absolute top-3 right-3 text-gray-500 hover:text-[#1B4965] text-3xl font-bold z-20" aria-label="Fechar modal">&times;</button>
 
-    <!-- Coluna esquerda: imagem + avaliação do usuário -->
-    <div id="modal-left" class="w-[40%] min-w-[220px] flex flex-col items-center justify-start gap-4 px-1 py-2 relative">
+    <!-- Coluna esquerda: imagem -->
+    <div id="modal-left" class="w-full md:w-[45%] flex justify-center items-start mb-4 md:mb-0">
       <img
         id="modalCapa"
         src=""
         alt="Capa do livro"
-        class="object-contain rounded-xl shadow-md transition-all duration-300 w-full max-h-[65vh]"
+        class="object-contain rounded-xl shadow-md max-h-[73vh] md:max-h-[85vh] "
       />
     </div>
 
     <!-- Coluna direita: conteúdo do livro -->
-    <div id="modal-right" class="w-[60%] flex flex-col justify-between py-1 pr-1 overflow-hidden">
-      <div>
+    <div id="modal-right" class="w-full md:w-[55%] flex flex-col gap-2">
         <!-- Título e autor -->
-        <h2 id="modalTitulo" class="text-2xl md:text-3xl font-bold text-[#1B4965] leading-tight mb-1"></h2>
+        <h2 id="modalTitulo" class="line-clamp-2 text-lg md:text-xl font-bold text-[#1B4965] leading-tight mb-1"></h2>
         <p id="modalAutor" class="text-gray-600 mb-3"></p>
-
+        
         <!-- Gênero e data -->
-        <div class="flex flex-wrap items-center gap-3 mb-3">
+        <div class="flex flex-wrap gap-3 mb-3">
           <p id="modalGenero" class="text-sm text-gray-700"></p>
           <p id="modalData" class="text-sm text-gray-700"></p>
         </div>
@@ -35,18 +38,18 @@
         </div>
 
         <!-- Sinopse (scroll interno, altura limitada ~10 linhas) -->
-        <div class="mt-2">
+
           <p class="text-gray-700 font-semibold mb-2">Sinopse:</p>
-          <div id="modalSinopseContainer" class="overflow-y-auto max-h-[300px] pr-2 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded">
+          <div id="modalSinopseContainer" class="overflow-y-auto md:max-h-[140px] lg:max-h-[170px] pr-2 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded">
             <p id="modalSinopse" class="text-gray-700 text-sm leading-relaxed"></p>
           </div>
-        </div>
-      </div>
+        
+      
 
       <!-- Rodapé do modal: botões de download e favorito alinhados -->
-      <div class="mt-6 flex items-center justify-between w-full">
+
         <!-- Botões de formato (PDF / EPUB / MOBI) -->
-        <div class="flex gap-3">
+        <div class="flex gap-3 mt-4 flex-wrap">
           <button id="btnPdf" class="px-5 py-2 bg-[#1B4965] text-white rounded-xl font-semibold shadow hover:bg-[#123347] hover:shadow-lg transition-all">PDF</button>
           <button id="btnEpub" class="px-5 py-2 bg-[#1B4965] text-white rounded-xl font-semibold shadow hover:bg-[#123347] hover:shadow-lg transition-all">EPUB</button>
           <button id="btnMobi" class="px-5 py-2 bg-[#1B4965] text-white rounded-xl font-semibold shadow hover:bg-[#123347] hover:shadow-lg transition-all">MOBI</button>
