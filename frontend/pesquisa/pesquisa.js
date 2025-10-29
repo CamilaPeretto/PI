@@ -114,7 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
           data: info.publishedDate || 'Data não informada',
           nota: info.averageRating || Math.floor(Math.random() * 5) + 1, // nota aleatória se não houver
           totalAvaliacoes: info.ratingsCount || Math.floor(Math.random() * 1000), // avaliações aleatórias
-          sinopse: info.description || 'Sem descrição disponível.'
+          sinopse: info.description || 'Sem descrição disponível.',
+          isBanco: false
         });
       });
       searchResults.appendChild(card);

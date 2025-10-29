@@ -74,6 +74,26 @@ async function carregarDadosDashboard() {
 // Chama assim que a página carrega
 await carregarDadosDashboard();
 
+// Conectar SSE para atualizações em tempo real do total de downloads
+try {
+  const tokenSSE = localStorage.getItem("token");
+  if (tokenSSE) {
+    const es = new EventSource(`http://localhost:5000/api/admin/stream?token=${encodeURIComponent(tokenSSE)}`);
+    es.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data || '{}');
+        if (typeof data.totalDownloads === 'number') {
+          const el = document.getElementById("totalDownloads");
+          if (el) el.textContent = data.totalDownloads;
+        }
+      } catch {}
+    };
+    es.onerror = () => {
+      // Falha silenciosa; dashboard continuará usando polling inicial
+    };
+  }
+} catch {}
+
 // ====== Função principal para carregar livros ======
 let temMaisLivros = true;
 
@@ -116,7 +136,8 @@ async function carregarLivros(filtros = {}, limparTabela = false) {
         <td class="p-3">${livro.genero}</td>
         <td class="p-3">${livro.formato}</td>
       `;
-
+      // Abrir modal de detalhes ao clicar na linha
+      tr.addEventListener("click", () => abrirModalDetalhes(livro));
       tabela.appendChild(tr);
     });
 
@@ -296,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => carregarLivros());
     };
 
     try {
-      const res = await fetch(`${API_URL}/${livroSelecionado._id}`, {
+      const res = await fetch(`${API_URL}/${livroSelecionado.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -327,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => carregarLivros());
     if (!confirm(`Tem certeza que deseja excluir "${livroSelecionado.titulo}"?`)) return;
 
     try {
-      const res = await fetch(`${API_URL}/${livroSelecionado._id}`, {
+      const res = await fetch(`${API_URL}/${livroSelecionado.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

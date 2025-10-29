@@ -127,4 +127,38 @@ function abrirModalLivro(info = {}) {
 
   overlay.addEventListener("click", onOverlayClick);
   document.addEventListener("keydown", onKey);
+
+  // === Ações dos botões de formato ===
+  const btnPdf = document.getElementById("btnPdf");
+  const btnEpub = document.getElementById("btnEpub");
+  const btnMobi = document.getElementById("btnMobi");
+
+  function alertSolicitacao() {
+    alert("Formato disponível apenas por solicitação. Acesse Perfil -> Solicitação de livros.");
+  }
+
+  if (btnPdf) {
+    btnPdf.onclick = () => {
+      if (info.isBanco && info.formato === 'PDF' && (info.downloadUrl || info.arquivoUrl)) {
+        // Prefere endpoint que incrementa downloads
+        const href = info.downloadUrl || info.arquivoUrl;
+        const a = document.createElement('a');
+        a.href = href;
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        alertSolicitacao();
+      }
+    };
+  }
+
+  if (btnEpub) {
+    btnEpub.onclick = alertSolicitacao;
+  }
+
+  if (btnMobi) {
+    btnMobi.onclick = alertSolicitacao;
+  }
 }

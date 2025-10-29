@@ -23,7 +23,7 @@ router.get("/perfil", verificarToken, async (req, res) => {
         nome: user.nome,
         email: user.email,
         cpf: user.cpf || "",
-        daataNascimento: user.dataNascimento || "",
+        dataNascimento: user.dataNascimento || "",
       }
     });
   } catch (error) {

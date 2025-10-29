@@ -2,77 +2,10 @@
 import express from "express";
 import { verificarToken, verificarAdmin } from "../middleware/authMiddleware.js";
 import Livro from "../models/Livros.js";
-import multer from "multer";
-import path from "path";
-import fs from "fs";
+import { upload, handleUploadErrors } from "../services/upload.js";
 
 const router = express.Router();
 
-// Garantir que as pastas de upload existam
-const ensureUploadDirs = () => {
-  const dirs = ['uploads/capas', 'uploads/livros'];
-  dirs.forEach(dir => {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-  });
-};
-
-ensureUploadDirs();
-
-// Configuração do Multer para upload de arquivos
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (file.fieldname === "capa") {
-      cb(null, "uploads/capas/");
-    } else if (file.fieldname === "arquivo") {
-      cb(null, "uploads/livros/");
-    }
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 50 * 1024 * 1024 // 50MB para livros, 5MB para capas
-  },
-  fileFilter: (req, file, cb) => {
-    if (file.fieldname === "capa") {
-      if (file.mimetype.startsWith("image/")) {
-        cb(null, true);
-      } else {
-        cb(new Error("Apenas imagens são permitidas para capas"));
-      }
-    } else if (file.fieldname === "arquivo") {
-      const allowedTypes = [".pdf"];
-      const fileExt = path.extname(file.originalname).toLowerCase();
-      if (allowedTypes.includes(fileExt)) {
-        cb(null, true);
-      } else {
-        cb(new Error("Apenas arquivos PDF são permitidos"));
-      }
-    }
-  }
-});
-
-// Middleware para tratamento de erros do Multer
-const handleUploadErrors = (error, req, res, next) => {
-  if (error instanceof multer.MulterError) {
-    if (error.code === "LIMIT_FILE_SIZE") {
-      return res.status(400).json({ 
-        message: "Arquivo muito grande. Tamanho máximo: 50MB para livros, 5MB para capas" 
-      });
-    }
-  } else if (error) {
-    return res.status(400).json({ message: error.message });
-  }
-  next();
-};
 
 // GET /api/admin/dados - Dashboard admin
 router.get("/dados", verificarToken, verificarAdmin, async (req, res) => {
@@ -256,7 +189,7 @@ router.post("/livros",
         genero,
         formato,
         sinopse: (sinopse || "").trim(),
-        criadoPor: req.user.userId
+        criadoPor: req.user.id
       };
 
       // Processar arquivos de upload

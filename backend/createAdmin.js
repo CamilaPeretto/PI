@@ -1,18 +1,17 @@
 // backend/createAdmin.js
-require("dotenv").config();
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const connectDB = require("./config/db"); // usa a mesma conexão
-const Usuario = require("./models/User"); // modelo do usuário
+import 'dotenv/config';
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import connectDB from './config/db.js';
+import User from './models/User.js';
 
 // Função autoexecutável
 (async () => {
   try {
-    // Conecta ao banco usando o db.js
     await connectDB();
 
     // Verifica se o admin já existe
-    const adminExistente = await Usuario.findOne({ email: "admin@email.com" });
+    const adminExistente = await User.findOne({ email: "admin@email.com" });
     if (adminExistente) {
       console.log("⚠️ Admin já existe!");
       process.exit(0);
@@ -22,7 +21,7 @@ const Usuario = require("./models/User"); // modelo do usuário
     const senhaCriptografada = await bcrypt.hash("admin123", 10);
 
     // Cria o novo admin
-    const novoAdmin = new Usuario({
+    const novoAdmin = new User({
       nome: "Administrador",
       email: "admin@email.com",
       senha: senhaCriptografada,

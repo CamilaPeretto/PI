@@ -97,6 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       card.addEventListener('click', () => {
+        const isBanco = !!item._id;
+        const livroId = isBanco ? item._id : null;
+        const arquivoUrl = isBanco && item.arquivo?.url ? `http://localhost:5000${item.arquivo.url}` : null;
+        const downloadUrl = isBanco && livroId ? `http://localhost:5000/api/livros/${livroId}/download` : null;
+        const formato = isBanco ? item.formato : null;
+
         abrirModalLivro({
           capa: volume.imageLinks?.thumbnail || item.capa?.url,
           titulo: volume.title || item.titulo,
@@ -105,7 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
           data: volume.publishedDate || item.dataPublicacao,
           nota: volume.averageRating,
           totalAvaliacoes: volume.ratingsCount,
-          sinopse: volume.description || item.sinopse
+          sinopse: volume.description || item.sinopse,
+          isBanco,
+          formato,
+          arquivoUrl,
+          downloadUrl,
+          livroId
         });
       });
 
