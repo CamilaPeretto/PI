@@ -1,5 +1,7 @@
-// backend/config/db.js
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 mongoose.set("strictQuery", true);
 
@@ -10,7 +12,11 @@ export default async function connectDB() {
   const uri = `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0.ims9asr.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
   try {
     console.log("🔄 Conectando ao MongoDB...");
-    await mongoose.connect(uri);
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 30000, // Timeout de 30 segundos
+    });
     console.log(`✅ Conectado ao MongoDB: ${DB_NAME}`);
   } catch (error) {
     console.error("❌ Erro ao conectar ao MongoDB:", error);
