@@ -25,11 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 🔹 NOVO: filtra livros +18 (maturityRating = MATURE)
   function filtrarAdultos(livros) {
     return livros.filter(item => {
       const rating = item.volumeInfo?.maturityRating || 'NOT_MATURE';
-      return rating !== 'MATURE';
+      const isMature = rating === 'MATURE';
+      if (isMature) {
+        console.log(`🔞 Livro adulto filtrado:`, item.volumeInfo?.title || item.titulo);
+      }
+      return !isMature;
     });
   }
 
@@ -40,30 +43,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = section.querySelector('.book-carousel');
     if (!container) return;
     container.innerHTML = '';
-  
-    // 🔹 Filtra +18
+
+    console.log(`🔍 [${sectionId}] Recebeu ${livros.length} livros antes do filtro`);
+    
     const livrosFiltrados = filtrarAdultos(livros);
-  
+    
+    console.log(`🔍 [${sectionId}] ${livrosFiltrados.length} livros após filtro de adultos`);
+
     if (!Array.isArray(livrosFiltrados) || livrosFiltrados.length === 0) {
       container.innerHTML = '<p class="sem-resultados text-[#1B4965]">Nenhum livro encontrado.</p>';
       return;
     }
-  
-    // 🔹 Evita duplicados
+
     const vistos = new Set();
-  
+    const titulosVistos = new Set(); // 🔹 Controle de duplicatas por título
+
     livrosFiltrados.forEach(item => {
       const volume = item.volumeInfo || item;
-      const id = item.id || volume.id || volume.title;
-      if (vistos.has(id)) return;
-      vistos.add(id);
-  
-      const img = volume.imageLinks?.thumbnail || volume.image || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg';
-      const titulo = volume.title || 'Sem título';
+      
+      // 🔹 Normaliza o título para comparação (remove espaços extras, lowercase)
+      const tituloNormalizado = (volume.title || item.titulo || '').trim().toLowerCase();
+      
+      if (titulosVistos.has(tituloNormalizado)) {
+        console.log(`⚠️ [${sectionId}] Livro duplicado ignorado (mesmo título): ${volume.title || item.titulo}`);
+        return;
+      }
+      titulosVistos.add(tituloNormalizado);
+      
+      // 🔹 Cria um ID único que diferencia livros do banco vs API
+      const isBanco = !!item._id;
+      const baseId = isBanco 
+        ? `banco_${item._id}` 
+        : `api_${item.id || volume.id || tituloNormalizado}`;
+      
+      if (vistos.has(baseId)) {
+        console.log(`⚠️ [${sectionId}] Livro duplicado ignorado (mesmo ID): ${volume.title || item.titulo}`);
+        return;
+      }
+      vistos.add(baseId);
+
+      const img = volume.imageLinks?.thumbnail || volume.image || item.capa?.url || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg';
+      const titulo = volume.title || item.titulo || 'Sem título';
       const autor = (volume.authors && volume.authors.join)
         ? volume.authors.join(', ')
-        : (volume.author || 'Autor desconhecido');
-  
+        : (volume.autor || 'Autor desconhecido');
+
       const card = document.createElement('div');
       card.className = 'book-card w-44 md:w-48 h-72 bg-white rounded-lg p-3 shadow hover:scale-[1.03] transition-transform flex-shrink-0';
       card.innerHTML = `
@@ -71,30 +95,30 @@ document.addEventListener('DOMContentLoaded', () => {
         <h4 class="text-sm font-semibold truncate">${titulo}</h4>
         <p class="text-xs text-gray-500 truncate">${autor}</p>
       `;
-  
-      // 🔹 Corrigido: usar volume em vez de info
+
       card.addEventListener('click', () => {
         abrirModalLivro({
-          capa: volume.imageLinks?.thumbnail || volume.imageLinks?.smallThumbnail,
-          imagemLinks: volume.imageLinks, // opcional
-          titulo: volume.title,
-          autor: (volume.authors||[]).join(', '),
-          genero: volume.categories?.[0],
-          data: volume.publishedDate,
+          capa: volume.imageLinks?.thumbnail || item.capa?.url,
+          titulo: volume.title || item.titulo,
+          autor: (volume.authors||[]).join(', ') || item.autor,
+          genero: volume.categories?.[0] || item.genero,
+          data: volume.publishedDate || item.dataPublicacao,
           nota: volume.averageRating,
           totalAvaliacoes: volume.ratingsCount,
-          sinopse: volume.description
+          sinopse: volume.description || item.sinopse
         });
       });
-  
+
       container.appendChild(card);
     });
-  
+
+    console.log(`✅ [${sectionId}] Renderizou ${vistos.size} livros únicos`);
+    
     limitarTexto(container.querySelectorAll('h4'), 40);
     limitarTexto(container.querySelectorAll('p'), 30);
     section.classList.remove('hidden');
   }
-  
+
 
   /* ---------- Buscar na API ---------- */
   async function buscarLivros(query) {
@@ -117,6 +141,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+ /* ---------- Buscar no Banco ---------- */
+async function buscarLivrosBanco() {
+  try {
+    const res = await fetch("http://localhost:5000/api/livros");
+    if (!res.ok) throw new Error("Erro ao buscar livros do banco");
+    const data = await res.json();
+    console.log(`🗄️ Banco retornou ${Array.isArray(data) ? data.length : 0} livros`, data);
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.error("Erro ao carregar livros do banco:", e);
+    return [];
+  }
+}
+
   /* ---------- Cache ---------- */
   function temCacheValido() {
     const cache = safeJsonParse(localStorage.getItem(CACHE_KEY));
@@ -131,14 +169,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* ---------- Atualizado: carregarAtualizado() ---------- */
   async function carregarAtualizado() {
     const dados = {};
+    
     for (const [secao, query] of Object.entries(categorias)) {
       if (!document.getElementById(secao)) continue;
-      const livros = await buscarLivros(query);
+
+      let livros = [];
+      
+      // 🔹 Apenas na primeira seção (suggested): mistura livros do banco + API
+      if (secao === 'suggested') {
+        const [livrosBanco, livrosGoogle] = await Promise.all([
+          buscarLivrosBanco(),
+          buscarLivros(query)
+        ]);
+        
+        // Pega TODOS os livros do banco + até 15 da API
+        livros = [...livrosBanco, ...livrosGoogle.slice(0, 15)];
+        
+        console.log(`📚 Seção ${secao}: ${livrosBanco.length} do banco + ${livrosGoogle.slice(0, 15).length} da API`);
+      } else {
+        // Outras seções: apenas API
+        livros = await buscarLivros(query);
+      }
+
       renderLivros(livros, secao);
       dados[secao] = livros;
     }
+
     try {
       localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: dados }));
     } catch (e) {
@@ -203,7 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileSearchInput = document.getElementById('mobileSearchInput');
   const mobileSearchSubmit = document.getElementById('mobileSearchSubmit');
 
-  // Desktop
   if (searchBtnDesktop && searchInput) {
     searchBtnDesktop.addEventListener('click', () => {
       const termo = searchInput.value.trim();
@@ -215,7 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Mobile
   if (searchToggleMobile && mobileSearchBox && mobileSearchInput && mobileSearchSubmit) {
     searchToggleMobile.addEventListener('click', () => {
       mobileSearchBox.classList.toggle('hidden');
@@ -229,8 +286,6 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileSearchInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); mobileSearchSubmit.click(); }
     });
-
-    // fecha mobile search ao clicar fora
     document.addEventListener('click', (ev) => {
       if (!ev.target.closest('#mobileSearchBox') && !ev.target.closest('#searchToggleMobile')) {
         mobileSearchBox.classList.add('hidden');
@@ -238,30 +293,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-const logoutBtn = document.getElementById("logoutBtn");
-
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("token");
-    alert("Logout realizado com sucesso!");
-    window.location.href = "../login/login.html";
-  });
-}
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("token");
+      alert("Logout realizado com sucesso!");
+      window.location.href = "../login/login.html";
+    });
+  }
 
   const token = localStorage.getItem("token");
-
   if (!token) {
     alert("Você precisa estar logado para acessar esta página!");
     window.location.href = "../login/login.html";
     return;
   }
 
-  // Opcional: validar token no servidor
   fetch("http://localhost:5000/api/auth/perfil", {
     headers: { Authorization: `Bearer ${token}` },
   })
-    .then((res) => res.json())
-    .then((data) => {
+    .then(res => res.json())
+    .then(data => {
       if (!data.success) {
         alert("Sessão expirada. Faça login novamente.");
         localStorage.removeItem("token");

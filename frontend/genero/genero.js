@@ -1,179 +1,129 @@
 document.addEventListener('DOMContentLoaded', () => {
-/* ---------- Parâmetros da URL ---------- */
-const params = new URLSearchParams(window.location.search);
-const tipoOriginal = params.get('tipo') || 'romance';
-let pagina = parseInt(params.get('pagina')) || 1;
 
-/* ---------- Normalização do gênero ---------- */
-function normalizarGenero(genero) {
-  const mapa = {
-    'acao': 'action', 'ação': 'action', 'romance': 'romance', 'fantasia': 'fantasy',
-    'misterio': 'mystery', 'mistério': 'mystery', 'terror': 'horror',
-    'autoajuda': 'self-help', 'ficcao cientifica': 'science fiction', 'ficção científica': 'science fiction',
-    'aventura': 'adventure', 'biografia': 'biography', 'classicos': 'classics',
-     'policial': 'crime', 'poesia': 'poetry',
-    'religiao': 'religion', 'religião': 'religion', 'drama': 'drama',
-    'historia': 'history', 'infantil': 'children', 'psicologia': 'psychology',
-    'suspense': 'suspense', 'trhilher': 'thriller'
-  };
-  const generoSemAcento = removerAcentos(genero.toLowerCase());
-  return mapa[generoSemAcento] || generoSemAcento;
-}
+  /* ---------- Configs ---------- */
+  const PAGE_SIZE = 40; // máximo de livros exibidos
 
-function removerAcentos(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+  /* ---------- Variáveis do HTML ---------- */
+  const searchInput = document.getElementById('searchInput');
+  const searchBtnDesktop = document.getElementById('searchBtnDesktop');
+  const searchToggleMobile = document.getElementById('searchToggleMobile');
+  const mobileSearchBox = document.getElementById('mobileSearchBox');
+  const mobileSearchInput = document.getElementById('mobileSearchInput');
+  const mobileSearchSubmit = document.getElementById('mobileSearchSubmit');
+  const searchResults = document.getElementById('searchResults');
+  const searchTitle = document.getElementById('searchTitle');
+  const breadcrumb = document.getElementById('breadcrumb');
 
-const generoMapeado = normalizarGenero(tipoOriginal);
+  /* ---------- Helpers ---------- */
+  function getQueryParam(name) {
+    return new URLSearchParams(window.location.search).get(name) || '';
+  }
 
-/* ---------- Funções auxiliares ---------- */
-function capitalizar(txt) {
-  return txt.charAt(0).toUpperCase() + txt.slice(1);
-}
+  function limitarTexto(nodeList, limite = 40) {
+    if (!nodeList) return;
+    nodeList.forEach(el => {
+      const txt = (el.textContent || '').trim();
+      if (txt.length > limite) el.textContent = txt.substring(0, limite).trim() + '...';
+    });
+  }
 
-function corrigirTituloGenero(genero) {
-  const mapa = {
-    'acao': 'Ação', 'misterio': 'Mistério', 'ficcao cientifica': 'Ficção Científica',
-    'classicos': 'Clássicos', 'religiao': 'Religião', 'trhilher': 'Thriller'
-  };
-  const generoMinusculo = genero.toLowerCase();
-  return mapa[generoMinusculo] || capitalizar(genero);
-}
+  function atualizarBreadcrumb(termo) {
+    if (!breadcrumb) return;
+    breadcrumb.innerHTML = `
+      <a href="../home/home.html" class="hover:underline">Home</a>
+      <span>/</span>
+      <span>Pesquisa</span>
+    `;
+  }
 
-/* ---------- Breadcrumb ---------- */
-function atualizarBreadcrumb(genero) {
-  const breadcrumb = document.getElementById("breadcrumb");
-  const generoCorrigido = corrigirTituloGenero(genero);
+  /* ---------- Buscar livros na API ---------- */
+  async function buscarLivros(query) {
+    if (!query) return [];
+    if (searchResults) {
+      searchResults.innerHTML = `
+        <div class="col-span-full flex justify-center items-center gap-3 text-gray-500">
+          <div class="w-6 h-6 border-4 border-gray-300 border-t-[#1B4965] rounded-full animate-spin"></div>
+          <span>Carregando livros...</span>
+        </div>
+      `;
+    }
 
-  breadcrumb.innerHTML = `
-    <a href="../home/home.html" class="hover:underline">Home</a>
-    <span>/</span>
-    <span class="font-bold">${generoCorrigido}</span>
-  `;
-}
-atualizarBreadcrumb(tipoOriginal);
+    try {
+      const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${PAGE_SIZE}`);
+      const data = await res.json();
+      let livros = (data.items || []).filter(item => item.volumeInfo?.title);
+      return livros;
+    } catch (err) {
+      console.warn('Erro ao buscar livros:', err);
+      if (searchResults) searchResults.innerHTML = `<p class="text-red-500 text-center">Erro ao carregar livros.</p>`;
+      return [];
+    }
+  }
 
-/* ---------- Configurações de paginação ---------- */
-const livrosPorPagina = 40;
-const startIndex = (pagina - 1) * livrosPorPagina;
+  /* ---------- Filtrar livros relevantes ---------- */
+  function filtrarLivrosRelevantes(livros, termo) {
+    const t = termo.toLowerCase();
+    return livros
+      .map(item => {
+        const info = item.volumeInfo || {};
+        const titulo = (info.title || '').toLowerCase();
+        const autores = (info.authors || []).join(' ').toLowerCase();
+        const score = (titulo.includes(t) ? 3 : 0) + (autores.includes(t) ? 2 : 0);
+        return { item, score };
+      })
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(x => x.item);
+  }
 
-const limitesGenero = {
-  'action': 5, 'self-help': 5, 'adventure': 5, 'biography': 5, 'classics': 5,
-   'drama': 5, 'fantasy': 4, 'science fiction': 8, 'history': 5,
-  'children': 1, 'mystery': 5, 'poetry': 5, 'crime': 5, 'psychology': 5,
-  'religion': 5, 'romance': 5, 'suspense': 5, 'horror': 5, 'thriller': 5
-};
+  /* ---------- Renderizar livros ---------- */
+  function renderLivros(livros) {
+    if (!searchResults) return;
+    searchResults.innerHTML = '';
 
-/* ---------- Carregar livros (versão melhorada e flexível) ---------- */
-async function carregarLivros() {
-  const url = `https://www.googleapis.com/books/v1/volumes?q=subject:${encodeURIComponent(generoMapeado)}&maxResults=${livrosPorPagina}&startIndex=${startIndex}`;
-  const grade = document.getElementById("livros-grade");
-  const paginaAtual = document.getElementById("pagina-atual");
-  const prevBtn = document.getElementById("prev");
-  const nextBtn = document.getElementById("next");
-
-  grade.innerHTML = `<div class="col-span-full flex justify-center items-center gap-3 text-gray-500">
-    <div class="w-6 h-6 border-4 border-gray-300 border-t-[#1B4965] rounded-full animate-spin"></div>
-    <span>Carregando livros...</span>
-  </div>`;
-
-
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    grade.innerHTML = "";
-
-    if (!data.items || data.items.length === 0) {
-      grade.innerHTML = `<p class="col-span-full text-center text-gray-600">Nenhum livro encontrado.</p>`;
-      paginaAtual.textContent = "";
-      prevBtn.disabled = true;
-      nextBtn.disabled = true;
+    if (!livros.length) {
+      searchResults.innerHTML = '<p class="text-[#1B4965] text-center">Nenhum livro encontrado.</p>';
       return;
     }
 
-    // 🔹 Filtro flexível (mantém relevância mas não corta resultados)
-    const livrosFiltrados = data.items
-      .map(livro => {
-        const info = livro.volumeInfo;
-        const categorias = info.categories?.map(c => removerAcentos(c.toLowerCase())) || [];
-        const match = categorias.some(c => c.includes(generoMapeado)) ? 2 : 1; // peso de relevância
-        return { livro, relevancia: match };
-      })
-      .sort((a, b) => b.relevancia - a.relevancia) // mais relevantes primeiro
-      .map(item => item.livro);
+    const vistos = new Set();
 
-    // 🔹 Renderizar livros
-    livrosFiltrados.forEach(livro => {
-      const info = livro.volumeInfo;
+    livros.forEach(item => {
+      const info = item.volumeInfo || {};
+      const id = item.id || info.title;
+      if (vistos.has(id)) return;
+      vistos.add(id);
+
       const img = info.imageLinks?.thumbnail || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg';
-      const titulo = info.title || "Sem título";
-      const autor = info.authors?.join(", ") || "Autor desconhecido";
-      const genero = info.categories?.[0] || corrigirTituloGenero(tipoOriginal);
-      const nota = info.averageRating || (Math.random() * 4 + 1).toFixed(1);
-      const totalAvaliacoes = info.ratingsCount || Math.floor(Math.random() * 1500) + 50;
+      const titulo = info.title || 'Sem título';
+      const autor = (info.authors || []).join(', ') || 'Autor desconhecido';
 
-      const card = document.createElement("div");
-      card.className = "bg-white rounded-lg shadow-md p-3 text-center hover:scale-105 hover:shadow-xl transition-transform duration-300 h-auto cursor-pointer";
-
+      const card = document.createElement('div');
+      card.className = 'book-card w-44 md:w-48 h-72 bg-white rounded-lg p-3 shadow hover:scale-[1.03] transition-transform flex-shrink-0 cursor-pointer';
       card.innerHTML = `
-         <img src="${img}" alt="${titulo}" class="w-full h-auto object-contain rounded-md mb-3">
-          <h4 class="text-sm font-semibold truncate">${titulo}</h4>
-          <p class="text-xs text-gray-600 truncate">${autor}</p>
-        `;
-
-        card.addEventListener('click', () => {
-          const notaFinal = Number(info.averageRating);
-          const notaSegura = !isNaN(notaFinal) && notaFinal > 0
-            ? parseFloat(notaFinal.toFixed(1))
-            : parseFloat((Math.random() * 4 + 1).toFixed(1));
-        
-          const totalAvaliacoesSeguras = Number.isFinite(info.ratingsCount)
-            ? info.ratingsCount
-            : Math.floor(Math.random() * 1500) + 50;
-        
-          abrirModalLivro({
-            capa: img,
-            titulo: titulo,
-            autor: autor,
-            genero: genero,
-            data: info.publishedDate || 'Data não informada',
-            nota: notaSegura,
-            totalAvaliacoes: totalAvaliacoesSeguras,
-            sinopse: info.description || 'Sem descrição disponível.'
-          });
+        <img src="${img}" alt="${titulo}" class="w-full h-56 object-cover rounded-md mb-2">
+        <h4 class="text-sm font-semibold truncate">${titulo}</h4>
+        <p class="text-xs text-gray-500 truncate">${autor}</p>
+      `;
+      card.addEventListener('click', () => {
+        abrirModalLivro({
+          capa: info.imageLinks?.thumbnail || 'https://i.ibb.co/1YPzMMTN/placeholder.jpg',
+          titulo: info.title || 'Sem título',
+          autor: info.authors?.join(", ") || 'Autor desconhecido',
+          genero: info.categories?.[0] || 'Sem gênero',
+          data: info.publishedDate || 'Data não informada',
+          nota: info.averageRating || Math.floor(Math.random() * 5) + 1, // nota aleatória se não houver
+          totalAvaliacoes: info.ratingsCount || Math.floor(Math.random() * 1000), // avaliações aleatórias
+          sinopse: info.description || 'Sem descrição disponível.'
         });
-
-      grade.appendChild(card);
+      });
+      searchResults.appendChild(card);
     });
 
-    // 🔹 Paginação
-    const limitePagina = limitesGenero[generoMapeado] || 5;
-    paginaAtual.textContent = `Página ${pagina} de ${limitePagina}`;
-    prevBtn.disabled = pagina <= 1;
-    nextBtn.disabled = pagina >= limitePagina;
-
-  } catch (err) {
-    console.error("Erro ao carregar livros:", err);
-    grade.innerHTML = `<p class="col-span-full text-center text-red-500">Erro ao carregar livros. Recarregue a página.</p>`;
+    limitarTexto(searchResults.querySelectorAll('h4'), 40);
+    limitarTexto(searchResults.querySelectorAll('p'), 30);
   }
-}
-
-/* ---------- Paginação ---------- */
-function alterarPagina(novaPagina) {
-  const urlAtualizada = new URL(window.location.href);
-  urlAtualizada.searchParams.set("pagina", novaPagina);
-  history.pushState({}, "", urlAtualizada.toString());
-  location.reload();
-}
-
-document.getElementById("prev").addEventListener("click", () => {
-  if (pagina > 1) alterarPagina(pagina - 1);
-});
-
-document.getElementById("next").addEventListener("click", () => {
-  alterarPagina(pagina + 1);
-});
-
+  
 /* ---------- Dropdown ---------- */
 document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
   toggle.addEventListener('click', (ev) => {
@@ -195,6 +145,45 @@ document.addEventListener('click', (ev) => {
   }
 });
 
+  /* ---------- Inicialização ---------- */
+  async function init() {
+    const termo = getQueryParam('q');
+    if (!termo) return;
+    if (searchTitle) searchTitle.textContent = `Resultados para: "${termo}"`;
+    atualizarBreadcrumb(termo);
+
+    const livros = await buscarLivros(termo);
+    const filtrados = filtrarLivrosRelevantes(livros, termo);
+    renderLivros(filtrados);
+  }
+
+  /* ---------- Eventos de busca ---------- */
+  function setupSearch(input, btn) {
+    btn.addEventListener('click', () => {
+      const termo = input.value.trim();
+      if (!termo) return;
+      window.location.href = `pesquisa.html?q=${encodeURIComponent(termo)}`;
+    });
+    input.addEventListener('keypress', e => {
+      if (e.key === 'Enter') { e.preventDefault(); btn.click(); }
+    });
+  }
+
+  if (searchInput && searchBtnDesktop) setupSearch(searchInput, searchBtnDesktop);
+  if (mobileSearchInput && mobileSearchSubmit) setupSearch(mobileSearchInput, mobileSearchSubmit);
+
+  // Toggle mobile search
+  if (searchToggleMobile && mobileSearchBox && mobileSearchInput) {
+    searchToggleMobile.addEventListener('click', () => {
+      mobileSearchBox.classList.toggle('hidden');
+      if (!mobileSearchBox.classList.contains('hidden')) mobileSearchInput.focus();
+    });
+    document.addEventListener('click', ev => {
+      if (!ev.target.closest('#mobileSearchBox') && !ev.target.closest('#searchToggleMobile')) {
+        mobileSearchBox.classList.add('hidden');
+      }
+    });
+  }
 const logoutBtn = document.getElementById("logoutBtn");
      logoutBtn.addEventListener("click", () => {
     if (confirm("Deseja realmente sair?")) {
@@ -202,7 +191,7 @@ const logoutBtn = document.getElementById("logoutBtn");
       window.location.href = "../login/login.html";
     }
   });
+  /* ---------- Rodar ---------- */
+  init();
 
-/* ---------- Executar ---------- */
-carregarLivros();
 });
