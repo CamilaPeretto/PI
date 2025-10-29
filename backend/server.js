@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contatoRoutes from "./routes/contatoRoutes.js";
 import solicitacaoRoutes from "./routes/solicitacaoRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +21,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contato", contatoRoutes);
 app.use("/api/solicitacao-livro", solicitacaoRoutes);
+app.use("/api/usuarios", userRoutes);
 
 app.get("/", (req, res) => res.send("API InBook rodando"));
 

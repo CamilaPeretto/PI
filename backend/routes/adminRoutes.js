@@ -1,5 +1,5 @@
 // backend/routes/adminRoutes.js
-import express, { Router } from "express";
+import express from "express";
 import { verificarToken, verificarAdmin } from "../middleware/authMiddleware.js";
 import Livro from "../models/Livros.js";
 import multer from "multer";
@@ -49,12 +49,12 @@ const upload = multer({
         cb(new Error("Apenas imagens são permitidas para capas"));
       }
     } else if (file.fieldname === "arquivo") {
-      const allowedTypes = [".pdf", ".epub", ".mobi"];
+      const allowedTypes = [".pdf"];
       const fileExt = path.extname(file.originalname).toLowerCase();
       if (allowedTypes.includes(fileExt)) {
         cb(null, true);
       } else {
-        cb(new Error("Apenas arquivos PDF, EPUB e MOBI são permitidos"));
+        cb(new Error("Apenas arquivos PDF são permitidos"));
       }
     }
   }
@@ -425,4 +425,4 @@ router.delete("/livros/:id", verificarToken, verificarAdmin, async (req, res) =>
   }
 });
 
-export default Router;
+export default router;

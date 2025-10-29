@@ -32,21 +32,21 @@
     <div class="bg-white p-5 rounded-2xl shadow flex items-center justify-between">
       <div>
         <h3 class="text-gray-500 text-sm">Livros Baixados</h3>
-        <p class="text-2xl font-bold">1.248</p>
+        <p id="totalDownloads" class="text-2xl font-bold">60</p>
       </div>
       <i data-lucide="download" class="w-8 h-8 text-[#123347]"></i>
     </div>
     <div class="bg-white p-5 rounded-2xl shadow flex items-center justify-between">
       <div>
         <h3 class="text-gray-500 text-sm">Total de Livros</h3>
-        <p class="text-2xl font-bold">320</p>
+        <p id="totalLivros" class="text-2xl font-bold">20</p>
       </div>
       <i data-lucide="book" class="w-8 h-8 text-[#123347]"></i>
     </div>
     <div class="bg-white p-5 rounded-2xl shadow flex items-center justify-between">
       <div>
         <h3 class="text-gray-500 text-sm">Usuários</h3>
-        <p class="text-2xl font-bold">580</p>
+        <p id="totalUsuarios" class="text-2xl font-bold">30</p>
       </div>
       <i data-lucide="users" class="w-8 h-8 text-[#123347]"></i>
     </div>
@@ -95,14 +95,6 @@
         <label class="text-sm text-gray-600">Publicação (até)</label>
         <input type="date" id="dataPubAte" class="border rounded-lg p-2 w-full">
       </div>
-      <div>
-        <label class="text-sm text-gray-600">Adicionado (de)</label>
-        <input type="date" id="dataAddDe" class="border rounded-lg p-2 w-full">
-      </div>
-      <div>
-        <label class="text-sm text-gray-600">Adicionado (até)</label>
-        <input type="date" id="dataAddAte" class="border rounded-lg p-2 w-full">
-      </div>
       
     </div>
     <div class="flex justify-end gap-3 pt-4">
@@ -120,7 +112,6 @@
           <th class="p-3">Título</th>
           <th class="p-3">Autor</th>
           <th class="p-3">Data de Publicação</th>
-          <th class="p-3">Adicionado em</th>
           <th class="p-3">Gênero</th>
           <th class="p-3">Formato</th>
         </tr>
@@ -152,22 +143,22 @@
     <form id="formAdicionar" class="space-y-3">
       <div>
         <label class="block text-sm font-medium text-gray-600">Título</label>
-        <input type="text" id="tituloAdd" placeholder="Título do livro" class="border p-2 rounded w-full" required>
+        <input type="text" id="tituloAdd" name="titulo" placeholder="Título do livro" class="border p-2 rounded w-full" required>
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-600">Autor</label>
-        <input type="text" id="autorAdd" placeholder="Autor do livro" class="border p-2 rounded w-full" required>
+        <input type="text" id="autorAdd" name="autor" placeholder="Autor do livro" class="border p-2 rounded w-full" required>
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-600">Data de Publicação</label>
-        <input type="date" id="dataPubAdd" class="border p-2 rounded w-full" required>
+        <input type="date" id="dataPubAdd" name="dataPublicacao" class="border p-2 rounded w-full" required>
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-600 mb-1">Gênero</label>
-        <select id="generoAdd" class="w-full border-gray-300 rounded-lg p-2">
+        <select id="generoAdd" name="genero" class="w-full border-gray-300 rounded-lg p-2">
           <option>Ação</option>
           <option>Autoajuda</option>
           <option>Aventura</option>
@@ -193,12 +184,12 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-600">Sinopse</label>
-        <textarea id="sinopseAdd" rows="3" placeholder="Resumo do livro..." class="border p-2 rounded w-full resize-none"></textarea>
+        <textarea id="sinopseAdd" name="sinopse" rows="3" placeholder="Resumo do livro..." class="border p-2 rounded w-full resize-none"></textarea>
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-600">Tipo de Arquivo</label>
-        <select id="formatoAdd" class="border p-2 rounded w-full">
+        <select id="formatoAdd" name="formato" class="border p-2 rounded w-full">
           <option>PDF</option>
           <option>EPUB</option>
           <option>MOBI</option>
@@ -206,26 +197,27 @@
       </div>
 
       <!-- Upload da capa -->
-<div>
-  <label class="block text-sm font-medium text-gray-600 mb-1">Capa do Livro</label>
-  <label for="uploadCapa" 
-         class="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-6 bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
-    <i data-lucide="image" class="w-5 h-5 text-gray-500"></i>
-    <span id="labelCapa" class="text-gray-500 text-sm">Selecionar imagem...</span>
-  </label>
-  <input type="file" id="uploadCapa" accept="image/*" class="hidden">
-</div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">Capa do Livro</label>
+          <label for="uploadCapaAdd" 
+                class="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-6 bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+            <i data-lucide="image" class="w-5 h-5 text-gray-500"></i>
+            <span class="text-gray-500 text-sm">Selecionar imagem...</span>
+          </label>
+          <input type="file" id="uploadCapaAdd" name="capa" accept="image/*" class="hidden">
+          <span id="nomeArquivo" class="block mt-1 text-sm text-gray-600 italic"></span>
+        </div>
 
-<!-- Upload do arquivo -->
-<div>
-  <label class="block text-sm font-medium text-gray-600 mb-1">Arquivo do Livro</label>
-  <label for="uploadArquivo" 
-         class="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-6 bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
-    <i data-lucide="file-text" class="w-5 h-5 text-gray-500"></i>
-    <span id="labelArquivo" class="text-gray-500 text-sm">Selecionar arquivo (.pdf, .epub, .mobi)...</span>
-  </label>
-  <input type="file" id="uploadArquivo" accept=".pdf,.epub,.mobi" class="hidden">
-</div>
+        <!-- Upload do arquivo -->
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">Arquivo do Livro</label>
+          <label for="uploadArquivoAdd" 
+                class="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-xl py-6 bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+            <i data-lucide="file-text" class="w-5 h-5 text-gray-500"></i>
+            <span id="labelArquivo" class="text-gray-500 text-sm">Selecionar arquivo (.pdf, .epub, .mobi)...</span>
+          </label>
+          <input type="file" id="uploadArquivoAdd" name="arquivo" accept=".pdf,.epub,.mobi" class="hidden">
+        </div>
 
       <button type="submit" class="bg-[#1B4965] text-white w-full py-2 rounded-lg hover:bg-[#163a51] transition">
         Salvar
@@ -258,22 +250,13 @@
         <input type="text" id="autorDetalhe" class="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" readonly>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
+      
         <div>
           <label class="block text-gray-700 mb-1 font-medium">Data de Publicação</label>
           <input type="date" id="dataPubDetalhe" class="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" readonly>
         </div>
 
-        <div>
-          <label class="block text-gray-700 mb-1 font-medium">Data de Adição</label>
-          <input type="date" id="dataAddDetalhe" class="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" readonly>
-        </div>
-      </div>
 
-      <div class="flex justify-between text-xs text-gray-500">
-        <span id="dataPubInfo"></span>
-        <span id="dataAddInfo"></span>
-      </div>
 
       <div>
   <label class="block text-sm font-medium text-gray-600 mb-1">Gênero</label>

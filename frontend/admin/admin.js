@@ -1,313 +1,397 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // =========================
-  // Inicialização dos ícones Lucide
-  // =========================
+document.addEventListener("DOMContentLoaded", async () => {
   lucide.createIcons();
- const token = localStorage.getItem("token");
 
+  const token = localStorage.getItem("token");
   if (!token) {
     alert("Acesso negado! Faça login primeiro.");
     window.location.href = "../login/login.html";
     return;
   }
 
-  // Tenta validar o token com o backend
-  fetch("http://localhost:5000/api/admin/dados", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then(res => {
-      if (!res.ok) throw new Error("Token inválido");
-      return res.json();
-    })
-    .then(data => {
-      console.log("✅ Dados carregados:", data);
-      // Aqui você pode preencher os cards com dados reais
-    })
-    .catch(() => {
-      alert("Sessão expirada. Faça login novamente.");
-      localStorage.removeItem("token");
-      window.location.href = "../login/login.html";
-    });
-  // =========================
-  // Seletores principais
-  // =========================
-  const tabelaLivros = document.getElementById("tabelaLivros");
-  const btnCarregarMais = document.getElementById("carregarMais");
+  // ==============================
+  // ELEMENTOS
+  // ==============================
+const tabelaLivros = document.getElementById("tabelaLivros");
+  const carregarMais = document.getElementById("carregarMais");
   const btnAdicionar = document.getElementById("btnAdicionar");
   const modalAdicionar = document.getElementById("modalAdicionar");
   const fecharModalAdicionar = document.getElementById("fecharModalAdicionar");
   const formAdicionar = document.getElementById("formAdicionar");
+
   const modalDetalhes = document.getElementById("modalDetalhes");
   const fecharModalDetalhes = document.getElementById("fecharModalDetalhes");
-  const btnFiltrar = document.getElementById("btnFiltrar");
-  const btnLimpar = document.getElementById("btnLimpar");
-  const logoutBtn = document.getElementById("logoutBtn");
-
-  // Modal de detalhes
-  const formDetalhes = document.getElementById("formDetalhes");
+  const btnEditarLivro = document.getElementById("editarLivro");
+  const btnSalvarEdicao = document.getElementById("salvarEdicao");
+  const btnExcluirLivro = document.getElementById("deletarLivro");
+  const dataAddDetalhe = document.getElementById("dataAddDetalhe");
   const tituloDetalhe = document.getElementById("tituloDetalhe");
   const autorDetalhe = document.getElementById("autorDetalhe");
   const dataPubDetalhe = document.getElementById("dataPubDetalhe");
   const generoDetalhe = document.getElementById("generoDetalhe");
   const formatoDetalhe = document.getElementById("formatoDetalhe");
   const sinopseDetalhe = document.getElementById("sinopseDetalhe");
-  const capaDetalhe = document.getElementById("uploadCapaDetalhe");
-  const labelCapaDetalhe = document.getElementById("labelCapaDetalhe");
-  const previewCapaDetalhe = document.getElementById("previewCapaDetalhe");
-  const arquivoDetalhe = document.getElementById("uploadArquivoDetalhe");
-  const labelArquivoDetalhe = document.getElementById("labelArquivoDetalhe");
-  const dataPubInfo = document.getElementById("dataPubInfo");
-  const dataAddInfo = document.getElementById("dataAddInfo");
-  const btnEditarLivro = document.getElementById("editarLivro");
-  const btnSalvarEdicao = document.getElementById("salvarEdicao");
-  const btnExcluirLivro = document.getElementById("deletarLivro");
+  // ==============================
+  // CONFIGURAÇÃO GLOBAL
+  // ==============================
+  const API_URL = "http://localhost:5000/api/admin/livros";
 
-  // =========================
-  // Dados iniciais
-  // =========================
-  const generos = ["Romance", "Ficção", "Aventura", "Fantasia", "Terror"];
-  const formatos = ["PDF", "EPUB", "MOBI"];
-
-  let livros = Array.from({ length: 20 }, (_, i) => ({
-    id: crypto.randomUUID(),
-    titulo: `Livro ${i + 1}`,
-    autor: `Autor ${i + 1}`,
-    dataPub: gerarDataAleatoria(2010, 2023),
-    dataAdd: gerarDataAleatoria(2024, 2025),
-    genero: generos[Math.floor(Math.random() * generos.length)],
-    formato: formatos[Math.floor(Math.random() * formatos.length)],
-    sinopse: `Sinopse do Livro ${i + 1} — Lorem ipsum dolor sit amet.`,
-    capa: "",
-    arquivo: ""
-  }));
-
-  let livrosFiltrados = [...livros];
+  let totalLivros = 0;
+  let paginaAtual = 1;
   let limite = 10;
-  let livroSelecionado = null;
+  let filtrosAtuais = {};
 
-  // =========================
-  // Funções utilitárias
-  // =========================
-  function gerarDataAleatoria(anoInicio, anoFim) {
-    const ano = Math.floor(Math.random() * (anoFim - anoInicio + 1)) + anoInicio;
-    const mes = String(Math.ceil(Math.random() * 12)).padStart(2, "0");
-    const dia = String(Math.ceil(Math.random() * 28)).padStart(2, "0");
-    return `${ano}-${mes}-${dia}`;
+  // ================= DASHBOARD =================
+async function carregarDadosDashboard() {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("Token não encontrado.");
+
+    // ====== 1️⃣ Buscar dados gerais (downloads e livros) ======
+    const response = await fetch("http://localhost:5000/api/admin/dados", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) throw new Error("Erro ao buscar dados do dashboard");
+    const dados = await response.json();
+
+    document.getElementById("totalDownloads").textContent = dados.totalDownloads || 0;
+    document.getElementById("totalLivros").textContent = dados.totalLivros || 0;
+
+    // ====== 2️⃣ Buscar total de usuários direto do banco ======
+    const responseUsuarios = await fetch("http://localhost:5000/api/usuarios/count");
+    if (!responseUsuarios.ok) throw new Error("Erro ao buscar total de usuários");
+
+    const dataUsuarios = await responseUsuarios.json();
+    document.getElementById("totalUsuarios").textContent = dataUsuarios.total || 0;
+
+  } catch (error) {
+    console.error("Erro ao carregar dashboard:", error);
   }
+}
 
-  function renderizarTabela(lista) {
-    tabelaLivros.innerHTML = "";
-    const visiveis = lista.slice(0, limite);
-    visiveis.forEach((livro) => {
+// Chama assim que a página carrega
+await carregarDadosDashboard();
+
+// ====== Função principal para carregar livros ======
+let temMaisLivros = true;
+
+async function carregarLivros(filtros = {}, limparTabela = false) {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("Token não encontrado.");
+
+    const params = new URLSearchParams({
+      page: paginaAtual,
+      limit: 10,
+      ...filtros
+    });
+
+    const response = await fetch(`http://localhost:5000/api/admin/livros?${params.toString()}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) throw new Error("Erro ao buscar livros.");
+    const data = await response.json();
+
+    const tabela = document.getElementById("tabelaLivros");
+    if (!tabela) throw new Error("Elemento #tabelaLivros não encontrado.");
+
+    if (limparTabela) tabela.innerHTML = ""; // limpa antes de aplicar filtros
+
+    const livros = data.livros || [];
+
+    // Renderizar as linhas
+    livros.forEach(livro => {
       const tr = document.createElement("tr");
-      tr.className = "hover:bg-gray-50 cursor-pointer transition";
+      tr.classList.add("border-b", "hover:bg-gray-50", "transition");
+
       tr.innerHTML = `
         <td class="p-3">${livro.titulo}</td>
         <td class="p-3">${livro.autor}</td>
-        <td class="p-3">${livro.dataPub}</td>
-        <td class="p-3">${livro.dataAdd}</td>
+        <td class="p-3">${livro.dataPub || "-"}</td>
         <td class="p-3">${livro.genero}</td>
         <td class="p-3">${livro.formato}</td>
       `;
-      tr.addEventListener("click", () => abrirModalDetalhes(livro));
-      tabelaLivros.appendChild(tr);
+
+      tabela.appendChild(tr);
     });
-    btnCarregarMais.classList.toggle("hidden", lista.length <= limite);
+
+    // Controle do botão "Carregar mais"
+    const btnCarregar = document.getElementById("carregarMais");
+    if (data.pagination.hasNext) {
+      btnCarregar.classList.remove("hidden");
+      temMaisLivros = true;
+    } else {
+      btnCarregar.classList.add("hidden");
+      temMaisLivros = false;
+
+      
+    }
+
+  } catch (error) {
+    console.error("Erro em carregarLivros:", error);
+  }
+}
+
+// Filtros
+document.getElementById("btnFiltrar").addEventListener("click", async () => {
+  const filtros = {
+    titulo: document.getElementById("filtroTitulo").value,
+    autor: document.getElementById("filtroAutor").value,
+    genero: document.getElementById("filtroGenero").value,
+    formato: document.getElementById("filtroFormato").value,
+    dataPubDe: document.getElementById("dataPubDe").value,
+    dataPubAte: document.getElementById("dataPubAte").value,
+  };
+
+  paginaAtual = 1;
+  await carregarLivros(filtros, true);
+});
+
+document.getElementById("btnLimpar").addEventListener("click", async () => {
+  document.getElementById("filtroTitulo").value = "";
+  document.getElementById("filtroAutor").value = "";
+  document.getElementById("filtroGenero").value = "";
+  document.getElementById("filtroFormato").value = "";
+  document.getElementById("dataPubDe").value = "";
+  document.getElementById("dataPubAte").value = "";
+
+  paginaAtual = 1;
+  await carregarLivros({}, true);
+});
+
+// Botão "Carregar mais"
+document.getElementById("carregarMais").addEventListener("click", async () => {
+  if (temMaisLivros) {
+    paginaAtual++;
+    await carregarLivros();
+  }
+});
+
+// Carregar ao iniciar
+document.addEventListener("DOMContentLoaded", () => carregarLivros());
+
+  // ==============================
+  // RENDERIZAR TABELA
+  // ==============================
+  function renderizarTabela(livros) {
+    const tbody = tabelaLivros;
+    if (!tbody) return;
+
+    livros.forEach((livro) => {
+      const tr = document.createElement("tr");
+      tr.classList.add("cursor-pointer", "hover:bg-gray-100");
+
+      tr.innerHTML = `
+        <td class="p-3">${livro.titulo}</td>
+        <td class="p-3">${livro.autor}</td>
+        <td class="p-3">${livro.dataPub || ""}</td>
+        <td class="p-3">${livro.genero || ""}</td>
+        <td class="p-3">${livro.formato || ""}</td>
+      `;
+
+      tr.addEventListener("click", () => abrirModalDetalhes(livro));
+      tbody.appendChild(tr);
+    });
   }
 
-  // =========================
+  // ==============================
+  // ADICIONAR LIVRO
+  // ==============================
+  formAdicionar.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(formAdicionar);
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Erro ao adicionar livro");
+
+      alert("✅ Livro adicionado com sucesso!");
+      modalAdicionar.classList.add("hidden");
+      formAdicionar.reset();
+
+      tabelaLivros.innerHTML = ""; // limpa antes de recarregar
+      paginaAtual = 1;
+      await carregarLivros();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Erro ao salvar o livro no banco.");
+    }
+  });
+
+  // ==============================
   // MODAL DETALHES
-  // =========================
+  // ==============================
   function abrirModalDetalhes(livro) {
     livroSelecionado = livro;
-
     tituloDetalhe.value = livro.titulo;
     autorDetalhe.value = livro.autor;
-    dataPubDetalhe.value = livro.dataPub;
-    generoDetalhe.value = livro.genero;
-    formatoDetalhe.value = livro.formato;
-    sinopseDetalhe.value = livro.sinopse;
-
-    capaDetalhe.value = "";
-    previewCapaDetalhe.src = livro.capa || "";
-    previewCapaDetalhe.classList.toggle("hidden", !livro.capa);
-
-    arquivoDetalhe.value = "";
-
-    dataPubInfo.textContent = `Publicação: ${livro.dataPub}`;
-    dataAddInfo.textContent = `Adicionado: ${livro.dataAdd}`;
+    dataPubDetalhe.value = livro.dataPublicacao?.split("T")[0] || livro.dataPub || "";
+    generoDetalhe.value = livro.genero || "";
+    formatoDetalhe.value = livro.formato || "";
+    sinopseDetalhe.value = livro.sinopse || "";
 
     desabilitarEdicao();
     modalDetalhes.classList.remove("hidden");
+
+    // Mostra os nomes dos arquivos e preview da capa
+    if (livro.capa?.originalName) {
+      document.getElementById("labelCapaDetalhe").textContent = ` ${livro.capa.originalName}`;
+      previewCapaDetalhe.src = `http://localhost:5000/${livro.capa.path}`;
+
+      
+    } else {
+      document.getElementById("labelCapaDetalhe").textContent = "Selecionar imagem...";
+      document.getElementById("previewCapaDetalhe").classList.add("hidden");
+    }
+
+    if (livro.arquivo?.originalName) {
+      document.getElementById("labelArquivoDetalhe").textContent = ` ${livro.arquivo.originalName}`;
+    } else {
+      document.getElementById("labelArquivoDetalhe").textContent = "Selecionar arquivo (.pdf, .epub, .mobi)...";
+    }
   }
 
   function habilitarEdicao() {
-  const container = document.getElementById('detalhesLivro');
-  if (!container) return; // previne erros
-  container.querySelectorAll("input, select, textarea").forEach(el => el.disabled = false);
-  btnSalvarEdicao.classList.remove("hidden");
-  btnEditarLivro.classList.add("hidden");
-}
-
-function desabilitarEdicao() {
-  const container = document.getElementById('detalhesLivro');
-  if (!container) return;
-  container.querySelectorAll("input, select, textarea").forEach(el => el.disabled = true);
-  btnSalvarEdicao.classList.add("hidden");
-  btnEditarLivro.classList.remove("hidden");
-}
-
-  // Preview da capa (detalhes)
-  if (capaDetalhe) {
-    capaDetalhe.addEventListener("change", () => {
-      const file = capaDetalhe.files[0];
-      if (file) {
-        labelCapaDetalhe.textContent = file.name;
-        const reader = new FileReader();
-        reader.onload = e => {
-          previewCapaDetalhe.src = e.target.result;
-          previewCapaDetalhe.classList.remove("hidden");
-        };
-        reader.readAsDataURL(file);
-      }
-    });
+    [tituloDetalhe, autorDetalhe, dataPubDetalhe, generoDetalhe, formatoDetalhe, sinopseDetalhe].forEach(
+      (el) => (el.disabled = false)
+    );
+    btnEditarLivro.classList.add("hidden");
+    btnSalvarEdicao.classList.remove("hidden");
   }
 
-  // Preview do arquivo (detalhes)
-  if (arquivoDetalhe) {
-    arquivoDetalhe.addEventListener("change", () => {
-      const file = arquivoDetalhe.files[0];
-      if (file) labelArquivoDetalhe.textContent = file.name;
-    });
+  function desabilitarEdicao() {
+    [tituloDetalhe, autorDetalhe, dataPubDetalhe, generoDetalhe, formatoDetalhe, sinopseDetalhe].forEach(
+      (el) => (el.disabled = true)
+    );
+    btnEditarLivro.classList.remove("hidden");
+    btnSalvarEdicao.classList.add("hidden");
   }
 
-  // Editar livro
   btnEditarLivro.addEventListener("click", habilitarEdicao);
 
-  // Salvar edição
-  btnSalvarEdicao.addEventListener("click", () => {
-    livroSelecionado.titulo = tituloDetalhe.value;
-    livroSelecionado.autor = autorDetalhe.value;
-    livroSelecionado.dataPub = dataPubDetalhe.value;
-    livroSelecionado.genero = generoDetalhe.value;
-    livroSelecionado.formato = formatoDetalhe.value;
-    livroSelecionado.sinopse = sinopseDetalhe.value;
+  // ==============================
+  // SALVAR EDIÇÃO
+  // ==============================
+  btnSalvarEdicao.addEventListener("click", async () => {
+    if (!livroSelecionado) return;
 
-    if (capaDetalhe.files[0]) {
-      const reader = new FileReader();
-      reader.onload = e => livroSelecionado.capa = e.target.result;
-      reader.readAsDataURL(capaDetalhe.files[0]);
-    }
-
-    if (arquivoDetalhe.files[0]) {
-      livroSelecionado.arquivo = arquivoDetalhe.files[0].name;
-    }
-
-    desabilitarEdicao();
-    renderizarTabela(livrosFiltrados);
-    alert("Livro atualizado com sucesso!");
-  });
-  
-
-  // Excluir livro
-  btnExcluirLivro.addEventListener("click", () => {
-    if (confirm("Tem certeza que deseja excluir este livro?")) {
-      livros = livros.filter(l => l.id !== livroSelecionado.id);
-      livrosFiltrados = [...livros];
-      renderizarTabela(livrosFiltrados);
-      fecharModal(modalDetalhes);
-      alert("Livro excluído com sucesso!");
-    }
-    
-  });
-
-  // =========================
-  // ADICIONAR NOVO LIVRO
-  // =========================
-  formAdicionar.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const novoLivro = {
-      id: crypto.randomUUID(),
-      titulo: document.getElementById("tituloAdd").value.trim(),
-      autor: document.getElementById("autorAdd").value.trim(),
-      dataPub: document.getElementById("dataPubAdd").value,
-      dataAdd: new Date().toISOString().split("T")[0],
-      genero: document.getElementById("generoAdd").value,
-      formato: document.getElementById("formatoAdd").value,
-      sinopse: document.getElementById("sinopseAdd")?.value || "",
-      capa: "",
-      arquivo: ""
+    const livroAtualizado = {
+      titulo: tituloDetalhe.value,
+      autor: autorDetalhe.value,
+      dataPublicacao: dataPubDetalhe.value,
+      genero: generoDetalhe.value,
+      formato: formatoDetalhe.value,
+      sinopse: sinopseDetalhe.value,
     };
 
-    livros.unshift(novoLivro);
-    livrosFiltrados = [...livros];
-    formAdicionar.reset();
-    fecharModal(modalAdicionar);
-    renderizarTabela(livrosFiltrados);
+    try {
+      const res = await fetch(`${API_URL}/${livroSelecionado._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(livroAtualizado),
+      });
+
+      if (!res.ok) throw new Error("Erro ao salvar edição");
+
+      alert("✅ Alterações salvas com sucesso!");
+      modalDetalhes.classList.add("hidden");
+      tabelaLivros.innerHTML = "";
+      paginaAtual = 1;
+      await carregarLivros();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Erro ao atualizar o livro.");
+    }
   });
 
-  // =========================
-  // FILTROS
-  // =========================
-  btnFiltrar.addEventListener("click", () => {
-    const titulo = document.getElementById("filtroTitulo").value.toLowerCase();
-    const autor = document.getElementById("filtroAutor").value.toLowerCase();
-    const genero = document.getElementById("filtroGenero").value;
-    const formato = document.getElementById("filtroFormato").value;
-    const dataPubDe = document.getElementById("dataPubDe").value;
-    const dataPubAte = document.getElementById("dataPubAte").value;
-    const dataAddDe = document.getElementById("dataAddDe").value;
-    const dataAddAte = document.getElementById("dataAddAte").value;
+  // ==============================
+  // EXCLUIR LIVRO
+  // ==============================
+  btnExcluirLivro.addEventListener("click", async () => {
+    if (!livroSelecionado) return;
 
-    livrosFiltrados = livros.filter(livro => {
-      const matchTitulo = !titulo || livro.titulo.toLowerCase().includes(titulo);
-      const matchAutor = !autor || livro.autor.toLowerCase().includes(autor);
-      const matchGenero = !genero || livro.genero === genero;
-      const matchFormato = !formato || livro.formato === formato;
-      const matchDataPub = (!dataPubDe || livro.dataPub >= dataPubDe) && (!dataPubAte || livro.dataPub <= dataPubAte);
-      const matchDataAdd = (!dataAddDe || livro.dataAdd >= dataAddDe) && (!dataAddAte || livro.dataAdd <= dataAddAte);
-      return matchTitulo && matchAutor && matchGenero && matchFormato && matchDataPub && matchDataAdd;
-    });
+    if (!confirm(`Tem certeza que deseja excluir "${livroSelecionado.titulo}"?`)) return;
 
-    limite = 10;
-    renderizarTabela(livrosFiltrados);
+    try {
+      const res = await fetch(`${API_URL}/${livroSelecionado._id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) throw new Error("Erro ao excluir livro");
+
+      alert("🗑️ Livro removido com sucesso!");
+      modalDetalhes.classList.add("hidden");
+      tabelaLivros.innerHTML = "";
+      paginaAtual = 1;
+      await carregarLivros();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Erro ao excluir o livro.");
+    }
   });
 
-  btnLimpar.addEventListener("click", () => {
-    document.querySelectorAll("#filtroTitulo, #filtroAutor, #filtroGenero, #filtroFormato, #dataPubDe, #dataPubAte, #dataAddDe, #dataAddAte").forEach(el => el.value = "");
-    livrosFiltrados = [...livros];
-    renderizarTabela(livrosFiltrados);
-  });
-
-  // =========================
-  // EVENTOS GERAIS
-  // =========================
-  btnCarregarMais.addEventListener("click", () => {
-    limite += 10;
-    renderizarTabela(livrosFiltrados);
-  });
-
+  // ==============================
+  // BOTÕES E MODAIS
+  // ==============================
   btnAdicionar.addEventListener("click", () => modalAdicionar.classList.remove("hidden"));
-  fecharModalAdicionar.addEventListener("click", () => fecharModal(modalAdicionar));
-  fecharModalDetalhes.addEventListener("click", () => fecharModal(modalDetalhes));
+  fecharModalAdicionar.addEventListener("click", () => modalAdicionar.classList.add("hidden"));
+  fecharModalDetalhes.addEventListener("click", () => modalDetalhes.classList.add("hidden"));
 
-  logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("token");
-  window.location.href = "../login/login.html";
-});
-  
-  // =========================
-  // Fechar modal genérico
-  // =========================
-  function fecharModal(modal) {
-    modal.classList.add("hidden");
-    if (modal === modalDetalhes) desabilitarEdicao();
+  if (carregarMais) carregarMais.addEventListener("click", carregarLivros);
+
+  // ==============================
+  // LOGOUT
+  // ==============================
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("token");
+    window.location.href = "../login/login.html";
+  });
+// ============================== NOMES DE ARQUIVOS E PREVIEW CAPA ==============================
+  // Modal Adicionar
+  const inputCapaAdd = document.getElementById("uploadCapaAdd");
+  const inputArquivoAdd = document.getElementById("uploadArquivoAdd");
+  const labelArquivoAdd = document.getElementById("labelArquivo");
+  const nomeArquivoAdd = document.getElementById("nomeArquivo");
+
+  if (inputCapaAdd) {
+    inputCapaAdd.addEventListener("change", () => {
+      if (inputCapaAdd.files.length > 0) {
+        const nome = inputCapaAdd.files[0].name;
+        nomeArquivoAdd.textContent = ` ${nome}`;
+      } else nomeArquivoAdd.textContent = "";
+    });
   }
 
-  // =========================
-  // Inicialização
-  // =========================
-  renderizarTabela(livros);
+  if (inputArquivoAdd) {
+    inputArquivoAdd.addEventListener("change", () => {
+      if (inputArquivoAdd.files.length > 0) {
+        const nome = inputArquivoAdd.files[0].name;
+        labelArquivoAdd.textContent = ` ${nome}`;
+      } else labelArquivoAdd.textContent = "Selecionar arquivo (.pdf, .epub, .mobi)...";
+    });
+  }
+
+  
+  
+  
+  // ==============================
+  // INICIALIZAÇÃO
+  // ==============================
+  await carregarLivros();
 });
+
